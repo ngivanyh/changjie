@@ -1,20 +1,24 @@
-# 蒼蟬
+# `ngivanyh` - 蒼蟬
+從：[`Cycatz/cangzen`](https://github.com/Cycatz/cangzen) fork 過來，做一些有益於使用者的改變
 
-## 名稱由來
+Forked from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), it contains serveral QOL improvements.
+
+## 名稱由來 (Name Origin)
 
 倉禪，取諧音為蒼蟬。
 
-英文 Cangzen = Cangjie + Zen 
+Cangzen = Cangjie + Zen 
 
-## 背景
+## 背景 (Background)
 
-1. [倉頡新星](https://github.com/GHolk/cjns)
-2. [倉頡輸入法自學套件](http://www.scj2000.com/cjselfstudyv1/)
-3. 倉頡之星
+1. [原版蒼蟬 ｜ `Cycatz/cangzen`](https://github.com/Cycatz/cangzen)
+2. [倉頡新星](https://github.com/GHolk/cjns)
+3. [倉頡輸入法自學套件](http://www.scj2000.com/cjselfstudyv1/)
+4. 倉頡之星
 
 ## 使用方法
 
-主頁：[https://cycatz.github.io/cangzen](https://cycatz.github.io/cangzen)
+主頁：[https://ngivanyh.github.io/cangzen/](https://ngivanyh.github.io/cangzen/)
 
 左下角圓圈：切換黑白主題
 
@@ -22,3 +26,12 @@
 
 在拆碼模式下，按下空白鍵可提示當前字碼
 
+## Usage
+
+Homepage: [https://ngivanyh.github.io/cangzen/](https://ngivanyh.github.io/cangzen/)
+
+Change themes via the circle on the bottom left of your screen
+
+Toggle between word decomposition and layout practice with the `鍵/拆` buttons on the bottom right.
+
+Pressing the spacebar in word decomposition mode will show you the word hint

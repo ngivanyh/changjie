@@ -136,7 +136,7 @@ function decompositionMode_generateQuest() {
 function keydownEvent(e) {
 	if (currentMode === "layout") {
 		const keyname = (e.key).toLowerCase();
-		console.log(e.key);
+		console.log(keyname);
 
 		var keyboardKey = document.getElementsByClassName('keyboard__key-' + keyname)[0];
 		if (keyboardKey) {
@@ -190,7 +190,7 @@ function keydownEvent(e) {
 
 function keyupEvent(e) {
 	if (currentMode === "layout") {
-		const keyname = e.key;
+		const keyname = (e.key).toLowerCase();
 
 		var keyboardKey = document.getElementsByClassName('keyboard__key-' + keyname)[0];
 		if (keyboardKey) {
