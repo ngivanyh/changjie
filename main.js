@@ -21,7 +21,8 @@ window.addEventListener('load', function(){
 			cangjieCodeTable = request.response;
 			initialize();
 		} else {
-			console.log('Network request failed with response ' + request.status + ': ' + request.statusText);
+			alert(`Network request failed with response ${request.status}: ${request.statusText}`)
+			console.log(`Network request failed with response ${request.status}: ${request.statusText}`);
 		}
 	}
 	request.send();
@@ -93,11 +94,11 @@ function generateQuest(){
 
 	var keys = Object.keys(key2RadicalTable);
 	for (i = 0; i < keys.length; i++) {
-		keyboardKey = document.getElementsByClassName('keyboard__key-' + keys[i])[0];
+		keyboardKey = document.getElementsByClassName(`keyboard__key-${keys[i]}`)[0];
 		keyboardKey.classList.remove("keyboard__key--blink");
 	}
 	
-	document.getElementsByClassName('keyboard__key-' + questCharacterCodes[0])[0].classList.add("keyboard__key--blink");
+	document.getElementsByClassName(`keyboard__key-${questCharacterCodes[0]}`)[0].classList.add("keyboard__key--blink");
 
 	console.log(questCharacter, questCharacterCodes);	
 
@@ -138,7 +139,7 @@ function keydownEvent(e) {
 		const keyname = (e.key).toLowerCase();
 		console.log(keyname);
 
-		var keyboardKey = document.getElementsByClassName('keyboard__key-' + keyname)[0];
+		var keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
 		if (keyboardKey) {
 			keyboardKey.classList.add("keyboard__key--activated");
 		}
@@ -157,10 +158,9 @@ function keydownEvent(e) {
 			if (questCharacterCodesPosition == questCharacterCodesLength) {
 				generateQuest();
 			} else {
-
 				decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
 				 
-				var keyboardNextKey = document.getElementsByClassName('keyboard__key-' + questCharacterCodes[questCharacterCodesPosition])[0];
+				var keyboardNextKey = document.getElementsByClassName(`keyboard__key-${questCharacterCodes[questCharacterCodesPosition]}`)[0];
 				keyboardNextKey.classList.add("keyboard__key--blink");
 			}
 		}
@@ -192,7 +192,7 @@ function keyupEvent(e) {
 	if (currentMode === "layout") {
 		const keyname = (e.key).toLowerCase();
 
-		var keyboardKey = document.getElementsByClassName('keyboard__key-' + keyname)[0];
+		var keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
 		if (keyboardKey) {
 			keyboardKey.classList.remove("keyboard__key--activated");
 		}
