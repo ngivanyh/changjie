@@ -14,7 +14,7 @@ var key2RadicalTable = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"�
 
 window.addEventListener('load', function(){
 	var request = new XMLHttpRequest();
-	request.open('GET', 'cangjieCodeTable.json');
+	request.open('GET', 'cangjieCodeTable.min.json');
 	request.responseType = 'json';
 	request.onload = function(){
 		if (this.status >= 200 && this.status < 400) {
