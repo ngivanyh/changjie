@@ -1,13 +1,13 @@
-# `ngivanyh` - 蒼蟬
+# `ngivanyh` - 暢頡
 從：[`Cycatz/cangzen`](https://github.com/Cycatz/cangzen) fork 過來，做一些有益於使用者的改變
 
 Forked from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), it contains serveral QOL improvements.
 
 ## 名稱由來 (Name Origin)
 
-倉禪，取諧音為蒼蟬。
+暢頡，暢既「倉」子諧音，也為舒暢之意。頡，既頡之「頡」，也為便捷之意。
 
-Cangzen = Cangjie + Zen 
+A pinyin translation of the Chinese name.
 
 ## 背景 (Background)
 
