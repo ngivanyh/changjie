@@ -51,7 +51,7 @@ body {
 	text-align: center;
 }
 
-.quest-frame__charactor {
+.quest-frame__character {
 	display: inline-block;
 	border: 1px solid;
 	font-size: 172px;
@@ -66,7 +66,7 @@ body {
 	margin-top: var(--practice-mode-cursor-margin-size); 
 }
 
-.decomposition-cursor__charactor {
+.decomposition-cursor__character {
 	display: inline-block;
 	vertical-align: top;
 	height: 100px;
@@ -81,16 +81,16 @@ body {
 	border-bottom-style: var(--practice-mode-border-bottom-style);
 }
 
-.decomposition-cursor__charactor--finished {
+.decomposition-cursor__character--finished {
 	color: gray;
 }
 
-.decomposition-cursor__charactor--hint {
+.decomposition-cursor__character--hint {
 	color: gray;
 	border-bottom-color: var(--font-color);	
 }
 
-.decomposition-cursor__charactor--blink {
+.decomposition-cursor__character--blink {
 	background-color: var(--blink-bg-color);
 	color: var(--blink-font-color);
 }
@@ -123,7 +123,7 @@ body {
 
 .keyboard__key--blink {
 	/* box-shadow: inset 0 -4px 0 0 black; */
-	box-shadow: inset 0 0 8px 0;
+	box-shadow: inset 0 0 13px 0;
 }
 
 .keyboard__key--activated {

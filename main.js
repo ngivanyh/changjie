@@ -1,14 +1,14 @@
 var cangjieCodeTable; 
-var questCharactor;
-var questCharactorCodes;
-var questCharactorCodesLength;
-var questCharactorCodesPosition;
+var questCharacter;
+var questCharacterCodes;
+var questCharacterCodesLength;
+var questCharacterCodesPosition;
 
 var currentTheme;
 var currentMode;
 
 var decompositionCursor = document.getElementsByClassName('decomposition-cursor')[0];
-var questFrameCharactor = document.getElementsByClassName('quest-frame__charactor')[0];
+var questFrameCharacter = document.getElementsByClassName('quest-frame__character')[0];
 
 var key2RadicalTable = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜"};
 
@@ -84,12 +84,12 @@ function array_rand(arr){
 function generateQuest(){
 	decompositionCursor.innerHTML = ''; // unprocessed
 
-	var charactors = Object.keys(cangjieCodeTable); 
-	questCharactor = array_rand(charactors);
-	questCharactorCodes = array_rand(cangjieCodeTable[questCharactor]) 
-	questCharactorCodesLength = questCharactorCodes.length;
-	questFrameCharactor.textContent = questCharactor;
-	questCharactorCodesPosition = 0;
+	var characters = Object.keys(cangjieCodeTable); 
+	questCharacter = array_rand(characters);
+	questCharacterCodes = array_rand(cangjieCodeTable[questCharacter]) 
+	questCharacterCodesLength = questCharacterCodes.length;
+	questFrameCharacter.textContent = questCharacter;
+	questCharacterCodesPosition = 0;
 
 	var keys = Object.keys(key2RadicalTable);
 	for(i = 0; i < keys.length; i++){
@@ -97,18 +97,18 @@ function generateQuest(){
 		keyboardKey.classList.remove("keyboard__key--blink");
 	}
 	
-	document.getElementsByClassName('keyboard__key-' + questCharactorCodes[0])[0].classList.add("keyboard__key--blink");
+	document.getElementsByClassName('keyboard__key-' + questCharacterCodes[0])[0].classList.add("keyboard__key--blink");
 
-	console.log(questCharactor, questCharactorCodes);	
+	console.log(questCharacter, questCharacterCodes);	
 
-	for(i = 0; i < questCharactorCodesLength; i++) {
-		var decompositionCursorCharactor = document.createElement('span');
+	for(i = 0; i < questCharacterCodesLength; i++) {
+		var decompositionCursorCharacter = document.createElement('span');
 
-		decompositionCursorCharactor.className = "decomposition-cursor__charactor";
+		decompositionCursorCharacter.className = "decomposition-cursor__character";
 		
-		if(!i) decompositionCursorCharactor.className += " decomposition-cursor__charactor--blink";
-		decompositionCursorCharactor.textContent = key2RadicalTable[questCharactorCodes[i]];
-		decompositionCursor.appendChild(decompositionCursorCharactor);					
+		if(!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
+		decompositionCursorCharacter.textContent = key2RadicalTable[questCharacterCodes[i]];
+		decompositionCursor.appendChild(decompositionCursorCharacter);					
 	}
 	
 }
@@ -117,19 +117,19 @@ function generateQuest(){
 function decompositionMode_generateQuest() {
 	decompositionCursor.innerHTML = ''; // unprocessed
 
-	var charactors = Object.keys(cangjieCodeTable); 
-	questCharactor = array_rand(charactors);
-	questCharactorCodes = array_rand(cangjieCodeTable[questCharactor]) 
-	questCharactorCodesLength = questCharactorCodes.length;
-	questFrameCharactor.textContent = questCharactor;
-	questCharactorCodesPosition = 0;
+	var characters = Object.keys(cangjieCodeTable); 
+	questCharacter = array_rand(characters);
+	questCharacterCodes = array_rand(cangjieCodeTable[questCharacter]) 
+	questCharacterCodesLength = questCharacterCodes.length;
+	questFrameCharacter.textContent = questCharacter;
+	questCharacterCodesPosition = 0;
 	
-	console.log(questCharactor, questCharactorCodes);	
+	console.log(questCharacter, questCharacterCodes);	
 
-	for(i = 0; i < questCharactorCodesLength; i++) {
-		var decompositionCursorCharactor = document.createElement('span');
-		decompositionCursorCharactor.className = "decomposition-cursor__charactor";
-		decompositionCursor.appendChild(decompositionCursorCharactor);					
+	for(i = 0; i < questCharacterCodesLength; i++) {
+		var decompositionCursorCharacter = document.createElement('span');
+		decompositionCursorCharacter.className = "decomposition-cursor__character";
+		decompositionCursor.appendChild(decompositionCursorCharacter);					
 	}
 }
 
@@ -143,47 +143,47 @@ function keydownEvent(e) {
 			keyboardKey.classList.add("keyboard__key--activated");
 		}
 
-		var decompositionCursorCharactor = document.getElementsByClassName('decomposition-cursor__charactor')[questCharactorCodesPosition];
-		if(keyname ===  questCharactorCodes[questCharactorCodesPosition]){
-			decompositionCursorCharactor.classList.remove("decomposition-cursor__charactor--blink");
-			decompositionCursorCharactor.classList.add("decomposition-cursor__charactor--finished");
+		var decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
+		if(keyname ===  questCharacterCodes[questCharacterCodesPosition]){
+			decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
+			decompositionCursorCharacter.classList.add("decomposition-cursor__character--finished");
 			if(currentMode === "decomposition"){
-				decompositionCursorCharactor.textContent = key2RadicalTable[keyname];
+				decompositionCursorCharacter.textContent = key2RadicalTable[keyname];
 			}
 			keyboardKey.classList.remove("keyboard__key--blink");
 
-			questCharactorCodesPosition++;
+			questCharacterCodesPosition++;
 
-			if(questCharactorCodesPosition == questCharactorCodesLength){
+			if(questCharacterCodesPosition == questCharacterCodesLength){
 				generateQuest();
 			} else {
 
-				decompositionCursorCharactor.nextElementSibling.classList.add("decomposition-cursor__charactor--blink");
+				decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
 				 
-				var keyboardNextKey = document.getElementsByClassName('keyboard__key-' + questCharactorCodes[questCharactorCodesPosition])[0];
+				var keyboardNextKey = document.getElementsByClassName('keyboard__key-' + questCharacterCodes[questCharacterCodesPosition])[0];
 				keyboardNextKey.classList.add("keyboard__key--blink");
 			}
 		}
 	} else {
 		const keyname = e.key;
 
-		var decompositionCursorCharactor = document.getElementsByClassName('decomposition-cursor__charactor')[questCharactorCodesPosition];
+		var decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
 
-		if(keyname ===  questCharactorCodes[questCharactorCodesPosition]){
+		if(keyname ===  questCharacterCodes[questCharacterCodesPosition]){
 
-			if(decompositionCursorCharactor.classList.contains("decomposition-cursor__charactor--hint"))
-				decompositionCursorCharactor.classList.remove("decomposition-cursor__charactor--hint");
+			if(decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
+				decompositionCursorCharacter.classList.remove("decomposition-cursor__character--hint");
 
-			decompositionCursorCharactor.textContent = key2RadicalTable[keyname];
-			questCharactorCodesPosition++;
+			decompositionCursorCharacter.textContent = key2RadicalTable[keyname];
+			questCharacterCodesPosition++;
 
-			if(questCharactorCodesPosition == questCharactorCodesLength){
+			if(questCharacterCodesPosition == questCharacterCodesLength){
 				decompositionMode_generateQuest();
 			} 
 		} else if(keyname === " ") {
-			decompositionCursorCharactor.textContent = key2RadicalTable[questCharactorCodes[questCharactorCodesPosition]];
-			if(!decompositionCursorCharactor.classList.contains("decomposition-cursor__charactor--hint"))
-				decompositionCursorCharactor.classList.add("decomposition-cursor__charactor--hint");
+			decompositionCursorCharacter.textContent = key2RadicalTable[questCharacterCodes[questCharacterCodesPosition]];
+			if(!decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
+				decompositionCursorCharacter.classList.add("decomposition-cursor__character--hint");
 		}
 	}
 }
