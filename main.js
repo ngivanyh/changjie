@@ -17,10 +17,10 @@ window.addEventListener('load', function(){
 	request.open('GET', 'cangjieCodeTable.json');
 	request.responseType = 'json';
 	request.onload = function(){
-		if(this.status >= 200 && this.status < 400){
+		if (this.status >= 200 && this.status < 400) {
 			cangjieCodeTable = request.response;
 			initialize();
-		} else{
+		} else {
 			console.log('Network request failed with response ' + request.status + ': ' + request.statusText);
 		}
 	}
@@ -40,7 +40,7 @@ function initTheme() {
 	const btnDarkmode = document.getElementsByClassName('btn-darkmode--toggle')[0];  
 	btnDarkmode.addEventListener('click', (e) => {
 		console.log('clicked!');
-		if(currentTheme === 'light')
+		if (currentTheme === 'light')
 			currentTheme = 'dark' 
 		else 
 			currentTheme = 'light'; 
@@ -54,7 +54,7 @@ function initMode() {
 	document.documentElement.setAttribute('practice-mode', currentMode);
 	localStorage.setItem('mode', currentMode);
 
-	if(currentMode === "decomposition")
+	if (currentMode === "decomposition")
 		decompositionMode_generateQuest();
 	else 
 		generateQuest();
@@ -65,7 +65,7 @@ function initMode() {
 	const btnPracticeMode = document.getElementsByClassName('btn-practice-mode--toggle')[0];  
 
 	btnPracticeMode.addEventListener('click', (e) => {
-		if(currentMode === "decomposition"){
+		if (currentMode === "decomposition") {
 			currentMode = "layout";
 			generateQuest();	
 		} else {
@@ -92,7 +92,7 @@ function generateQuest(){
 	questCharacterCodesPosition = 0;
 
 	var keys = Object.keys(key2RadicalTable);
-	for(i = 0; i < keys.length; i++){
+	for (i = 0; i < keys.length; i++) {
 		keyboardKey = document.getElementsByClassName('keyboard__key-' + keys[i])[0];
 		keyboardKey.classList.remove("keyboard__key--blink");
 	}
@@ -101,12 +101,12 @@ function generateQuest(){
 
 	console.log(questCharacter, questCharacterCodes);	
 
-	for(i = 0; i < questCharacterCodesLength; i++) {
+	for (i = 0; i < questCharacterCodesLength; i++) {
 		var decompositionCursorCharacter = document.createElement('span');
 
 		decompositionCursorCharacter.className = "decomposition-cursor__character";
 		
-		if(!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
+		if (!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
 		decompositionCursorCharacter.textContent = key2RadicalTable[questCharacterCodes[i]];
 		decompositionCursor.appendChild(decompositionCursorCharacter);					
 	}
@@ -126,7 +126,7 @@ function decompositionMode_generateQuest() {
 	
 	console.log(questCharacter, questCharacterCodes);	
 
-	for(i = 0; i < questCharacterCodesLength; i++) {
+	for (i = 0; i < questCharacterCodesLength; i++) {
 		var decompositionCursorCharacter = document.createElement('span');
 		decompositionCursorCharacter.className = "decomposition-cursor__character";
 		decompositionCursor.appendChild(decompositionCursorCharacter);					
@@ -134,27 +134,27 @@ function decompositionMode_generateQuest() {
 }
 
 function keydownEvent(e) {
-	if(currentMode === "layout"){
-		const keyname = e.key;
+	if (currentMode === "layout") {
+		const keyname = (e.key).toLowerCase();
 		console.log(e.key);
 
 		var keyboardKey = document.getElementsByClassName('keyboard__key-' + keyname)[0];
-		if(keyboardKey){
+		if (keyboardKey) {
 			keyboardKey.classList.add("keyboard__key--activated");
 		}
 
 		var decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
-		if(keyname ===  questCharacterCodes[questCharacterCodesPosition]){
+		if (keyname ===  questCharacterCodes[questCharacterCodesPosition]) {
 			decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
 			decompositionCursorCharacter.classList.add("decomposition-cursor__character--finished");
-			if(currentMode === "decomposition"){
+			if (currentMode === "decomposition") {
 				decompositionCursorCharacter.textContent = key2RadicalTable[keyname];
 			}
 			keyboardKey.classList.remove("keyboard__key--blink");
 
 			questCharacterCodesPosition++;
 
-			if(questCharacterCodesPosition == questCharacterCodesLength){
+			if (questCharacterCodesPosition == questCharacterCodesLength) {
 				generateQuest();
 			} else {
 
@@ -180,20 +180,20 @@ function keydownEvent(e) {
 			if(questCharacterCodesPosition == questCharacterCodesLength){
 				decompositionMode_generateQuest();
 			} 
-		} else if(keyname === " ") {
+		} else if (keyname === " ") {
 			decompositionCursorCharacter.textContent = key2RadicalTable[questCharacterCodes[questCharacterCodesPosition]];
-			if(!decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
+			if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
 				decompositionCursorCharacter.classList.add("decomposition-cursor__character--hint");
 		}
 	}
 }
 
 function keyupEvent(e) {
-	if(currentMode === "layout"){
+	if (currentMode === "layout") {
 		const keyname = e.key;
 
 		var keyboardKey = document.getElementsByClassName('keyboard__key-' + keyname)[0];
-		if(keyboardKey){
+		if (keyboardKey) {
 			keyboardKey.classList.remove("keyboard__key--activated");
 		}
 	}

@@ -119,6 +119,7 @@ body {
 
 .keyboard__key-f, .keyboard__key-j {
 	text-decoration: underline;
+	text-underline-offset: 8px;
 }
 
 .keyboard__key--blink {
@@ -143,8 +144,7 @@ body {
 	border-radius: 50%;
 }
 
-.btn-practice-mode--toggle {
-}
+.btn-practice-mode--toggle {}
 
 .btn-practice-mode--toggle:after {
 	display: inline-block;
