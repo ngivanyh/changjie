@@ -23,6 +23,8 @@
 	--practice-mode-border-bottom-width: 0;
 	--practice-mode-border-bottom-style: solid;
 	--practice-mode-button-content: '拆';
+	--key-correct-color: #44fc11;
+	--key-incorrect-color: #ff0010;
 }
 
 [data-theme="dark"] {
@@ -30,6 +32,8 @@
 	--font-color: white;
 	--blink-bg-color: white;
 	--blink-font-color: black;
+	--key-correct-color: #1ece2a;
+	--key-incorrect-color: #ed0414;
 }
 
 [practice-mode="decomposition"] {
@@ -135,8 +139,12 @@ body {
 	box-shadow: inset 0 0 13px 0;
 }
 
-.keyboard__key--activated {
-	background: gray;
+.keyboard__key--activated-correct {
+	background: var(--key-correct-color);
+}
+
+.keyboard__key--activated-incorrect {
+	background: var(--key-incorrect-color);
 }
 
 .btn-darkmode--toggle {

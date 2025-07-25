@@ -1,19 +1,19 @@
-var cangjieCodeTable; 
-var questCharacter;
-var questCharacterCodes;
-var questCharacterCodesLength;
-var questCharacterCodesPosition;
+let cangjieCodeTable; 
+let questCharacter;
+let questCharacterCodes;
+let questCharacterCodesLength;
+let questCharacterCodesPosition;
 
-var currentTheme;
-var currentMode;
+let currentTheme;
+let currentMode;
 
-var decompositionCursor = document.getElementsByClassName('decomposition-cursor')[0];
-var questFrameCharacter = document.getElementsByClassName('quest-frame__character')[0];
+let decompositionCursor = document.getElementsByClassName('decomposition-cursor')[0];
+let questFrameCharacter = document.getElementsByClassName('quest-frame__character')[0];
 
-var key2RadicalTable = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜"};
+let key2RadicalTable = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜"};
 
 window.addEventListener('load', function(){
-	var request = new XMLHttpRequest();
+	let request = new XMLHttpRequest();
 	request.open('GET', 'cangjieCodeTable.min.json');
 	request.responseType = 'json';
 	request.onload = function(){
@@ -85,14 +85,14 @@ function array_rand(arr){
 function generateQuest(){
 	decompositionCursor.innerHTML = ''; // unprocessed
 
-	var characters = Object.keys(cangjieCodeTable); 
+	let characters = Object.keys(cangjieCodeTable); 
 	questCharacter = array_rand(characters);
 	questCharacterCodes = array_rand(cangjieCodeTable[questCharacter]) 
 	questCharacterCodesLength = questCharacterCodes.length;
 	questFrameCharacter.textContent = questCharacter;
 	questCharacterCodesPosition = 0;
 
-	var keys = Object.keys(key2RadicalTable);
+	let keys = Object.keys(key2RadicalTable);
 	for (i = 0; i < keys.length; i++) {
 		keyboardKey = document.getElementsByClassName(`keyboard__key-${keys[i]}`)[0];
 		keyboardKey.classList.remove("keyboard__key--blink");
@@ -103,7 +103,7 @@ function generateQuest(){
 	console.log(questCharacter, questCharacterCodes);	
 
 	for (i = 0; i < questCharacterCodesLength; i++) {
-		var decompositionCursorCharacter = document.createElement('span');
+		let decompositionCursorCharacter = document.createElement('span');
 
 		decompositionCursorCharacter.className = "decomposition-cursor__character";
 		
@@ -114,11 +114,10 @@ function generateQuest(){
 	
 }
 
-
 function decompositionMode_generateQuest() {
 	decompositionCursor.innerHTML = ''; // unprocessed
 
-	var characters = Object.keys(cangjieCodeTable); 
+	let characters = Object.keys(cangjieCodeTable); 
 	questCharacter = array_rand(characters);
 	questCharacterCodes = array_rand(cangjieCodeTable[questCharacter]) 
 	questCharacterCodesLength = questCharacterCodes.length;
@@ -128,7 +127,7 @@ function decompositionMode_generateQuest() {
 	console.log(questCharacter, questCharacterCodes);	
 
 	for (i = 0; i < questCharacterCodesLength; i++) {
-		var decompositionCursorCharacter = document.createElement('span');
+		let decompositionCursorCharacter = document.createElement('span');
 		decompositionCursorCharacter.className = "decomposition-cursor__character";
 		decompositionCursor.appendChild(decompositionCursorCharacter);					
 	}
@@ -139,35 +138,38 @@ function keydownEvent(e) {
 		const keyname = (e.key).toLowerCase();
 		console.log(keyname);
 
-		var keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
+		let keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
 		if (keyboardKey) {
-			keyboardKey.classList.add("keyboard__key--activated");
-		}
+			let decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
+			console.log(decompositionCursorCharacter)
+			if (keyname ===  questCharacterCodes[questCharacterCodesPosition]) {
+				keyboardKey.classList.add("keyboard__key--activated-correct");
+				console.log("keyname === questCharacterCodes[questCharacterCodesPosition]")
+				decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
+				decompositionCursorCharacter.classList.add("decomposition-cursor__character--finished");
+				if (currentMode === "decomposition") {
+					decompositionCursorCharacter.textContent = key2RadicalTable[keyname];
+				}
+				keyboardKey.classList.remove("keyboard__key--blink");
 
-		var decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
-		if (keyname ===  questCharacterCodes[questCharacterCodesPosition]) {
-			decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
-			decompositionCursorCharacter.classList.add("decomposition-cursor__character--finished");
-			if (currentMode === "decomposition") {
-				decompositionCursorCharacter.textContent = key2RadicalTable[keyname];
-			}
-			keyboardKey.classList.remove("keyboard__key--blink");
+				questCharacterCodesPosition++;
 
-			questCharacterCodesPosition++;
-
-			if (questCharacterCodesPosition == questCharacterCodesLength) {
-				generateQuest();
+				if (questCharacterCodesPosition == questCharacterCodesLength) {
+					generateQuest();
+				} else {
+					decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
+					
+					let keyboardNextKey = document.getElementsByClassName(`keyboard__key-${questCharacterCodes[questCharacterCodesPosition]}`)[0];
+					keyboardNextKey.classList.add("keyboard__key--blink");
+				}
 			} else {
-				decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
-				 
-				var keyboardNextKey = document.getElementsByClassName(`keyboard__key-${questCharacterCodes[questCharacterCodesPosition]}`)[0];
-				keyboardNextKey.classList.add("keyboard__key--blink");
+				keyboardKey.classList.add("keyboard__key--activated-incorrect");
 			}
 		}
 	} else {
-		const keyname = e.key;
+		const keyname = (e.key).toLowerCase();
 
-		var decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
+		let decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
 
 		if(keyname ===  questCharacterCodes[questCharacterCodesPosition]){
 
@@ -192,9 +194,14 @@ function keyupEvent(e) {
 	if (currentMode === "layout") {
 		const keyname = (e.key).toLowerCase();
 
-		var keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
+		let keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
 		if (keyboardKey) {
-			keyboardKey.classList.remove("keyboard__key--activated");
+			if (keyboardKey.classList.contains("keyboard__key--activated-correct")) {
+				keyboardKey.classList.remove("keyboard__key--activated-correct");
+			} 
+			if (keyboardKey.classList.contains("keyboard__key--activated-incorrect")){
+				keyboardKey.classList.remove("keyboard__key--activated-incorrect");
+			}
 		}
 	}
 }

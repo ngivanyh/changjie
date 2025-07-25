@@ -5,7 +5,7 @@ Forked from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), it contains s
 
 ## 名稱由來 (Name Origin)
 
-暢頡，暢既「倉」子諧音，也為舒暢之意。頡，既頡之「頡」，也為便捷之意。
+暢頡，暢既「倉」子諧音，也為順暢之意。頡，既頡之「頡」，也為便捷之意。
 
 A pinyin translation of the Chinese name.
 
@@ -18,7 +18,7 @@ A pinyin translation of the Chinese name.
 
 ## 使用方法
 
-主頁：[https://ngivanyh.github.io/cangzen/](https://ngivanyh.github.io/cangzen/)
+主頁：[https://ngivanyh.github.io/changjie/](https://ngivanyh.github.io/changjie/)
 
 左下角圓圈：切換黑白主題
 
@@ -28,7 +28,7 @@ A pinyin translation of the Chinese name.
 
 ## Usage
 
-Homepage: [https://ngivanyh.github.io/cangzen/](https://ngivanyh.github.io/cangzen/)
+Homepage: [https://ngivanyh.github.io/changjie/](https://ngivanyh.github.io/changjie/)
 
 Change themes via the circle on the bottom left of your screen
 
