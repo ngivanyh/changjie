@@ -1,173 +1,177 @@
 @font-face {
-	font-family: 'TW-Kai';
-	src: url('./fonts/TW-Kai-98_1.ttf');
-	font-display: fallback;
+    font-family: 'TW-Kai';
+    src: url('./fonts/TW-Kai-98_1.ttf');
+    font-display: fallback;
 }
 
 @font-face {
-	font-family: 'Noto Serif TC';
-	src: url('./fonts/NotoSerifTC-Medium.otf');
-	font-display: fallback;
+    font-family: 'Noto Serif TC';
+    src: url('./fonts/NotoSerifTC-Medium.otf');
+    font-display: fallback;
 }
 
 :root {
-	/* dark mode */
-	--bg-color: transparent;
-	--font-color: black;
-	--blink-bg-color: black;
-	--blink-font-color: white;
-	/* practice mode */
-	--keyboard-display: block;  
-	--quest-frame-margin-size: 8vh;
-	--practice-mode-cursor-margin-size: 4vh;
-	--practice-mode-border-bottom-width: 0;
-	--practice-mode-border-bottom-style: solid;
-	--practice-mode-button-content: '拆';
-	--key-correct-color: #44fc11;
-	--key-incorrect-color: #ff0010;
+    /* light mode */
+    --bg-color: transparent;
+    --font-color: black;
+    --blink-bg-color: black;
+    --blink-font-color: white;
+    /* --light-mode-icon: url(); */
+    /* practice mode */
+    --keyboard-display: block;  
+    --quest-frame-margin-size: 8vh;
+    --practice-mode-cursor-margin-size: 4vh;
+    --practice-mode-border-bottom-width: 0;
+    --practice-mode-border-bottom-style: solid;
+    --practice-mode-button-content: '拆';
+    /* keyboard keypress highlight */
+    --key-correct-color: #44fc11;
+    --key-incorrect-color: #ff0010;
+    /* font */
+    --fonts: 'Noto Serif TC', 'TW-Kai';
 }
 
 [data-theme="dark"] {
-	--bg-color: black;
-	--font-color: white;
-	--blink-bg-color: white;
-	--blink-font-color: black;
-	--key-correct-color: #1ece2a;
-	--key-incorrect-color: #ed0414;
+    --bg-color: black;
+    --font-color: white;
+    --blink-bg-color: white;
+    --blink-font-color: black;
+    --key-correct-color: #1ece2a;
+    --key-incorrect-color: #ed0414;
 }
 
 [practice-mode="decomposition"] {
-	--keyboard-display: none;
-	--quest-frame-margin-size: 10vh;
-	--practice-mode-cursor-margin-size: 10vh;
-	--practice-mode-border-bottom-width: 1px;
-	--practice-mode-border-bottom-style: solid;
-	--practice-mode-button-content: '鍵';
+    --keyboard-display: none;
+    --quest-frame-margin-size: 10vh;
+    --practice-mode-cursor-margin-size: 10vh;
+    --practice-mode-border-bottom-width: 1px;
+    --practice-mode-border-bottom-style: solid;
+    --practice-mode-button-content: '鍵';
 }
 
 body {
-	background-color: var(--bg-color);
-	color: var(--font-color);
+    background-color: var(--bg-color);
+    color: var(--font-color);
 }
 
 .quest-frame {
-	margin-top: var(--quest-frame-margin-size);
-	text-align: center;
+    margin-top: var(--quest-frame-margin-size);
+    text-align: center;
 }
 
 .quest-frame__character {
-	display: inline-block;
-	border: 1px solid;
-	font-size: 172px;
-	padding: 0 30px;
-	font-family: 'Noto Serif TC';
-	background-color: var(--bg-color);
-	color: var(--font-color);
+    display: inline-block;
+    border: 1px solid;
+    font-size: 172px;
+    padding: 0px 30px;
+    font-family: var(--fonts);
+    background-color: var(--bg-color);
+    color: var(--font-color);
 }
 
 .decomposition-cursor {
-	text-align: center;
-	margin-top: var(--practice-mode-cursor-margin-size); 
+    text-align: center;
+    margin-top: var(--practice-mode-cursor-margin-size); 
 }
 
 .decomposition-cursor__character {
-	display: inline-block;
-	vertical-align: top;
-	height: 100px;
-	width: 100px;
-	line-height: 100px;
-	font-family: 'Noto Serif TC';
-	font-size: 56px;
-	margin: 0 4px;
-	color: var(--font-color);
-	background-color: var(--bg-color);
-	border-bottom-width: var(--practice-mode-border-bottom-width);
-	border-bottom-style: var(--practice-mode-border-bottom-style);
+    display: inline-block;
+    vertical-align: top;
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+    font-family: var(--fonts);
+    font-size: 56px;
+    margin: 0 4px;
+    color: var(--font-color);
+    background-color: var(--bg-color);
+    border-bottom-width: var(--practice-mode-border-bottom-width);
+    border-bottom-style: var(--practice-mode-border-bottom-style);
 }
 
 .decomposition-cursor__character--finished {
-	color: gray;
+    color: gray;
 }
 
 .decomposition-cursor__character--hint {
-	color: gray;
-	border-bottom-color: var(--font-color);	
+    color: gray;
+    border-bottom-color: var(--font-color);	
 }
 
 .decomposition-cursor__character--blink {
-	background-color: var(--blink-bg-color);
-	color: var(--blink-font-color);
+    background-color: var(--blink-bg-color);
+    color: var(--blink-font-color);
 }
 
 .keyboard {
-	margin: 5vh auto;
-	display: var(--keyboard-display);
+    margin: 5vh auto;
+    display: var(--keyboard-display);
 }
 
 [class^='keyboard__row-'] {
-	text-align: center;
+    text-align: center;
 }
 
 .keyboard__row-2 {
-	margin-left: 45px;
+    margin-left: 45px;
 }
 
 .keyboard__row-3 {
-	margin-left: 25px;
+    margin-left: 25px;
 }
 
 [class^='keyboard__key-'] {
-	display: inline-block;
-	border: 2px outset black;
-	width: 60px;
-	height: 67.2px;
-	margin: 0 3px 6px 3px;
-	line-height: 67.2px;
-	font: 40px 'Noto Serif TC';
-	background-color: var(--bg-color);
-	color: var(--font-color);
-	/* border-color: var(--border-color); */
+    display: inline-block;
+    border: 2px outset black;
+    width: 60px;
+    height: 67.2px;
+    margin: 0 3px 6px 3px;
+    line-height: 67.2px;
+    font: 40px var(--fonts);
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    /* border-color: var(--border-color); */
 }
 
 .keyboard__key-f, .keyboard__key-j {
-	text-decoration: underline;
-	text-underline-offset: 8px;
+    text-decoration: underline;
+    text-underline-offset: 8px;
 }
 
 .keyboard__key--blink {
-	/* box-shadow: inset 0 -4px 0 0 black; */
-	box-shadow: inset 0 0 13px 0;
+    /* box-shadow: inset 0 -4px 0 0 black; */
+    box-shadow: inset 0 0 13px 0;
 }
 
 .keyboard__key--activated-correct {
-	background: var(--key-correct-color);
+    background: var(--key-correct-color);
 }
 
 .keyboard__key--activated-incorrect {
-	background: var(--key-incorrect-color);
+    background: var(--key-incorrect-color);
 }
 
 .btn-darkmode--toggle {
-	display: inline-block;
-	position: fixed;
-	bottom: 10px;
-	left: 10px;
-	width: 30px;
-	height: 30px;
-	background: var(--bg-color);
-	color: var(--font-color);
-	border: 7px solid;
-	border-radius: 50%;
+    display: inline-block;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    background: var(--bg-color);
+    color: var(--font-color);
+    border: 7px solid;
+    border-radius: 50%;
 }
 
 .btn-practice-mode--toggle {}
 
 .btn-practice-mode--toggle:after {
-	display: inline-block;
-	position: fixed;
-	bottom: 10px;
-	right: 10px;
-	font: 30px 'Noto Serif TC';
-	color: var(--font-color);
-	content: var(--practice-mode-button-content);
+    display: inline-block;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font: 30px var(--fonts);
+    color: var(--font-color);
+    content: var(--practice-mode-button-content);
 }

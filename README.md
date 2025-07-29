@@ -5,13 +5,13 @@ Forked from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), it contains s
 
 ## 名稱由來 (Name Origin)
 
-暢頡，暢既「倉」子諧音，也為順暢之意。頡，既頡之「頡」，也為便捷之意。
+暢頡，暢既「倉」字諧音，也為順暢之意。頡，既倉頡之「頡」，也為諧音便「捷」之意。
 
 A pinyin translation of the Chinese name.
 
 ## 背景 (Background)
 
-1. [原版蒼蟬 ｜ `Cycatz/cangzen`](https://github.com/Cycatz/cangzen)
+1. [蒼蟬 ｜ `Cycatz/cangzen`](https://github.com/Cycatz/cangzen)
 2. [倉頡新星](https://github.com/GHolk/cjns)
 3. [倉頡輸入法自學套件](http://www.scj2000.com/cjselfstudyv1/)
 4. 倉頡之星
@@ -24,7 +24,7 @@ A pinyin translation of the Chinese name.
 
 右下角`鍵/拆`：選擇純記鍵位模式/拆碼模式
 
-在拆碼模式下，按下空白鍵可提示當前字碼
+在拆碼模式下，按下空白鍵可提示當前字碼，按下Enter鍵則能顯示所有字碼
 
 ## Usage
 
