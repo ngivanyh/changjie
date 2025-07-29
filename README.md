@@ -18,20 +18,22 @@ A pinyin translation of the Chinese name.
 
 ## 使用方法
 
-主頁：[https://ngivanyh.github.io/changjie/](https://ngivanyh.github.io/changjie/)
+[**主頁**](https://ngivanyh.github.io/changjie/)
 
 左下角圓圈：切換黑白主題
 
-右下角`鍵/拆`：選擇純記鍵位模式/拆碼模式
+右下角`鍵/拆`：選擇純記鍵位模式/拆字模式
 
 在拆碼模式下，按下空白鍵可提示當前字碼，按下Enter鍵則能顯示所有字碼
 
 ## Usage
 
-Homepage: [https://ngivanyh.github.io/changjie/](https://ngivanyh.github.io/changjie/)
+[**Homepage**](https://ngivanyh.github.io/changjie/)
 
 Change themes via the circle on the bottom left of your screen
 
 Toggle between word decomposition and layout practice with the `鍵/拆` buttons on the bottom right.
 
 Pressing the spacebar in word decomposition mode will show you the word hint
+
+## [學會倉頡](docs/LEARN-zh.md) | [Learning Cangjie](docs/LEARN-en.md)

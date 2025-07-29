@@ -16,9 +16,8 @@
     --font-color: black;
     --blink-bg-color: black;
     --blink-font-color: white;
-    /* --light-mode-icon: url(); */
     /* practice mode */
-    --keyboard-display: block;  
+    --keyboard-display: block;
     --quest-frame-margin-size: 8vh;
     --practice-mode-cursor-margin-size: 4vh;
     --practice-mode-border-bottom-width: 0;

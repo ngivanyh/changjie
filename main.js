@@ -97,7 +97,7 @@ function generateQuest(){
     
     document.getElementsByClassName(`keyboard__key-${questCharacterCodes[0]}`)[0].classList.add("keyboard__key--blink");
 
-    console.log(questCharacter, questCharacterCodes);	
+    // console.log(questCharacter, questCharacterCodes);	
 
     for (let i = 0; i < questCharacterCodesLength; i++) {
         let decompositionCursorCharacter = document.createElement('span');
@@ -108,7 +108,6 @@ function generateQuest(){
         decompositionCursorCharacter.textContent = key2RadicalTable[questCharacterCodes[i]];
         decompositionCursor.appendChild(decompositionCursorCharacter);					
     }
-    
 }
 
 function decompositionMode_generateQuest() {
@@ -120,7 +119,7 @@ function decompositionMode_generateQuest() {
     questFrameCharacter.textContent = questCharacter;
     questCharacterCodesPosition = 0;
     
-    console.log(questCharacter, questCharacterCodes);	
+    // console.log(questCharacter, questCharacterCodes);	
 
     for (let i = 0; i < questCharacterCodesLength; i++) {
         let decompositionCursorCharacter = document.createElement('span');
@@ -130,17 +129,17 @@ function decompositionMode_generateQuest() {
 }
 
 function keydownEvent(e) {
-    if (currentMode === "layout") {
-        const keyname = (e.key).toLowerCase();
-        console.log(keyname);
+    const keyname = (e.key).toLowerCase();
+    console.log(keyname);
 
+    if (currentMode === "layout") {
         let keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
             let decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
             // console.log(decompositionCursorCharacter)
             if (keyname ===  questCharacterCodes[questCharacterCodesPosition]) {
                 keyboardKey.classList.add("keyboard__key--activated-correct");
-                console.log("keyname === questCharacterCodes[questCharacterCodesPosition]")
+                // console.log("keyname === questCharacterCodes[questCharacterCodesPosition]")
                 decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
                 decompositionCursorCharacter.classList.add("decomposition-cursor__character--finished");
                 if (currentMode === "decomposition") {
@@ -163,8 +162,6 @@ function keydownEvent(e) {
             }
         }
     } else {
-        const keyname = (e.key).toLowerCase();
-
         let decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
 
         if(keyname ===  questCharacterCodes[questCharacterCodesPosition]){
