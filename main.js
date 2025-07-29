@@ -19,7 +19,10 @@ window.addEventListener('load', function(){
     request.onload = function(){
         if (this.status >= 200 && this.status < 400) {
             cangjieCodeTable = request.response;
-            initialize();
+
+            // init
+            initTheme();
+            initMode();
         } else {
             alert(`Network request failed with response ${request.status}: ${request.statusText}`)
             console.log(`Network request failed with response ${request.status}: ${request.statusText}`);
@@ -28,11 +31,6 @@ window.addEventListener('load', function(){
     request.send();
 });
 
-function initialize(){
-    initTheme();
-    initMode();
-}
-
 function initTheme() {
     currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light';
     document.documentElement.setAttribute('data-theme', currentTheme);
@@ -40,7 +38,7 @@ function initTheme() {
 
     const btnDarkmode = document.getElementsByClassName('btn-darkmode--toggle')[0];  
     btnDarkmode.addEventListener('click', (e) => {
-        console.log('clicked!');
+        // console.log('clicked!');
         if (currentTheme === 'light')
             currentTheme = 'dark' 
         else 
@@ -85,15 +83,14 @@ function array_rand(arr){
 function generateQuest(){
     decompositionCursor.innerHTML = ''; // unprocessed
 
-    let characters = Object.keys(cangjieCodeTable); 
-    questCharacter = array_rand(characters);
+    questCharacter = array_rand(Object.keys(cangjieCodeTable));
     questCharacterCodes = array_rand(cangjieCodeTable[questCharacter]) 
     questCharacterCodesLength = questCharacterCodes.length;
     questFrameCharacter.textContent = questCharacter;
     questCharacterCodesPosition = 0;
 
     let keys = Object.keys(key2RadicalTable);
-    for (i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         keyboardKey = document.getElementsByClassName(`keyboard__key-${keys[i]}`)[0];
         keyboardKey.classList.remove("keyboard__key--blink");
     }
@@ -102,7 +99,7 @@ function generateQuest(){
 
     console.log(questCharacter, questCharacterCodes);	
 
-    for (i = 0; i < questCharacterCodesLength; i++) {
+    for (let i = 0; i < questCharacterCodesLength; i++) {
         let decompositionCursorCharacter = document.createElement('span');
 
         decompositionCursorCharacter.className = "decomposition-cursor__character";
@@ -117,8 +114,7 @@ function generateQuest(){
 function decompositionMode_generateQuest() {
     decompositionCursor.innerHTML = ''; // unprocessed
 
-    let characters = Object.keys(cangjieCodeTable); 
-    questCharacter = array_rand(characters);
+    questCharacter = array_rand(Object.keys(cangjieCodeTable));
     questCharacterCodes = array_rand(cangjieCodeTable[questCharacter]) 
     questCharacterCodesLength = questCharacterCodes.length;
     questFrameCharacter.textContent = questCharacter;
@@ -126,7 +122,7 @@ function decompositionMode_generateQuest() {
     
     console.log(questCharacter, questCharacterCodes);	
 
-    for (i = 0; i < questCharacterCodesLength; i++) {
+    for (let i = 0; i < questCharacterCodesLength; i++) {
         let decompositionCursorCharacter = document.createElement('span');
         decompositionCursorCharacter.className = "decomposition-cursor__character";
         decompositionCursor.appendChild(decompositionCursorCharacter);					
@@ -141,7 +137,7 @@ function keydownEvent(e) {
         let keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
             let decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
-            console.log(decompositionCursorCharacter)
+            // console.log(decompositionCursorCharacter)
             if (keyname ===  questCharacterCodes[questCharacterCodesPosition]) {
                 keyboardKey.classList.add("keyboard__key--activated-correct");
                 console.log("keyname === questCharacterCodes[questCharacterCodesPosition]")
@@ -190,9 +186,10 @@ function keydownEvent(e) {
             const decompositionCharacterBar = document.getElementsByClassName("decomposition-cursor")[0]
             for (const [i, decompositionCharacter] of decompositionCharacterBar.childNodes.entries()) {
                 // console.log(questCharacterCodes)
-                decompositionCharacter.textContent = key2RadicalTable[questCharacterCodes[i]];
-                if (!decompositionCharacter.classList.contains("decomposition-cursor__character--hint"))
+                if (!decompositionCharacter.classList.contains("decomposition-cursor__character--hint") && decompositionCharacter.textContent === '') {
+                    decompositionCharacter.textContent = key2RadicalTable[questCharacterCodes[i]];
                     decompositionCharacter.classList.add("decomposition-cursor__character--hint");
+                }
             }
         }
     }

@@ -164,8 +164,6 @@ body {
     border-radius: 50%;
 }
 
-.btn-practice-mode--toggle {}
-
 .btn-practice-mode--toggle:after {
     display: inline-block;
     position: fixed;
