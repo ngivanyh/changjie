@@ -8,8 +8,8 @@ let currentTheme;
 let currentMode;
 
 let decompositionCursor = document.getElementsByClassName('decomposition-cursor')[0];
-let questFrameCharacter = document.getElementsByClassName('quest-frame__character')[0];
-const key_activated_classnames = ["keyboard__key--activated-incorrect", "keyboard__key--activated-correct", "keyboard__key--activated"]
+let charToType = document.getElementsByClassName('quest-frame__character')[0];
+const key_activated_classnames = ["keyboard__key--activated-incorrect", "keyboard__key--activated-correct"]
 
 const key2RadicalTable = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜"};
 
@@ -87,7 +87,7 @@ function generateQuest(){
     questCharacter = array_rand(Object.keys(cangjieCodeTable));
     questCharacterCodes = array_rand(cangjieCodeTable[questCharacter]) 
     questCharacterCodesLength = questCharacterCodes.length;
-    questFrameCharacter.textContent = questCharacter;
+    charToType.textContent = questCharacter;
     questCharacterCodesPosition = 0;
 
     let keys = Object.keys(key2RadicalTable);
@@ -117,7 +117,7 @@ function decompositionMode_generateQuest() {
     questCharacter = array_rand(Object.keys(cangjieCodeTable));
     questCharacterCodes = array_rand(cangjieCodeTable[questCharacter]) 
     questCharacterCodesLength = questCharacterCodes.length;
-    questFrameCharacter.textContent = questCharacter;
+    charToType.textContent = questCharacter;
     questCharacterCodesPosition = 0;
     
     // console.log(questCharacter, questCharacterCodes);	

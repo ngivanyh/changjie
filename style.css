@@ -10,6 +10,10 @@
     font-display: fallback;
 }
 
+* {
+    transition: background-color 0.1s;
+}
+
 :root {
     /* light mode */
     --bg-color: transparent;
@@ -57,6 +61,7 @@ body {
 .quest-frame {
     margin-top: var(--quest-frame-margin-size);
     text-align: center;
+    transition: margin-top 0.1s;
 }
 
 .quest-frame__character {
@@ -72,6 +77,7 @@ body {
 .decomposition-cursor {
     text-align: center;
     margin-top: var(--practice-mode-cursor-margin-size); 
+    transition: margin-top 0.1s;
 }
 
 .decomposition-cursor__character {
@@ -87,6 +93,7 @@ body {
     background-color: var(--bg-color);
     border-bottom-width: var(--practice-mode-border-bottom-width);
     border-bottom-style: var(--practice-mode-border-bottom-style);
+    transition: border-bottom-width 0.1s;
 }
 
 .decomposition-cursor__character--finished {
@@ -106,6 +113,12 @@ body {
 .keyboard {
     margin: 5vh auto;
     display: var(--keyboard-display);
+    transition: opacity 0.1s;
+    opacity: 1;
+}
+
+[practice-mode="decomposition"] .keyboard {
+    opacity: 0;
 }
 
 [class^='keyboard__row-'] {
@@ -138,10 +151,6 @@ body {
     text-underline-offset: 8px;
 }
 
-.keyboard__key-  {
-    width: 400px;
-}
-
 .keyboard__key--blink {
     /* box-shadow: inset 0 -4px 0 0 black; */
     box-shadow: inset 0 0 13px 0;
@@ -153,10 +162,6 @@ body {
 
 .keyboard__key--activated-incorrect {
     background: var(--key-incorrect);
-}
-
-.keyboard__key--activated {
-    background: var(--key-activated);
 }
 
 .btn-darkmode--toggle {
