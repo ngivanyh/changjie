@@ -24,8 +24,9 @@
     --practice-mode-border-bottom-style: solid;
     --practice-mode-button-content: '拆';
     /* keyboard keypress highlight */
-    --key-correct-color: #44fc11;
-    --key-incorrect-color: #ff0010;
+    --key-correct: #44fc11;
+    --key-incorrect: #ff0010;
+    --key-activated: gray;
     /* font */
     --fonts: 'Noto Serif TC', 'TW-Kai';
 }
@@ -35,8 +36,8 @@
     --font-color: white;
     --blink-bg-color: white;
     --blink-font-color: black;
-    --key-correct-color: #1ece2a;
-    --key-incorrect-color: #ed0414;
+    --key-correct: #1ece2a;
+    --key-incorrect: #ed0414;
 }
 
 [practice-mode="decomposition"] {
@@ -137,17 +138,25 @@ body {
     text-underline-offset: 8px;
 }
 
+.keyboard__key-  {
+    width: 400px;
+}
+
 .keyboard__key--blink {
     /* box-shadow: inset 0 -4px 0 0 black; */
     box-shadow: inset 0 0 13px 0;
 }
 
 .keyboard__key--activated-correct {
-    background: var(--key-correct-color);
+    background: var(--key-correct);
 }
 
 .keyboard__key--activated-incorrect {
-    background: var(--key-incorrect-color);
+    background: var(--key-incorrect);
+}
+
+.keyboard__key--activated {
+    background: var(--key-activated);
 }
 
 .btn-darkmode--toggle {

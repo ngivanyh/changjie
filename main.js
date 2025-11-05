@@ -9,12 +9,13 @@ let currentMode;
 
 let decompositionCursor = document.getElementsByClassName('decomposition-cursor')[0];
 let questFrameCharacter = document.getElementsByClassName('quest-frame__character')[0];
+const key_activated_classnames = ["keyboard__key--activated-incorrect", "keyboard__key--activated-correct", "keyboard__key--activated"]
 
 const key2RadicalTable = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜"};
 
 window.addEventListener('load', function(){
     let request = new XMLHttpRequest();
-    request.open('GET', 'cangjieCodeTable.min.json');
+    request.open('GET', './resources/cangjieCodeTable.min.json');
     request.responseType = 'json';
     request.onload = function(){
         if (this.status >= 200 && this.status < 400) {
@@ -137,7 +138,7 @@ function keydownEvent(e) {
         if (keyboardKey) {
             let decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
             // console.log(decompositionCursorCharacter)
-            if (keyname ===  questCharacterCodes[questCharacterCodesPosition]) {
+            if (keyname === questCharacterCodes[questCharacterCodesPosition]) {
                 keyboardKey.classList.add("keyboard__key--activated-correct");
                 // console.log("keyname === questCharacterCodes[questCharacterCodesPosition]")
                 decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
@@ -198,11 +199,12 @@ function keyupEvent(e) {
 
         let keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
-            if (keyboardKey.classList.contains("keyboard__key--activated-correct")) {
-                keyboardKey.classList.remove("keyboard__key--activated-correct");
-            } 
-            if (keyboardKey.classList.contains("keyboard__key--activated-incorrect")){
-                keyboardKey.classList.remove("keyboard__key--activated-incorrect");
+            key_classlist = keyboardKey.classList
+
+            for (const activation_classname of key_activated_classnames) {
+                if (key_classlist.contains(activation_classname)) {
+                    key_classlist.remove(activation_classname)
+                }
             }
         }
     }
