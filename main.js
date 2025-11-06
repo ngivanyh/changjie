@@ -9,60 +9,58 @@ let currentMode;
 
 let decompositionCursor = document.getElementsByClassName('decomposition-cursor')[0];
 let charToType = document.getElementsByClassName('quest-frame__character')[0];
-const key_activated_classnames = ["keyboard__key--activated-incorrect", "keyboard__key--activated-correct"]
 
-const key2RadicalTable = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜"};
+const key2RadicalTable = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z"};
 
-window.addEventListener('load', function(){
-    let request = new XMLHttpRequest();
-    request.open('GET', './resources/cangjieCodeTable.min.json');
-    request.responseType = 'json';
-    request.onload = function(){
-        if (this.status >= 200 && this.status < 400) {
-            cangjieCodeTable = request.response;
 
-            // init
-            initTheme();
-            initMode();
-        } else {
-            alert(`Network request failed with response ${request.status}: ${request.statusText}`)
-            console.log(`Network request failed with response ${request.status}: ${request.statusText}`);
-        }
+function saveSettings(key, value) {
+    document.documentElement.setAttribute(key, value);
+    localStorage.setItem(key, value);
+}
+
+const request = new XMLHttpRequest();
+request.open('GET', './resources/cangjieCodeTable.min.json');
+request.responseType = 'json';
+request.onload = function(){
+    if (this.status >= 200 && this.status < 400) {
+        cangjieCodeTable = request.response;
+
+        // init
+        initTheme();
+        initMode();
+    } else {
+        const err_msg = `Network request failed with response ${request.status}: ${request.statusText}`
+        alert(err_msg)
+        console.log(err_msg);
     }
-    request.send();
-});
+}
+request.send();
 
 function initTheme() {
-    currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light';
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    localStorage.setItem('theme', currentTheme);
+    currentTheme = window.matchMedia("(prefers-color-scheme: light)") ? 'light' : 'dark';
+    saveSettings('theme', currentTheme)
 
-    const btnDarkmode = document.getElementsByClassName('btn-darkmode--toggle')[0];  
+    const btnDarkmode = document.querySelector('#btn-darkmode--toggle');  
     btnDarkmode.addEventListener('click', (e) => {
         // console.log('clicked!');
-        if (currentTheme === 'light')
-            currentTheme = 'dark' 
-        else 
-            currentTheme = 'light'; 
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        localStorage.setItem('theme', currentTheme);
+        currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
+        saveSettings('theme', currentTheme)
     });
 }
 
 function initMode() {
     currentMode = localStorage.getItem('mode') ? localStorage.getItem('mode') : 'layout';
-    document.documentElement.setAttribute('practice-mode', currentMode);
-    localStorage.setItem('mode', currentMode);
+    saveSettings('mode', currentMode)
 
     if (currentMode === "decomposition")
-        decompositionMode_generateQuest();
-    else 
-        generateQuest();
+        decompositionMode_generateQuest()
+    else
+        generateQuest()
 
     document.addEventListener('keydown', keydownEvent);
     document.addEventListener('keyup', keyupEvent);
 
-    const btnPracticeMode = document.getElementsByClassName('btn-practice-mode--toggle')[0];  
+    const btnPracticeMode = document.querySelector('#btn-practice-mode--toggle');  
 
     btnPracticeMode.addEventListener('click', (e) => {
         if (currentMode === "decomposition") {
@@ -72,8 +70,7 @@ function initMode() {
             currentMode = "decomposition";
             decompositionMode_generateQuest();					
         }
-        document.documentElement.setAttribute('practice-mode', currentMode);
-        localStorage.setItem('mode', currentMode);
+        saveSettings('mode', currentMode)
     });
 }
 
@@ -135,7 +132,7 @@ function keydownEvent(e) {
 
     if (currentMode === "layout") {
         let keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
-        if (keyboardKey) {
+        if (keyboardKey && keyboardKey != ' ') {
             let decompositionCursorCharacter = document.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
             // console.log(decompositionCursorCharacter)
             if (keyname === questCharacterCodes[questCharacterCodesPosition]) {
@@ -158,6 +155,8 @@ function keydownEvent(e) {
                     let keyboardNextKey = document.getElementsByClassName(`keyboard__key-${questCharacterCodes[questCharacterCodesPosition]}`)[0];
                     keyboardNextKey.classList.add("keyboard__key--blink");
                 }
+            } else if (keyboardKey === ' ') {
+
             } else {
                 keyboardKey.classList.add("keyboard__key--activated-incorrect");
             }
@@ -200,6 +199,7 @@ function keyupEvent(e) {
         let keyboardKey = document.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
             key_classlist = keyboardKey.classList
+            const key_activated_classnames = ["keyboard__key--activated-incorrect", "keyboard__key--activated-correct"]
 
             for (const activation_classname of key_activated_classnames) {
                 if (key_classlist.contains(activation_classname)) {

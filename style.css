@@ -35,7 +35,7 @@
     --fonts: 'Noto Serif TC', 'TW-Kai';
 }
 
-[data-theme="dark"] {
+[theme="dark"] {
     --bg-color: black;
     --font-color: white;
     --blink-bg-color: white;
@@ -117,7 +117,7 @@ body {
     opacity: 1;
 }
 
-[practice-mode="decomposition"] .keyboard {
+[mode="decomposition"] .keyboard {
     opacity: 0;
 }
 
@@ -164,7 +164,7 @@ body {
     background: var(--key-incorrect);
 }
 
-.btn-darkmode--toggle {
+#btn-darkmode--toggle {
     display: inline-block;
     position: fixed;
     bottom: 10px;
@@ -177,7 +177,7 @@ body {
     border-radius: 50%;
 }
 
-.btn-practice-mode--toggle:after {
+#btn-practice-mode--toggle:after {
     display: inline-block;
     position: fixed;
     bottom: 10px;
