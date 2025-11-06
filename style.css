@@ -44,7 +44,7 @@
     --key-incorrect: #ed0414;
 }
 
-[practice-mode="decomposition"] {
+[mode="decomposition"] {
     --keyboard-display: none;
     --quest-frame-margin-size: 10vh;
     --practice-mode-cursor-margin-size: 10vh;
