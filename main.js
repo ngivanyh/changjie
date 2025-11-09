@@ -11,7 +11,7 @@ const $ = document
 let decompositionCursor = $.getElementsByClassName('decomposition-cursor')[0];
 let charToType = $.getElementsByClassName('quest-frame__character')[0];
 
-const key2RadicalTable = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z"};
+const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z",",":"，",".":"。",";":"；"};
 
 const request = new XMLHttpRequest();
 request.open('GET', './resources/cangjieCodeTable.min.json');
@@ -76,7 +76,7 @@ function initLayoutPrac(){
     charToType.textContent = questCharacter;
     questCharacterCodesPosition = 0;
 
-    let keys = Object.keys(key2RadicalTable);
+    let keys = Object.keys(keyToRadical);
     for (let i = 0; i < keys.length; i++) {
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${keys[i]}`)[0];
         keyboardKey.classList.remove("keyboard__key--blink");
@@ -92,7 +92,7 @@ function initLayoutPrac(){
         decompositionCursorCharacter.className = "decomposition-cursor__character";
         
         if (!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
-        decompositionCursorCharacter.textContent = key2RadicalTable[questCharacterCodes[i]];
+        decompositionCursorCharacter.textContent = keyToRadical[questCharacterCodes[i]];
         decompositionCursor.appendChild(decompositionCursorCharacter);					
     }
 }
@@ -120,17 +120,24 @@ function keydownEvent(e) {
     console.log(keyname);
 
     if (currentMode === "layout") {
+        if (keyname === ' ') {
+            for (const k of Object.keys(keyToRadical)) {
+                let k_html = $.getElementsByClassName(`keyboard__key-${k}`)[0]
+                k_html.innerHTML = (k_html.innerHTML != '　') ? '　' : keyToRadical[k]
+            }
+        }
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
-        if (keyboardKey && keyboardKey != ' ') {
+        if (keyboardKey) {
             let decompositionCursorCharacter = $.getElementsByClassName('decomposition-cursor__character')[questCharacterCodesPosition];
             // console.log(decompositionCursorCharacter)
             if (keyname === questCharacterCodes[questCharacterCodesPosition]) {
+                console.log('saa')
                 keyboardKey.classList.add("keyboard__key--activated-correct");
                 // console.log("keyname === questCharacterCodes[questCharacterCodesPosition]")
                 decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
                 decompositionCursorCharacter.classList.add("decomposition-cursor__character--finished");
                 if (currentMode === "decomposition") {
-                    decompositionCursorCharacter.textContent = key2RadicalTable[keyname];
+                    decompositionCursorCharacter.textContent = keyToRadical[keyname];
                 }
                 keyboardKey.classList.remove("keyboard__key--blink");
 
@@ -144,8 +151,6 @@ function keydownEvent(e) {
                     let keyboardNextKey = $.getElementsByClassName(`keyboard__key-${questCharacterCodes[questCharacterCodesPosition]}`)[0];
                     keyboardNextKey.classList.add("keyboard__key--blink");
                 }
-            } else if (keyboardKey === ' ') {
-
             } else {
                 keyboardKey.classList.add("keyboard__key--activated-incorrect");
             }
@@ -158,14 +163,14 @@ function keydownEvent(e) {
             if(decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
                 decompositionCursorCharacter.classList.remove("decomposition-cursor__character--hint");
 
-            decompositionCursorCharacter.textContent = key2RadicalTable[keyname];
+            decompositionCursorCharacter.textContent = keyToRadical[keyname];
             questCharacterCodesPosition++;
 
             if(questCharacterCodesPosition == questCharacterCodesLength){
                 initDecompPrac();
             } 
         } else if (keyname === " ") {
-            decompositionCursorCharacter.textContent = key2RadicalTable[questCharacterCodes[questCharacterCodesPosition]];
+            decompositionCursorCharacter.textContent = keyToRadical[questCharacterCodes[questCharacterCodesPosition]];
             if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
                 decompositionCursorCharacter.classList.add("decomposition-cursor__character--hint");
         } else if (keyname === "enter") {
@@ -173,7 +178,7 @@ function keydownEvent(e) {
             for (const [i, decompositionCharacter] of decompositionCharacterBar.childNodes.entries()) {
                 // console.log(questCharacterCodes)
                 if (!decompositionCharacter.classList.contains("decomposition-cursor__character--hint") && decompositionCharacter.textContent === '') {
-                    decompositionCharacter.textContent = key2RadicalTable[questCharacterCodes[i]];
+                    decompositionCharacter.textContent = keyToRadical[questCharacterCodes[i]];
                     decompositionCharacter.classList.add("decomposition-cursor__character--hint");
                 }
             }
