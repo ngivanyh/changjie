@@ -58,13 +58,13 @@ body {
     color: var(--font-color);
 }
 
-.quest-frame {
+#testing-section {
     margin-top: var(--quest-frame-margin-size);
     text-align: center;
     transition: margin-top 0.1s;
 }
 
-.quest-frame__character {
+#test-char {
     display: inline-block;
     border: 1px solid;
     font-size: 172px;
@@ -110,14 +110,14 @@ body {
     color: var(--blink-font-color);
 }
 
-.keyboard {
+#keyboard {
     margin: 5vh auto;
     display: var(--keyboard-display);
     transition: opacity 0.1s;
     opacity: 1;
 }
 
-[mode="decomposition"] .keyboard {
+[mode="decomposition"] #keyboard {
     opacity: 0;
 }
 
