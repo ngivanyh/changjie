@@ -26,13 +26,13 @@
     --practice-mode-cursor-margin-size: 4vh;
     --practice-mode-border-bottom-width: 0;
     --practice-mode-border-bottom-style: solid;
-    --practice-mode-button-content: '拆';
+    --practice-mode-button-content: '✂';
     /* keyboard keypress highlight */
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
-    --key-activated: gray;
-    /* font */
+    /* fonts */
     --fonts: 'Noto Serif TC', 'TW-Kai';
+    --key-height: 67.2px;
 }
 
 [theme="dark"] {
@@ -50,7 +50,7 @@
     --practice-mode-cursor-margin-size: 10vh;
     --practice-mode-border-bottom-width: 1px;
     --practice-mode-border-bottom-style: solid;
-    --practice-mode-button-content: '鍵';
+    --practice-mode-button-content: '⌨';
 }
 
 body {
@@ -123,6 +123,8 @@ body {
 
 [class^='keyboard__row-'] {
     text-align: center;
+    height: calc(6px + var(--key-height));
+    margin-bottom: 6px;
 }
 
 .keyboard__row-2 {
@@ -133,35 +135,62 @@ body {
     margin-left: 25px;
 }
 
-[class^='keyboard__key-'] {
+[kb_visible='visible'] [class^='keyboard__key-'] {
     display: inline-block;
     border: 2px outset black;
     width: 60px;
-    height: 67.2px;
-    margin: 0 3px 6px 3px;
-    line-height: 67.2px;
+    height: var(--key-height);
+    margin: 0 3px 0 3px;
+    line-height: var(--key-height);
     font: 40px var(--fonts);
     background-color: var(--bg-color);
     color: var(--font-color);
-    /* border-color: var(--border-color); */
+    content-visibility: visible;
 }
 
-.keyboard__key-f, .keyboard__key-j {
+[kb_visible='hidden'] [class^='keyboard__key-'] {
+    display: inline-block;
+    border: 2px outset black;
+    width: 60px;
+    height: var(--key-height);
+    margin: 0 3px 0 3px;
+    background-color: var(--bg-color);
+    content-visibility: hidden;
+}
+
+/* .keyboard__key-f, .keyboard__key-j {
     text-decoration: underline;
     text-underline-offset: 8px;
+} */
+
+.keyboard__key-f,
+.keyboard__key-j {
+    position: relative;               /* needed for the ::after positioning */
 }
 
-.keyboard__key--blink {
+/* create an underline that sits just under the glyph */
+[kb_visible] .keyboard__key-f::after,
+[kb_visible] .keyboard__key-j::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4px;                     /* distance from the baseline – tweak as needed */
+    height: 2px;                     /* thickness of the line */
+    background: currentColor;        /* follows the text colour */
+}
+
+[kb_visible='visible'] .keyboard__key--blink {
     /* box-shadow: inset 0 -4px 0 0 black; */
     box-shadow: inset 0 0 13px 0;
 }
 
-.keyboard__key--activated-correct {
-    background: var(--key-correct);
+[kb_visible] .keyboard__key--activated-correct {
+    background-color: var(--key-correct);
 }
 
-.keyboard__key--activated-incorrect {
-    background: var(--key-incorrect);
+[kb_visible] .keyboard__key--activated-incorrect {
+    background-color: var(--key-incorrect);
 }
 
 #btn-darkmode--toggle {

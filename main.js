@@ -6,6 +6,7 @@ let currentCodePos;
 
 let currentTheme;
 let currentMode;
+let kbVisibility;
 
 const $ = document
 let decompositionCursor = $.getElementsByClassName('decomposition-cursor')[0];
@@ -14,22 +15,27 @@ const charBox = $.querySelector('#test-char');
 const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z",",":"，",".":"。",";":"；"};
 const enKeys = Object.keys(keyToRadical)
 
+function saveSettings(k, v) {
+    $.documentElement.setAttribute(k, v);
+    localStorage.setItem(k, v);
+}
+
 const request = new XMLHttpRequest();
 request.open('GET', './resources/cangjieCodeTable.min.json');
 request.responseType = 'json';
 request.onload = function(){
     if (this.status >= 200 && this.status < 400) {
-        function saveSettings(k, v) {
-            $.documentElement.setAttribute(k, v);
-            localStorage.setItem(k, v);
-        }
         cangjieCodeTable = request.response;
 
+        // config (mode, theme, kb vis)
         currentTheme = window.matchMedia("(prefers-color-scheme: light)") ? 'light' : 'dark';
         saveSettings('theme', currentTheme)
 
         currentMode = localStorage.getItem('mode') ? localStorage.getItem('mode') : 'layout';
         saveSettings('mode', currentMode)
+
+        kbVisibility = localStorage.getItem('kb_visible') ? localStorage.getItem('kb_visible') : 'visible'
+        saveSettings('kb_visible', kbVisibility)
 
         const _ = (currentMode === "decomposition") ? initDecompPrac() : initLayoutPrac()
 
@@ -38,9 +44,6 @@ request.onload = function(){
             currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
             saveSettings('theme', currentTheme)
         });
-
-        $.addEventListener('keydown', keydownEvent);
-        $.addEventListener('keyup', keyupEvent);
 
         $.querySelector('#btn-practice-mode--toggle').addEventListener('click', (e) => {
             if (currentMode === "decomposition") {
@@ -52,6 +55,9 @@ request.onload = function(){
             }
             saveSettings('mode', currentMode)
         });
+
+        $.addEventListener('keydown', keydownEvent);
+        $.addEventListener('keyup', keyupEvent);
     } else {
         const err_msg = `Network request failed with response ${request.status}: ${request.statusText}`
         alert(err_msg)
@@ -113,17 +119,15 @@ function keydownEvent(e) {
 
     if (currentMode === "layout") {
         if (keyname === ' ') {
-            for (const k of enKeys) {
-                let k_html = $.getElementsByClassName(`keyboard__key-${k}`)[0]
-                k_html.textContent = (k_html.textContent != '　') ? '　' : keyToRadical[k]
-            }
+            kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible'
+            saveSettings('kb_visible', kbVisibility)
         }
+        
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
             let decompositionCursorCharacter = $.getElementsByClassName('decomposition-cursor__character')[currentCodePos];
             // console.log(decompositionCursorCharacter)
             if (keyname === testCharCode[currentCodePos]) {
-                console.log('saa')
                 keyboardKey.classList.add("keyboard__key--activated-correct");
                 // console.log("keyname === questCharacterCodes[questCharacterCodesPosition]")
                 decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
