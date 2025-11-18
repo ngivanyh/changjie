@@ -135,7 +135,7 @@ body {
     margin-left: 25px;
 }
 
-[kb_visible='visible'] [class^='keyboard__key-'] {
+[kb_visible] [class^='keyboard__key-'] {
     display: inline-block;
     border: 2px outset black;
     width: 60px;
@@ -144,44 +144,26 @@ body {
     line-height: var(--key-height);
     font: 40px var(--fonts);
     background-color: var(--bg-color);
+}
+
+[kb_visible='visible'] [class^='keyboard__key-'] {
     color: var(--font-color);
-    content-visibility: visible;
 }
 
 [kb_visible='hidden'] [class^='keyboard__key-'] {
-    display: inline-block;
-    border: 2px outset black;
-    width: 60px;
-    height: var(--key-height);
-    margin: 0 3px 0 3px;
-    background-color: var(--bg-color);
-    content-visibility: hidden;
+    color: var(--bg-color);
 }
 
-/* .keyboard__key-f, .keyboard__key-j {
-    text-decoration: underline;
-    text-underline-offset: 8px;
-} */
-
-.keyboard__key-f,
-.keyboard__key-j {
-    position: relative;               /* needed for the ::after positioning */
-}
-
-/* create an underline that sits just under the glyph */
-[kb_visible] .keyboard__key-f::after,
-[kb_visible] .keyboard__key-j::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 4px;                     /* distance from the baseline – tweak as needed */
-    height: 2px;                     /* thickness of the line */
-    background: currentColor;        /* follows the text colour */
+.home_dot {
+    display: block; 
+    width: 6px; 
+    height: 6px; 
+    border-radius: 50%; 
+    background: var(--font-color); 
+    margin: 0 auto;
 }
 
 [kb_visible='visible'] .keyboard__key--blink {
-    /* box-shadow: inset 0 -4px 0 0 black; */
     box-shadow: inset 0 0 13px 0;
 }
 
