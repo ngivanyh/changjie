@@ -1,0 +1,50 @@
+@font-face {
+    font-family: 'TW-Kai';
+    src: url('../fonts/TW-Kai-98_1.ttf');
+    font-display: fallback;
+}
+
+@font-face {
+    font-family: 'Noto Serif TC';
+    src: url('../fonts/NotoSerifTC-Medium.otf');
+    font-display: fallback;
+}
+
+:root {
+    /* light mode */
+    --bg-color: transparent;
+    --font-color: black;
+    --blink-bg-color: black;
+    --blink-font-color: white;
+    /* practice mode */
+    --keyboard-display: block;
+    --quest-frame-margin-size: 8vh;
+    --practice-mode-cursor-margin-size: 4vh;
+    --practice-mode-border-bottom-width: 0;
+    --practice-mode-border-bottom-style: solid;
+    --practice-mode-button-content: '✂';
+    /* keyboard keypress highlight */
+    --key-correct: #44fc11;
+    --key-incorrect: #ff0010;
+    /* fonts */
+    --fonts: 'Noto Serif TC', 'TW-Kai';
+    --key-height: 67.2px;
+}
+
+[theme="dark"] {
+    --bg-color: black;
+    --font-color: white;
+    --blink-bg-color: white;
+    --blink-font-color: black;
+    --key-correct: #1ece2a;
+    --key-incorrect: #ed0414;
+}
+
+[mode="decomposition"] {
+    --keyboard-display: none;
+    --quest-frame-margin-size: 10vh;
+    --practice-mode-cursor-margin-size: 10vh;
+    --practice-mode-border-bottom-width: 1px;
+    --practice-mode-border-bottom-style: solid;
+    --practice-mode-button-content: '⌨';
+}

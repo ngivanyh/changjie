@@ -1,39 +1,26 @@
-# `ngivanyh` - 暢頡
-從：[`Cycatz/cangzen`](https://github.com/Cycatz/cangzen) fork 過來，做一些有益於使用者的改變
+# 暢頡 | `changjie`
 
-Forked from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), it contains serveral QOL improvements.
+<style>
+    .summary_heading {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+</style>
 
-## 名稱由來 (Name Origin)
+<details>
+    <summary class="summary_heading">English</summary>
 
-暢頡，暢既「倉」字諧音，也為順暢之意。頡，既倉頡之「頡」，也為諧音便「捷」之意。
+    `changjie` is a project designed to help you practice and learn Cangjie, an input method of Chinese that relies on typing different word "roots" that's based on how the character is written. This program derives from others in its simplicity, but still has all the features needed to practice and learn the Cangjie input method.
 
-A pinyin translation of the Chinese name.
+    This project was originally forked from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), but it extends the original functionality and adds some QOL improvements.
+</details>
 
-## 背景 (Background)
+<details>
+    <summary class="summary_heading">中文</summary>
 
-1. [蒼蟬 ｜ `Cycatz/cangzen`](https://github.com/Cycatz/cangzen)
-2. [倉頡新星](https://github.com/GHolk/cjns)
-3. [倉頡輸入法自學套件](http://www.scj2000.com/cjselfstudyv1/)
-4. 倉頡之星
+    暢頡是一個倉頡練習軟體，幫助您更好的練習和學習倉頡。風格簡潔，但是需要學會一個輸入法的所有功能都有在此。
 
-## 使用方法
-
-[**主頁**](https://ngivanyh.github.io/changjie/)
-
-左下角圓圈：切換黑白主題
-
-右下角`鍵/拆`：選擇純記鍵位模式/拆字模式
-
-在拆碼模式下，按下空白鍵可提示當前字碼，按下Enter鍵則能顯示所有字碼
-
-## Usage
-
-[**Homepage**](https://ngivanyh.github.io/changjie/)
-
-Change themes via the circle on the bottom left of your screen
-
-Toggle between word decomposition and layout practice with the `鍵/拆` buttons on the bottom right.
-
-Pressing the spacebar in word decomposition mode will show you the word hint
+    這個軟體原從[`Cycatz/cangzen`](https://github.com/Cycatz/cangzen)fork過來而產生，但這個軟體衍生了原本的一些功能，有些地方並加以改善。
+</details>
 
 ## [學會倉頡](docs/LEARN-zh.md) | [Learning Cangjie](docs/LEARN-en.md)
