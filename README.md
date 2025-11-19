@@ -1,7 +1,7 @@
 # 暢頡 | `changjie`
 
 <details>
-    <summary>## English</summary>
+    <summary><b>English</b></summary>
 
     `changjie` is a project designed to help you practice and learn Cangjie, an input method of Chinese that relies on typing different word "roots" that's based on how the character is written. This program derives from others in its simplicity, but still has all the features needed to practice and learn the Cangjie input method.
 
@@ -9,7 +9,7 @@
 </details>
 
 <details>
-    <summary>中文</summary>
+    <summary><b>中文</b></summary>
 
     暢頡是一個倉頡練習軟體，幫助您更好的練習和學習倉頡。風格簡潔，但是需要學會一個輸入法的所有功能都有在此。
 
