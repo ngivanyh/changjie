@@ -24,8 +24,8 @@
     --practice-mode-cursor-margin-size: 4vh;
     --practice-mode-border-bottom-width: 0;
     --practice-mode-border-bottom-style: solid;
-    --display-layout-mode-icon: inherit;
-    --display-decomposition-mode-icon: none;
+    --display-layout-mode-icon: none;
+    --display-decomposition-mode-icon: inherit;
     /* keyboard keypress highlight */
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
@@ -51,6 +51,6 @@
     --practice-mode-cursor-margin-size: 10vh;
     --practice-mode-border-bottom-width: 1px;
     --practice-mode-border-bottom-style: solid;
-    --display-layout-mode-icon: none;
-    --display-decomposition-mode-icon: inherit;
+    --display-layout-mode-icon: inherit;
+    --display-decomposition-mode-icon: none;
 }

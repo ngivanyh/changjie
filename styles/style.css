@@ -16,7 +16,6 @@ body {
     font-size: 172px;
     padding: 0px 30px;
     font-family: var(--fonts);
-    background-color: var(--bg-color);
     color: var(--font-color);
 }
 
@@ -36,7 +35,6 @@ body {
     font-size: 56px;
     margin: 0 4px;
     color: var(--font-color);
-    background-color: var(--bg-color);
     border-bottom-width: var(--practice-mode-border-bottom-width);
     border-bottom-style: var(--practice-mode-border-bottom-style);
     transition: border-bottom-width 0.1s;
@@ -90,7 +88,6 @@ body {
     margin: 0 3px 0 3px;
     line-height: var(--key-height);
     font: 40px var(--fonts);
-    background-color: var(--bg-color);
 }
 
 [kb_visible='visible'] [class^='keyboard__key-'] {
