@@ -1,9 +1,6 @@
-* {
-    transition: background-color 0.1s;
-}
-
 body {
     background-color: var(--bg-color);
+    transition: background-color 0.1s ease;
     color: var(--font-color);
 }
 
@@ -125,25 +122,36 @@ body {
     background-color: var(--key-incorrect);
 }
 
-#btn-darkmode--toggle {
+.ui-toggle {
     display: inline-block;
     position: fixed;
     bottom: 10px;
-    left: 10px;
     width: 30px;
     height: 30px;
-    background: var(--bg-color);
     color: var(--font-color);
-    border: 7px solid;
-    border-radius: 50%;
+    font-size: 30px;
 }
 
-#btn-practice-mode--toggle:after {
-    display: inline-block;
-    position: fixed;
-    bottom: 10px;
+#theme-toggle {
+    left: 10px;
+}
+
+#mode-toggle {
     right: 10px;
-    font: 30px var(--fonts);
-    color: var(--font-color);
-    content: var(--practice-mode-button-content);
+}
+
+#theme-dark {
+    display: var(--display-dark-mode-icon);
+}
+
+#theme-light {
+    display: var(--display-light-mode-icon);
+}
+
+#mode-layout {
+    display: var(--display-layout-mode-icon);
+}
+
+#mode-decomposition {
+    display: var(--display-decomposition-mode-icon);
 }

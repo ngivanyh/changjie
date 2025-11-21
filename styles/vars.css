@@ -16,13 +16,16 @@
     --font-color: black;
     --blink-bg-color: black;
     --blink-font-color: white;
-    /* practice mode */
+    --display-dark-mode-icon: inherit;
+    --display-light-mode-icon: none;
+    /* layout mode */
     --keyboard-display: block;
     --quest-frame-margin-size: 8vh;
     --practice-mode-cursor-margin-size: 4vh;
     --practice-mode-border-bottom-width: 0;
     --practice-mode-border-bottom-style: solid;
-    --practice-mode-button-content: '✂';
+    --display-layout-mode-icon: inherit;
+    --display-decomposition-mode-icon: none;
     /* keyboard keypress highlight */
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
@@ -38,6 +41,8 @@
     --blink-font-color: black;
     --key-correct: #1ece2a;
     --key-incorrect: #ed0414;
+    --display-dark-mode-icon: none;
+    --display-light-mode-icon: inherit;
 }
 
 [mode="decomposition"] {
@@ -46,5 +51,6 @@
     --practice-mode-cursor-margin-size: 10vh;
     --practice-mode-border-bottom-width: 1px;
     --practice-mode-border-bottom-style: solid;
-    --practice-mode-button-content: '⌨';
+    --display-layout-mode-icon: none;
+    --display-decomposition-mode-icon: inherit;
 }

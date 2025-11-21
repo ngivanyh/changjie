@@ -39,13 +39,13 @@ request.onload = function(){
 
         const _ = (currentMode === "decomposition") ? initDecompPrac() : initLayoutPrac()
 
-        $.querySelector('#btn-darkmode--toggle').addEventListener('click', (e) => {
+        $.querySelector('#theme-toggle').addEventListener('click', (e) => {
             // console.log('clicked!');
             currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
             saveSettings('theme', currentTheme)
         });
 
-        $.querySelector('#btn-practice-mode--toggle').addEventListener('click', (e) => {
+        $.querySelector('#mode-toggle').addEventListener('click', (e) => {
             if (currentMode === "decomposition") {
                 currentMode = "layout";
                 initLayoutPrac();	

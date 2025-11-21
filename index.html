@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>暢頡 | Changjie</title>
+        <link rel="stylesheet" href="styles/fontawesome/all.min.css">
         <link rel="stylesheet" href="styles/vars.css">
         <link rel="stylesheet" href="styles/style.css">
     </head>
@@ -50,8 +51,14 @@
                 </div>
             </section>
         </main>
-        <div id="btn-darkmode--toggle"></div>
-        <div id="btn-practice-mode--toggle"></div>
+        <div id="theme-toggle" class="ui-toggle">
+            <i id="theme-dark" class="fa-solid fa-moon"></i>
+            <i id="theme-light" class="fa-solid fa-sun"></i>
+        </div>
+        <div id="mode-toggle" class="ui-toggle">
+            <i id="mode-layout" class="fa-solid fa-keyboard"></i>
+            <i id="mode-decomposition" class="fa-solid fa-scissors"></i>
+        </div>
         <script src="main.js"></script>
     </body>
 </html>
