@@ -1,4 +1,4 @@
-/* Original Work: MIT License © 2019 Cycatz (https://github.com/Cycatz/cangzen) */
+/* Original Work: MIT License © 2019 Cycatz (https://github.com/Cycatz/cangzen); License File: https://github.com/ngivanyh/changjie/blob/master/LICENSE */
 
 let cangjieCodeTable; 
 let testChar;
@@ -19,7 +19,7 @@ const enKeys = Object.keys(keyToRadical)
 
 const array_rand = (arr) => {return arr[Math.floor(Math.random() * arr.length)]};
 
-function saveSettings(k, v) {
+const saveSettings = (k, v) => {
     $.documentElement.setAttribute(k, v);
     localStorage.setItem(k, v);
 }
@@ -32,7 +32,8 @@ request.onload = function(){
         cangjieCodeTable = request.response;
 
         // config (mode, theme, kb vis)
-        currentTheme = window.matchMedia("(prefers-color-scheme: light)") ? 'light' : 'dark';
+        const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
+        currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : preferred_color_scheme;
         saveSettings('theme', currentTheme)
 
         currentMode = localStorage.getItem('mode') ? localStorage.getItem('mode') : 'layout';
@@ -43,19 +44,19 @@ request.onload = function(){
 
         const _ = (currentMode === "decomposition") ? initDecompPrac() : initLayoutPrac()
 
-        $.querySelector('#theme-toggle').addEventListener('click', (e) => {
+        $.querySelector('#theme-toggle').addEventListener('click', () => {
             currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
             saveSettings('theme', currentTheme)
         });
 
-        $.querySelector('#kb-toggle').addEventListener('click', (e) => {
+        $.querySelector('#kb-toggle').addEventListener('click', () => {
             if (currentMode === 'layout') {
                 kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible'
                 saveSettings('kb_visible', kbVisibility)
             }
         });
 
-        $.querySelector('#mode-toggle').addEventListener('click', (e) => {
+        $.querySelector('#mode-toggle').addEventListener('click', () => {
             if (currentMode === "decomposition") {
                 currentMode = "layout";
                 initLayoutPrac();	

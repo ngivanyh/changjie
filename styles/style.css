@@ -1,9 +1,23 @@
-/* Original Work: MIT License © 2019 Cycatz (https://github.com/Cycatz/cangzen) */
+/* Original Work: MIT License © 2019 Cycatz (https://github.com/Cycatz/cangzen); License File: https://github.com/ngivanyh/changjie/blob/master/LICENSE */
 
 body {
     background-color: var(--bg-color);
     transition: background-color 0.2s ease;
     color: var(--font-color);
+}
+
+#input-box {
+    opacity: 0; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip-path: rect(0, 0, 0, 0); 
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 #testing-section {
