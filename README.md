@@ -18,8 +18,8 @@ This project was originally forked from [`Cycatz/cangzen`](https://github.com/Cy
 </details>
 
 ## License
-Original work licensed under the MIT License ([here](LICENSE))
+Original work licensed under the MIT License ([here](LICENSE-ORIGINAL))
 
-All fonts in the [fonts](fonts/) directory are licensed under the [SIL OFL 1.1 License](https://openfontlicense.org/open-font-license-official-text/). (Copyright for [NotoSerifTC-Medium](fonts/NotoSerifTC-Medium.otf) belongs to Goolgle, see [here](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license); remaining fonts belong to Fonticons, Inc see [here](LICENSE-fontawesome))
+All fonts in the [fonts](fonts/) directory are licensed under the [SIL OFL 1.1 License](https://openfontlicense.org/open-font-license-official-text/). (Copyright for [NotoSerifTC-Medium](fonts/NotoSerifTC-Medium.otf) belongs to Goolgle, see [here](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license); remaining fonts belong to Fonticons, Inc see [here](LICENSE-FONT-AWESOME))
 
 ## [學會倉頡](docs/LEARN-zh.md) | [Learning Cangjie](docs/LEARN-en.md)
