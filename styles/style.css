@@ -1,13 +1,13 @@
 body {
     background-color: var(--bg-color);
-    transition: background-color 0.1s ease;
+    transition: background-color 0.2s ease;
     color: var(--font-color);
 }
 
 #testing-section {
     margin-top: var(--quest-frame-margin-size);
     text-align: center;
-    transition: margin-top 0.1s;
+    transition: margin-top 0.2s ease;
 }
 
 #test-char {
@@ -22,7 +22,7 @@ body {
 .decomposition-cursor {
     text-align: center;
     margin-top: var(--practice-mode-cursor-margin-size); 
-    transition: margin-top 0.1s;
+    transition: margin-top 0.2s ease;
 }
 
 .decomposition-cursor__character {
@@ -37,7 +37,7 @@ body {
     color: var(--font-color);
     border-bottom-width: var(--practice-mode-border-bottom-width);
     border-bottom-style: var(--practice-mode-border-bottom-style);
-    transition: border-bottom-width 0.1s;
+    transition: border-bottom-width 0.2s ease;
 }
 
 .decomposition-cursor__character--finished {
@@ -57,7 +57,7 @@ body {
 #keyboard {
     margin: 5vh auto;
     display: var(--keyboard-display);
-    transition: opacity 0.1s;
+    transition: opacity 0.2s ease;
     opacity: 1;
 }
 
@@ -95,10 +95,11 @@ body {
 }
 
 [kb_visible='hidden'] [class^='keyboard__key-'] {
-    color: var(--bg-color);
+    color: transparent;
 }
 
 .home_dot {
+    opacity: 1;
     display: block; 
     width: 6px; 
     height: 6px; 
@@ -120,7 +121,7 @@ body {
 }
 
 .ui-toggle {
-    display: inline-block;
+    display: block;
     position: fixed;
     bottom: 10px;
     width: 30px;
@@ -133,6 +134,11 @@ body {
     left: 10px;
 }
 
+#kb-toggle {
+    display: var(--keyboard-display);
+    left: calc(50vw - 15px);
+}
+
 #mode-toggle {
     right: 10px;
 }
@@ -143,6 +149,16 @@ body {
 
 #theme-light {
     display: var(--display-light-mode-icon);
+}
+
+[kb_visible="visible"] #visibility-visible,
+[kb_visible="hidden"] #visibility-invisible {
+    display: none;
+}
+
+[kb_visible="visible"] #visibility-invisible,
+[kb_visible="hidden"] #visibility-visible {
+    display: inherit;
 }
 
 #mode-layout {

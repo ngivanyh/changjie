@@ -15,6 +15,8 @@ const charBox = $.querySelector('#test-char');
 const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z",",":"，",".":"。",";":"；"};
 const enKeys = Object.keys(keyToRadical)
 
+const array_rand = (arr) => {return arr[Math.floor(Math.random() * arr.length)]};
+
 function saveSettings(k, v) {
     $.documentElement.setAttribute(k, v);
     localStorage.setItem(k, v);
@@ -40,9 +42,15 @@ request.onload = function(){
         const _ = (currentMode === "decomposition") ? initDecompPrac() : initLayoutPrac()
 
         $.querySelector('#theme-toggle').addEventListener('click', (e) => {
-            // console.log('clicked!');
             currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
             saveSettings('theme', currentTheme)
+        });
+
+        $.querySelector('#kb-toggle').addEventListener('click', (e) => {
+            if (currentMode === 'layout') {
+                kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible'
+                saveSettings('kb_visible', kbVisibility)
+            }
         });
 
         $.querySelector('#mode-toggle').addEventListener('click', (e) => {
@@ -65,10 +73,6 @@ request.onload = function(){
     }
 }
 request.send();
-
-function array_rand(arr){
-    return arr[Math.floor(Math.random() * arr.length)];	
-}
 
 function initLayoutPrac(){
     decompositionCursor.innerHTML = ''; // unprocessed
