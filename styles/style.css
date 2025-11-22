@@ -112,11 +112,11 @@ body {
     box-shadow: inset 0 0 13px 0;
 }
 
-[kb_visible] .keyboard__key--activated-correct {
+.keyboard__key--activated-correct {
     background-color: var(--key-correct);
 }
 
-[kb_visible] .keyboard__key--activated-incorrect {
+.keyboard__key--activated-incorrect {
     background-color: var(--key-incorrect);
 }
 
