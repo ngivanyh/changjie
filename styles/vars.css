@@ -1,8 +1,4 @@
-@font-face {
-    font-family: 'TW-Kai';
-    src: url('../fonts/TW-Kai-98_1.ttf');
-    font-display: fallback;
-}
+/* Original Work: MIT License © 2019 Cycatz (https://github.com/Cycatz/cangzen); License File: https://github.com/ngivanyh/changjie/blob/master/LICENSE */
 
 @font-face {
     font-family: 'Noto Serif TC';
@@ -30,7 +26,7 @@
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
     /* fonts */
-    --fonts: 'Noto Serif TC', 'TW-Kai';
+    --fonts: 'Noto Serif TC';
     --key-height: 67.2px;
 }
 
