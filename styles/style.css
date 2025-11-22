@@ -1,3 +1,5 @@
+/* Original Work: MIT License © 2019 Cycatz (https://github.com/Cycatz/cangzen) */
+
 body {
     background-color: var(--bg-color);
     transition: background-color 0.2s ease;

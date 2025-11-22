@@ -1,3 +1,5 @@
+/* Original Work: MIT License © 2019 Cycatz (https://github.com/Cycatz/cangzen) */
+
 let cangjieCodeTable; 
 let testChar;
 let testCharCode;
