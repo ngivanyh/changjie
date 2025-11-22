@@ -6,20 +6,6 @@ body {
     color: var(--font-color);
 }
 
-#input-box {
-    opacity: 0; 
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-    clip-path: rect(0, 0, 0, 0); 
-    border: none;
-    padding: 0;
-    margin: 0;
-}
-
 #testing-section {
     margin-top: var(--quest-frame-margin-size);
     text-align: center;
@@ -28,11 +14,22 @@ body {
 
 #test-char {
     display: inline-block;
-    border: 1px solid;
+    border: 2px solid black;
     font-size: 172px;
     padding: 0px 30px;
     font-family: var(--fonts);
     color: var(--font-color);
+}
+
+#input-box {
+    opacity: 0; 
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip-path: rect(0, 0, 0, 0); 
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .decomposition-cursor {
@@ -98,7 +95,7 @@ body {
 [kb_visible] [class^='keyboard__key-'] {
     display: inline-block;
     user-select: none;
-    border: 2px outset black;
+    border: 2px solid black;
     width: 60px;
     height: var(--key-height);
     margin: 0 3px 0 3px;

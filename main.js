@@ -16,6 +16,7 @@ const charBox = $.querySelector('#test-char');
 
 const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z",",":"，",".":"。",";":"；"};
 const enKeys = Object.keys(keyToRadical)
+const input = $.querySelector('#input-box');
 
 const array_rand = (arr) => {return arr[Math.floor(Math.random() * arr.length)]};
 
@@ -67,8 +68,10 @@ request.onload = function(){
             saveSettings('mode', currentMode)
         });
 
-        $.addEventListener('keydown', keydownEvent);
-        $.addEventListener('keyup', keyupEvent);
+        $.addEventListener('click', () => {input.focus()})
+
+        input.addEventListener('keydown', keydownEvent);
+        input.addEventListener('keyup', keyupEvent);
     } else {
         const err_msg = `Network request failed with response ${request.status}: ${request.statusText}`
         alert(err_msg)
@@ -205,4 +208,6 @@ function keyupEvent(e) {
             }
         }
     }
+
+    input.value = '';
 }
