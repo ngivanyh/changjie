@@ -18,6 +18,7 @@ const charBox = $.querySelector('#test-char');
 const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z",",":"，",".":"。",";":"；"};
 const enKeys = Object.keys(keyToRadical)
 const input = $.querySelector('#input-box');
+let pressed_meta = false;
 
 const array_rand = (arr) => {return arr[Math.floor(Math.random() * arr.length)]};
 
@@ -133,6 +134,10 @@ function keydownEvent(e) {
             kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible'
             saveSettings('kb_visible', kbVisibility)
         }
+
+        if (keyname === 'meta') {
+            pressed_meta = true;
+        }
         
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
@@ -197,16 +202,20 @@ function keyupEvent(e) {
     if (currentMode === "layout") {
         const keyname = (e.key).toLowerCase();
 
+        if (pressed_meta) {
+            for (const k of enKeys) {
+                const key = $.getElementsByClassName(`keyboard__key-${k}`)[0];
+                key.classList.remove("keyboard__key--activated-correct");
+                key.classList.remove("keyboard__key--activated-incorrect");
+            }
+
+            pressed_meta = false;
+        }
+
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
-            const key_classlist = keyboardKey.classList
-            const key_activated_classnames = ["keyboard__key--activated-incorrect", "keyboard__key--activated-correct"]
-
-            for (const activation_classname of key_activated_classnames) {
-                if (key_classlist.contains(activation_classname)) {
-                    key_classlist.remove(activation_classname)
-                }
-            }
+            keyboardKey.classList.remove("keyboard__key--activated-correct");
+            keyboardKey.classList.remove("keyboard__key--activated-incorrect");
         }
     }
 
