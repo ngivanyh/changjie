@@ -165,14 +165,12 @@ body {
     display: var(--display-light-mode-icon);
 }
 
-[kb_visible="visible"] #visibility-visible,
-[kb_visible="hidden"] #visibility-invisible {
-    display: none;
+#visibility-visible {
+    display: var(--display-kb-visibility-icon);
 }
 
-[kb_visible="visible"] #visibility-invisible,
-[kb_visible="hidden"] #visibility-visible {
-    display: inherit;
+#visibility-invisible {
+    display: var(--display-kb-invisibility-icon);
 }
 
 #mode-layout {

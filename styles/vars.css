@@ -29,6 +29,9 @@
     /* fonts */
     --fonts: 'Noto Serif TC';
     --key-height: 67.2px;
+    /* keyboard visible */
+    --display-kb-invisibility-icon: inherit;
+    --display-kb-visibility-icon: none;
 }
 
 [theme="dark"] {
@@ -50,4 +53,9 @@
     --practice-mode-border-bottom-style: solid;
     --display-layout-mode-icon: inherit;
     --display-decomposition-mode-icon: none;
+}
+
+[kb_visible="hidden"] {
+    --display-kb-invisibility-icon: none;
+    --display-kb-visibility-icon: inherit;
 }
