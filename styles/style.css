@@ -7,6 +7,10 @@ body {
     color: var(--font-color);
 }
 
+.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
 #testing-section {
     margin-top: var(--quest-frame-margin-size);
     text-align: center;

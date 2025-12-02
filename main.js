@@ -22,12 +22,9 @@ let pressed_meta = false;
 
 const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? "mobile" : "desktop"
 
-const array_rand = (arr) => {return arr[Math.floor(Math.random() * arr.length)]};
-
-const saveSettings = (k, v) => {
-    $.documentElement.setAttribute(k, v);
-    localStorage.setItem(k, v);
-}
+const array_rand = (arr) => { return arr[Math.floor(Math.random() * arr.length)] };
+const saveSettings = (k, v) => { $.documentElement.setAttribute(k, v); localStorage.setItem(k, v); }
+const shake_box = () => { charBox.classList.add('shake'); setTimeout(() => { charBox.classList.remove('shake'); }, 200) }
 
 const request = new XMLHttpRequest();
 request.open('GET', './resources/cangjieCodeTable.min.json');
@@ -73,10 +70,12 @@ request.onload = function(){
         });
         
         if (device_type === 'mobile') {
+            console.log("you're using mobile");
             $.addEventListener('click', () => {input.focus()})
             input.addEventListener('keydown', keydownEvent);
             input.addEventListener('keyup', keyupEvent);
         } else {
+            console.log("you're using desktop");
             $.addEventListener('keydown', keydownEvent);
             $.addEventListener('keyup', keyupEvent);
         }
@@ -138,16 +137,15 @@ function keydownEvent(e) {
 
     if (currentMode === "layout") {
         if (keyname === ' ') {
-            kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible'
-            saveSettings('kb_visible', kbVisibility)
+            kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible';
+            saveSettings('kb_visible', kbVisibility);
         }
 
-        if (keyname === 'meta') {
-            pressed_meta = true;
-        }
+        if (keyname === 'meta') { pressed_meta = true }
+        if (pressed_meta) { shake_box() }
         
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
-        if (keyboardKey) {
+        if (keyboardKey && !pressed_meta) {
             let decompositionCursorCharacter = $.getElementsByClassName('decomposition-cursor__character')[currentCodePos];
             // console.log(decompositionCursorCharacter)
             if (keyname === testCharCode[currentCodePos]) {
@@ -206,24 +204,19 @@ function keydownEvent(e) {
 }
 
 function keyupEvent(e) {
-    if (currentMode === "layout") {
-        const keyname = (e.key).toLowerCase();
-
-        if (pressed_meta) {
-            for (const k of enKeys) {
-                const key = $.getElementsByClassName(`keyboard__key-${k}`)[0];
-                key.classList.remove("keyboard__key--activated-correct");
-                key.classList.remove("keyboard__key--activated-incorrect");
-            }
-
-            pressed_meta = false;
-        }
-
-        let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
+    const remove_keypressed_style = (k) => {
+        let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
         if (keyboardKey) {
             keyboardKey.classList.remove("keyboard__key--activated-correct");
             keyboardKey.classList.remove("keyboard__key--activated-incorrect");
         }
+    }
+
+    if (currentMode === "layout") {
+        const keyname = (e.key).toLowerCase();
+
+        if (keyname === 'meta') { pressed_meta = false }
+        remove_keypressed_style(keyname)
     }
 
     input.value = '';
