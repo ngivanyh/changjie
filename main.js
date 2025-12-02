@@ -18,13 +18,13 @@ const charBox = $.querySelector('#test-char');
 const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z",",":"，",".":"。",";":"；"};
 const enKeys = Object.keys(keyToRadical)
 const input = $.querySelector('#input-box');
+let pressed_meta = false;
 
-const array_rand = (arr) => {return arr[Math.floor(Math.random() * arr.length)]};
+const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? "mobile" : "desktop"
 
-const saveSettings = (k, v) => {
-    $.documentElement.setAttribute(k, v);
-    localStorage.setItem(k, v);
-}
+const array_rand = (arr) => { return arr[Math.floor(Math.random() * arr.length)] };
+const saveSettings = (k, v) => { $.documentElement.setAttribute(k, v); localStorage.setItem(k, v); }
+const shake_box = () => { charBox.classList.add('shake'); setTimeout(() => { charBox.classList.remove('shake'); }, 200) }
 
 const request = new XMLHttpRequest();
 request.open('GET', './resources/cangjieCodeTable.min.json');
@@ -68,11 +68,18 @@ request.onload = function(){
             }
             saveSettings('mode', currentMode)
         });
+        
+        if (device_type === 'mobile') {
+            console.log("you're using mobile");
+            $.addEventListener('click', () => {input.focus()})
+            input.addEventListener('keydown', keydownEvent);
+            input.addEventListener('keyup', keyupEvent);
+        } else {
+            console.log("you're using desktop");
+            $.addEventListener('keydown', keydownEvent);
+            $.addEventListener('keyup', keyupEvent);
+        }
 
-        $.addEventListener('click', () => {input.focus()})
-
-        input.addEventListener('keydown', keydownEvent);
-        input.addEventListener('keyup', keyupEvent);
     } else {
         const err_msg = `Network request failed with response ${request.status}: ${request.statusText}`
         alert(err_msg)
@@ -130,12 +137,15 @@ function keydownEvent(e) {
 
     if (currentMode === "layout") {
         if (keyname === ' ') {
-            kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible'
-            saveSettings('kb_visible', kbVisibility)
+            kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible';
+            saveSettings('kb_visible', kbVisibility);
         }
+
+        if (keyname === 'meta') { pressed_meta = true }
+        if (pressed_meta) { shake_box() }
         
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
-        if (keyboardKey) {
+        if (keyboardKey && !pressed_meta) {
             let decompositionCursorCharacter = $.getElementsByClassName('decomposition-cursor__character')[currentCodePos];
             // console.log(decompositionCursorCharacter)
             if (keyname === testCharCode[currentCodePos]) {
@@ -194,20 +204,19 @@ function keydownEvent(e) {
 }
 
 function keyupEvent(e) {
+    const remove_keypressed_style = (k) => {
+        let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
+        if (keyboardKey) {
+            keyboardKey.classList.remove("keyboard__key--activated-correct");
+            keyboardKey.classList.remove("keyboard__key--activated-incorrect");
+        }
+    }
+
     if (currentMode === "layout") {
         const keyname = (e.key).toLowerCase();
 
-        let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
-        if (keyboardKey) {
-            const key_classlist = keyboardKey.classList
-            const key_activated_classnames = ["keyboard__key--activated-incorrect", "keyboard__key--activated-correct"]
-
-            for (const activation_classname of key_activated_classnames) {
-                if (key_classlist.contains(activation_classname)) {
-                    key_classlist.remove(activation_classname)
-                }
-            }
-        }
+        if (keyname === 'meta') { pressed_meta = false }
+        remove_keypressed_style(keyname)
     }
 
     input.value = '';
