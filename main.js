@@ -20,6 +20,8 @@ const enKeys = Object.keys(keyToRadical)
 const input = $.querySelector('#input-box');
 let pressed_meta = false;
 
+const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? "mobile" : "desktop"
+
 const array_rand = (arr) => {return arr[Math.floor(Math.random() * arr.length)]};
 
 const saveSettings = (k, v) => {
@@ -69,11 +71,16 @@ request.onload = function(){
             }
             saveSettings('mode', currentMode)
         });
+        
+        if (device_type === 'mobile') {
+            $.addEventListener('click', () => {input.focus()})
+            input.addEventListener('keydown', keydownEvent);
+            input.addEventListener('keyup', keyupEvent);
+        } else {
+            $.addEventListener('keydown', keydownEvent);
+            $.addEventListener('keyup', keyupEvent);
+        }
 
-        $.addEventListener('click', () => {input.focus()})
-
-        input.addEventListener('keydown', keydownEvent);
-        input.addEventListener('keyup', keyupEvent);
     } else {
         const err_msg = `Network request failed with response ${request.status}: ${request.statusText}`
         alert(err_msg)
