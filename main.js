@@ -70,12 +70,10 @@ request.onload = function(){
         });
         
         if (device_type === 'mobile') {
-            console.log("you're using mobile");
             $.addEventListener('click', () => {input.focus()})
             input.addEventListener('keydown', keydownEvent);
             input.addEventListener('keyup', keyupEvent);
         } else {
-            console.log("you're using desktop");
             $.addEventListener('keydown', keydownEvent);
             $.addEventListener('keyup', keyupEvent);
         }
