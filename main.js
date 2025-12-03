@@ -26,12 +26,18 @@ const array_rand = (arr) => { return arr[Math.floor(Math.random() * arr.length)]
 const saveSettings = (k, v) => { $.documentElement.setAttribute(k, v); localStorage.setItem(k, v); }
 const shake_box = () => { charBox.classList.add('shake'); setTimeout(() => { charBox.classList.remove('shake'); }, 200) }
 
-const request = new XMLHttpRequest();
-request.open('GET', './resources/cangjieCodeTable.min.json');
-request.responseType = 'json';
-request.onload = function(){
-    if (this.status >= 200 && this.status < 400) {
-        cangjieCodeTable = request.response;
+fetch('./resources/cangjieCodeTable.min.json')
+    .then(response => {
+        if (!response.ok) {
+            alert(`Network request failed with status ${response.status}: ${response.statusText}. See console log output for more details.`)
+            console.log(`${response.json()}`);
+        }
+
+        return response.json()
+    })
+    .then(data => {
+        cangjieCodeTable = data;
+        if (cangjieCodeTable === undefined || cangjieCodeTable === null) return;
 
         // config (mode, theme, kb vis)
         const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
@@ -77,14 +83,7 @@ request.onload = function(){
             $.addEventListener('keydown', keydownEvent);
             $.addEventListener('keyup', keyupEvent);
         }
-
-    } else {
-        const err_msg = `Network request failed with response ${request.status}: ${request.statusText}`
-        alert(err_msg)
-        console.log(err_msg);
-    }
-}
-request.send();
+    });
 
 function initLayoutPrac(){
     decompositionCursor.innerHTML = ''; // unprocessed
