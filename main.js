@@ -144,10 +144,8 @@ function keydownEvent(e) {
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey && !pressed_meta) {
             let decompositionCursorCharacter = $.getElementsByClassName('decomposition-cursor__character')[currentCodePos];
-            // console.log(decompositionCursorCharacter)
             if (keyname === testCharCode[currentCodePos]) {
                 keyboardKey.classList.add("keyboard__key--activated-correct");
-                // console.log("keyname === questCharacterCodes[questCharacterCodesPosition]")
                 decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
                 decompositionCursorCharacter.classList.add("decomposition-cursor__character--finished");
                 if (currentMode === "decomposition") {
@@ -183,14 +181,13 @@ function keydownEvent(e) {
             if(currentCodePos == testCharCodeLength){
                 initDecompPrac();
             } 
-        } else if (keyname === " ") {
+        } else if (keyname === ' ') {
             decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
             if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
                 decompositionCursorCharacter.classList.add("decomposition-cursor__character--hint");
-        } else if (keyname === "enter") {
+        } else if (keyname === 'enter') {
             const decompositionCharacterBar = $.getElementsByClassName("decomposition-cursor")[0]
             for (const [i, decompositionCharacter] of decompositionCharacterBar.childNodes.entries()) {
-                // console.log(questCharacterCodes)
                 if (!decompositionCharacter.classList.contains("decomposition-cursor__character--hint") && !decompositionCharacter.textContent) {
                     decompositionCharacter.textContent = keyToRadical[testCharCode[i]];
                     decompositionCharacter.classList.add("decomposition-cursor__character--hint");
@@ -201,19 +198,15 @@ function keydownEvent(e) {
 }
 
 function keyupEvent(e) {
-    const remove_keypressed_style = (k) => {
+    if (currentMode === "layout") {
+        const keyname = (e.key).toLowerCase();
+
+        if (keyname === 'meta') { pressed_meta = false }
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
         if (keyboardKey) {
             keyboardKey.classList.remove("keyboard__key--activated-correct");
             keyboardKey.classList.remove("keyboard__key--activated-incorrect");
         }
-    }
-
-    if (currentMode === "layout") {
-        const keyname = (e.key).toLowerCase();
-
-        if (keyname === 'meta') { pressed_meta = false }
-        remove_keypressed_style(keyname)
     }
 
     input.value = '';
