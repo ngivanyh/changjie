@@ -50,7 +50,7 @@ fetch('./resources/cangjieCodeTable.min.json')
         kbVisibility = localStorage.getItem('kb_visible') ? localStorage.getItem('kb_visible') : 'visible'
         saveSettings('kb_visible', kbVisibility)
 
-        const _ = (currentMode === "decomposition") ? initDecompPrac() : initLayoutPrac()
+        const _ = (currentMode === "decomposition") ? initPrac() : initPrac()
 
         $.querySelector('#theme-toggle').addEventListener('click', () => {
             currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
@@ -67,10 +67,10 @@ fetch('./resources/cangjieCodeTable.min.json')
         $.querySelector('#mode-toggle').addEventListener('click', () => {
             if (currentMode === "decomposition") {
                 currentMode = "layout";
-                initLayoutPrac();	
+                initPrac();	
             } else {
                 currentMode = "decomposition";
-                initDecompPrac();					
+                initPrac();					
             }
             saveSettings('mode', currentMode)
         });
@@ -85,7 +85,7 @@ fetch('./resources/cangjieCodeTable.min.json')
         }
     });
 
-function initLayoutPrac(){
+function initPrac() {
     decompositionCursor.innerHTML = ''; // unprocessed
 
     testChar = array_rand(Object.keys(cangjieCodeTable));
@@ -94,37 +94,29 @@ function initLayoutPrac(){
     charBox.textContent = testChar;
     currentCodePos = 0;
 
-    for (const k of enKeys) {
-        let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
-        keyboardKey.classList.remove("keyboard__key--blink");
-    }
-    
-    $.getElementsByClassName(`keyboard__key-${testCharCode[0]}`)[0].classList.add("keyboard__key--blink");
-
-    for (let i = 0; i < testCharCodeLength; i++) {
-        let decompositionCursorCharacter = $.createElement('span');
-
-        decompositionCursorCharacter.className = "decomposition-cursor__character";
+    if (currentMode === 'layout') {
+        for (const k of enKeys) {
+            let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
+            keyboardKey.classList.remove("keyboard__key--blink");
+        }
         
-        if (!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
-        decompositionCursorCharacter.textContent = keyToRadical[testCharCode[i]];
-        decompositionCursor.appendChild(decompositionCursorCharacter);					
-    }
-}
+        $.getElementsByClassName(`keyboard__key-${testCharCode[0]}`)[0].classList.add("keyboard__key--blink");
 
-function initDecompPrac() {
-    decompositionCursor.innerHTML = ''; // unprocessed
+        for (let i = 0; i < testCharCodeLength; i++) {
+            let decompositionCursorCharacter = $.createElement('span');
 
-    testChar = array_rand(Object.keys(cangjieCodeTable));
-    testCharCode = array_rand(cangjieCodeTable[testChar]) 
-    testCharCodeLength = testCharCode.length;
-    charBox.textContent = testChar;
-    currentCodePos = 0;
-    
-    for (let i = 0; i < testCharCodeLength; i++) {
-        let decompositionCursorCharacter = $.createElement('span');
-        decompositionCursorCharacter.className = "decomposition-cursor__character";
-        decompositionCursor.appendChild(decompositionCursorCharacter);					
+            decompositionCursorCharacter.className = "decomposition-cursor__character";
+            
+            if (!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
+            decompositionCursorCharacter.textContent = keyToRadical[testCharCode[i]];
+            decompositionCursor.appendChild(decompositionCursorCharacter);					
+        }
+    } else {
+        for (let i = 0; i < testCharCodeLength; i++) {
+            let decompositionCursorCharacter = $.createElement('span');
+            decompositionCursorCharacter.className = "decomposition-cursor__character";
+            decompositionCursor.appendChild(decompositionCursorCharacter);					
+        }
     }
 }
 
@@ -156,7 +148,7 @@ function keydownEvent(e) {
                 currentCodePos++;
 
                 if (currentCodePos == testCharCodeLength) {
-                    initLayoutPrac();
+                    initPrac();
                 } else {
                     decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
                     
@@ -178,9 +170,9 @@ function keydownEvent(e) {
             decompositionCursorCharacter.textContent = keyToRadical[keyname];
             currentCodePos++;
 
-            if(currentCodePos == testCharCodeLength){
-                initDecompPrac();
-            } 
+            if(currentCodePos == testCharCodeLength)
+                initPrac();
+            
         } else if (keyname === ' ') {
             decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
             if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
@@ -198,11 +190,11 @@ function keydownEvent(e) {
 }
 
 function keyupEvent(e) {
-    if (currentMode === "layout") {
+    if (currentMode === 'layout') {
         const keyname = (e.key).toLowerCase();
 
         if (keyname === 'meta') { pressed_meta = false }
-        let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
+        let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
             keyboardKey.classList.remove("keyboard__key--activated-correct");
             keyboardKey.classList.remove("keyboard__key--activated-incorrect");
