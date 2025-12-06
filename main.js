@@ -102,10 +102,10 @@ function initPrac() {
         
         $.getElementsByClassName(`keyboard__key-${testCharCode[0]}`)[0].classList.add("keyboard__key--blink");
 
+        // remove decomp cursor character blink and just have one overarching css class, then move the entire for loop before the if
         for (let i = 0; i < testCharCodeLength; i++) {
             let decompositionCursorCharacter = $.createElement('span');
-
-            decompositionCursorCharacter.className = "decomposition-cursor__character";
+            decompositionCursorCharacter.classList.add('decomposition-cursor__character');
             
             if (!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
             decompositionCursorCharacter.textContent = keyToRadical[testCharCode[i]];
@@ -114,7 +114,7 @@ function initPrac() {
     } else {
         for (let i = 0; i < testCharCodeLength; i++) {
             let decompositionCursorCharacter = $.createElement('span');
-            decompositionCursorCharacter.className = "decomposition-cursor__character";
+            decompositionCursorCharacter.classList.add('decomposition-cursor__character');
             decompositionCursor.appendChild(decompositionCursorCharacter);					
         }
     }
