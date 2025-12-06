@@ -26,12 +26,18 @@ const array_rand = (arr) => { return arr[Math.floor(Math.random() * arr.length)]
 const saveSettings = (k, v) => { $.documentElement.setAttribute(k, v); localStorage.setItem(k, v); }
 const shake_box = () => { charBox.classList.add('shake'); setTimeout(() => { charBox.classList.remove('shake'); }, 200) }
 
-const request = new XMLHttpRequest();
-request.open('GET', './resources/cangjieCodeTable.min.json');
-request.responseType = 'json';
-request.onload = function(){
-    if (this.status >= 200 && this.status < 400) {
-        cangjieCodeTable = request.response;
+fetch('./resources/cangjieCodeTable.min.json')
+    .then(response => {
+        if (!response.ok) {
+            alert(`Network request failed with status ${response.status}: ${response.statusText}. See console log output for more details.`)
+            console.log(`${response.json()}`);
+        }
+
+        return response.json()
+    })
+    .then(data => {
+        cangjieCodeTable = data;
+        if (cangjieCodeTable === undefined || cangjieCodeTable === null) return;
 
         // config (mode, theme, kb vis)
         const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
@@ -44,7 +50,7 @@ request.onload = function(){
         kbVisibility = localStorage.getItem('kb_visible') ? localStorage.getItem('kb_visible') : 'visible'
         saveSettings('kb_visible', kbVisibility)
 
-        const _ = (currentMode === "decomposition") ? initDecompPrac() : initLayoutPrac()
+        const _ = (currentMode === "decomposition") ? initPrac() : initPrac()
 
         $.querySelector('#theme-toggle').addEventListener('click', () => {
             currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
@@ -61,34 +67,25 @@ request.onload = function(){
         $.querySelector('#mode-toggle').addEventListener('click', () => {
             if (currentMode === "decomposition") {
                 currentMode = "layout";
-                initLayoutPrac();	
+                initPrac();	
             } else {
                 currentMode = "decomposition";
-                initDecompPrac();					
+                initPrac();					
             }
             saveSettings('mode', currentMode)
         });
         
         if (device_type === 'mobile') {
-            console.log("you're using mobile");
             $.addEventListener('click', () => {input.focus()})
             input.addEventListener('keydown', keydownEvent);
             input.addEventListener('keyup', keyupEvent);
         } else {
-            console.log("you're using desktop");
             $.addEventListener('keydown', keydownEvent);
             $.addEventListener('keyup', keyupEvent);
         }
+    });
 
-    } else {
-        const err_msg = `Network request failed with response ${request.status}: ${request.statusText}`
-        alert(err_msg)
-        console.log(err_msg);
-    }
-}
-request.send();
-
-function initLayoutPrac(){
+function initPrac() {
     decompositionCursor.innerHTML = ''; // unprocessed
 
     testChar = array_rand(Object.keys(cangjieCodeTable));
@@ -97,37 +94,29 @@ function initLayoutPrac(){
     charBox.textContent = testChar;
     currentCodePos = 0;
 
-    for (const k of enKeys) {
-        let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
-        keyboardKey.classList.remove("keyboard__key--blink");
-    }
-    
-    $.getElementsByClassName(`keyboard__key-${testCharCode[0]}`)[0].classList.add("keyboard__key--blink");
-
-    for (let i = 0; i < testCharCodeLength; i++) {
-        let decompositionCursorCharacter = $.createElement('span');
-
-        decompositionCursorCharacter.className = "decomposition-cursor__character";
+    if (currentMode === 'layout') {
+        for (const k of enKeys) {
+            let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
+            keyboardKey.classList.remove("keyboard__key--blink");
+        }
         
-        if (!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
-        decompositionCursorCharacter.textContent = keyToRadical[testCharCode[i]];
-        decompositionCursor.appendChild(decompositionCursorCharacter);					
-    }
-}
+        $.getElementsByClassName(`keyboard__key-${testCharCode[0]}`)[0].classList.add("keyboard__key--blink");
 
-function initDecompPrac() {
-    decompositionCursor.innerHTML = ''; // unprocessed
-
-    testChar = array_rand(Object.keys(cangjieCodeTable));
-    testCharCode = array_rand(cangjieCodeTable[testChar]) 
-    testCharCodeLength = testCharCode.length;
-    charBox.textContent = testChar;
-    currentCodePos = 0;
-    
-    for (let i = 0; i < testCharCodeLength; i++) {
-        let decompositionCursorCharacter = $.createElement('span');
-        decompositionCursorCharacter.className = "decomposition-cursor__character";
-        decompositionCursor.appendChild(decompositionCursorCharacter);					
+        // remove decomp cursor character blink and just have one overarching css class, then move the entire for loop before the if
+        for (let i = 0; i < testCharCodeLength; i++) {
+            let decompositionCursorCharacter = $.createElement('span');
+            decompositionCursorCharacter.classList.add('decomposition-cursor__character');
+            
+            if (!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
+            decompositionCursorCharacter.textContent = keyToRadical[testCharCode[i]];
+            decompositionCursor.appendChild(decompositionCursorCharacter);					
+        }
+    } else {
+        for (let i = 0; i < testCharCodeLength; i++) {
+            let decompositionCursorCharacter = $.createElement('span');
+            decompositionCursorCharacter.classList.add('decomposition-cursor__character');
+            decompositionCursor.appendChild(decompositionCursorCharacter);					
+        }
     }
 }
 
@@ -147,10 +136,8 @@ function keydownEvent(e) {
         let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey && !pressed_meta) {
             let decompositionCursorCharacter = $.getElementsByClassName('decomposition-cursor__character')[currentCodePos];
-            // console.log(decompositionCursorCharacter)
             if (keyname === testCharCode[currentCodePos]) {
                 keyboardKey.classList.add("keyboard__key--activated-correct");
-                // console.log("keyname === questCharacterCodes[questCharacterCodesPosition]")
                 decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
                 decompositionCursorCharacter.classList.add("decomposition-cursor__character--finished");
                 if (currentMode === "decomposition") {
@@ -161,7 +148,7 @@ function keydownEvent(e) {
                 currentCodePos++;
 
                 if (currentCodePos == testCharCodeLength) {
-                    initLayoutPrac();
+                    initPrac();
                 } else {
                     decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
                     
@@ -183,17 +170,16 @@ function keydownEvent(e) {
             decompositionCursorCharacter.textContent = keyToRadical[keyname];
             currentCodePos++;
 
-            if(currentCodePos == testCharCodeLength){
-                initDecompPrac();
-            } 
-        } else if (keyname === " ") {
+            if(currentCodePos == testCharCodeLength)
+                initPrac();
+            
+        } else if (keyname === ' ') {
             decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
             if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
                 decompositionCursorCharacter.classList.add("decomposition-cursor__character--hint");
-        } else if (keyname === "enter") {
+        } else if (keyname === 'enter') {
             const decompositionCharacterBar = $.getElementsByClassName("decomposition-cursor")[0]
             for (const [i, decompositionCharacter] of decompositionCharacterBar.childNodes.entries()) {
-                // console.log(questCharacterCodes)
                 if (!decompositionCharacter.classList.contains("decomposition-cursor__character--hint") && !decompositionCharacter.textContent) {
                     decompositionCharacter.textContent = keyToRadical[testCharCode[i]];
                     decompositionCharacter.classList.add("decomposition-cursor__character--hint");
@@ -204,19 +190,15 @@ function keydownEvent(e) {
 }
 
 function keyupEvent(e) {
-    const remove_keypressed_style = (k) => {
-        let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
+    if (currentMode === 'layout') {
+        const keyname = (e.key).toLowerCase();
+
+        if (keyname === 'meta') { pressed_meta = false }
+        let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
             keyboardKey.classList.remove("keyboard__key--activated-correct");
             keyboardKey.classList.remove("keyboard__key--activated-incorrect");
         }
-    }
-
-    if (currentMode === "layout") {
-        const keyname = (e.key).toLowerCase();
-
-        if (keyname === 'meta') { pressed_meta = false }
-        remove_keypressed_style(keyname)
     }
 
     input.value = '';
