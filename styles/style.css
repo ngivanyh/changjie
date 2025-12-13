@@ -138,14 +138,16 @@ body {
     background-color: var(--key-incorrect);
 }
 
-.ui-toggle {
+.ui-toggle-row {
+    fill: var(--font-color);
     display: block;
+}
+
+.ui-toggle {
     position: fixed;
     bottom: 10px;
     width: 30px;
     height: 30px;
-    color: var(--font-color);
-    font-size: 30px;
 }
 
 #theme-toggle {
