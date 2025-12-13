@@ -89,9 +89,10 @@ function initPrac() {
     decompositionCursor.innerHTML = ''; // unprocessed
 
     testChar = array_rand(Object.keys(cangjieCodeTable));
-    testCharCode = array_rand(cangjieCodeTable[testChar]) 
+    testCharCode = cangjieCodeTable[testChar]
     testCharCodeLength = testCharCode.length;
     charBox.textContent = testChar;
+    console.log(`${testChar} ${testCharCode} ${testCharCodeLength}`)
     currentCodePos = 0;
 
     if (currentMode === 'layout') {
