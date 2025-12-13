@@ -11,60 +11,64 @@
         <link rel="stylesheet" href="styles/style.css">
     </head>
     <body>
-        <section id="testing-section">
-            <span id="test-char"></span>
-            <textarea id="input-box" autofocus></textarea>
-        </section>
-        <section class="decomposition-cursor"></section>
-        <section id="keyboard">
-            <div id="keyboard__row-1">
-                <span class="keyboard__key-q">手</span>
-                <span class="keyboard__key-w">田</span>
-                <span class="keyboard__key-e">水</span>
-                <span class="keyboard__key-r">口</span>
-                <span class="keyboard__key-t">廿</span>
-                <span class="keyboard__key-y">卜</span>
-                <span class="keyboard__key-u">山</span>
-                <span class="keyboard__key-i">戈</span>
-                <span class="keyboard__key-o">人</span>
-                <span class="keyboard__key-p">心</span>
+        <main>
+            <section id="testing-section">
+                <span id="test-char"></span>
+                <textarea id="input-box" autofocus></textarea>
+            </section>
+            <section class="decomposition-cursor"></section>
+            <section id="keyboard">
+                <div id="keyboard__row-1">
+                    <span class="keyboard__key-q">手</span>
+                    <span class="keyboard__key-w">田</span>
+                    <span class="keyboard__key-e">水</span>
+                    <span class="keyboard__key-r">口</span>
+                    <span class="keyboard__key-t">廿</span>
+                    <span class="keyboard__key-y">卜</span>
+                    <span class="keyboard__key-u">山</span>
+                    <span class="keyboard__key-i">戈</span>
+                    <span class="keyboard__key-o">人</span>
+                    <span class="keyboard__key-p">心</span>
+                </div>
+                <div id="keyboard__row-2">
+                    <span class="keyboard__key-a">日</span>
+                    <span class="keyboard__key-s">尸</span>
+                    <span class="keyboard__key-d">木</span>
+                    <span class="keyboard__key-f">火<span class="home_dot"></span></span>
+                    <span class="keyboard__key-g">土</span>
+                    <span class="keyboard__key-h">竹</span>
+                    <span class="keyboard__key-j">十<span class="home_dot"></span></span>
+                    <span class="keyboard__key-k">大</span>
+                    <span class="keyboard__key-l">中</span>
+                    <span class="keyboard__key-;">；</span>
+                </div>
+                <div id="keyboard__row-3">
+                    <span class="keyboard__key-z">z</span>
+                    <span class="keyboard__key-x">難</span>
+                    <span class="keyboard__key-c">金</span>
+                    <span class="keyboard__key-v">女</span>
+                    <span class="keyboard__key-b">月</span>
+                    <span class="keyboard__key-n">弓</span>
+                    <span class="keyboard__key-m">一</span>
+                    <span class="keyboard__key-,">，</span>
+                    <span class="keyboard__key-.">。</span>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div id="theme-toggle" class="ui-toggle">
+                <i id="theme-dark" class="fa-solid fa-moon"></i>
+                <i id="theme-light" class="fa-solid fa-sun"></i>
             </div>
-            <div id="keyboard__row-2">
-                <span class="keyboard__key-a">日</span>
-                <span class="keyboard__key-s">尸</span>
-                <span class="keyboard__key-d">木</span>
-                <span class="keyboard__key-f">火<span class="home_dot"></span></span>
-                <span class="keyboard__key-g">土</span>
-                <span class="keyboard__key-h">竹</span>
-                <span class="keyboard__key-j">十<span class="home_dot"></span></span>
-                <span class="keyboard__key-k">大</span>
-                <span class="keyboard__key-l">中</span>
-                <span class="keyboard__key-;">；</span>
+            <div id="kb-toggle" class="ui-toggle">
+                <i id="visibility-visible" class="fa-solid fa-eye"></i>
+                <i id="visibility-invisible" class="fa-solid fa-eye-slash"></i>
             </div>
-            <div id="keyboard__row-3">
-                <span class="keyboard__key-z">z</span>
-                <span class="keyboard__key-x">難</span>
-                <span class="keyboard__key-c">金</span>
-                <span class="keyboard__key-v">女</span>
-                <span class="keyboard__key-b">月</span>
-                <span class="keyboard__key-n">弓</span>
-                <span class="keyboard__key-m">一</span>
-                <span class="keyboard__key-,">，</span>
-                <span class="keyboard__key-.">。</span>
+            <div id="mode-toggle" class="ui-toggle">
+                <i id="mode-layout" class="fa-solid fa-keyboard"></i>
+                <i id="mode-decomposition" class="fa-solid fa-scissors"></i>
             </div>
-        </section>
-        <div id="theme-toggle" class="ui-toggle">
-            <i id="theme-dark" class="fa-solid fa-moon"></i>
-            <i id="theme-light" class="fa-solid fa-sun"></i>
-        </div>
-        <div id="kb-toggle" class="ui-toggle">
-            <i id="visibility-visible" class="fa-solid fa-eye"></i>
-            <i id="visibility-invisible" class="fa-solid fa-eye-slash"></i>
-        </div>
-        <div id="mode-toggle" class="ui-toggle">
-            <i id="mode-layout" class="fa-solid fa-keyboard"></i>
-            <i id="mode-decomposition" class="fa-solid fa-scissors"></i>
-        </div>
+        </footer>
         <script src="main.js"></script>
     </body>
 </html>

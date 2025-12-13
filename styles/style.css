@@ -19,7 +19,7 @@ body {
 
 #test-char {
     display: inline-block;
-    border: 2px solid black;
+    border: 2px solid var(--font-color);
     font-size: 172px;
     padding: 0px 30px;
     font-family: var(--fonts);
@@ -100,7 +100,7 @@ body {
 [kb_visible] [class^='keyboard__key-'] {
     display: inline-block;
     user-select: none;
-    border: 2px solid black;
+    border: 2px solid var(--font-color);
     width: 60px;
     height: var(--key-height);
     margin: 0 3px 0 3px;

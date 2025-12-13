@@ -1,7 +1,7 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-let cangjieCodeTable; 
+let cangjieCodeTable;
 let testChar;
 let testCharCode;
 let testCharCodeLength;
@@ -26,64 +26,69 @@ const array_rand = (arr) => { return arr[Math.floor(Math.random() * arr.length)]
 const saveSettings = (k, v) => { $.documentElement.setAttribute(k, v); localStorage.setItem(k, v); }
 const shake_box = () => { charBox.classList.add('shake'); setTimeout(() => { charBox.classList.remove('shake'); }, 200) }
 
-fetch('./resources/cangjieCodeTable.min.json')
-    .then(response => {
-        if (!response.ok) {
-            alert(`Network request failed with status ${response.status}: ${response.statusText}. See console log output for more details.`)
-            console.log(`${response.json()}`);
-        }
+$.addEventListener('DOMContentLoaded', async function() {
+    const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
+    currentTheme = localStorage.hasOwnProperty('theme') ? localStorage.getItem('theme') : preferred_color_scheme;
+    saveSettings('theme', currentTheme)
 
-        return response.json()
-    })
-    .then(data => {
-        cangjieCodeTable = data;
-        if (cangjieCodeTable === undefined || cangjieCodeTable === null) return;
+    currentMode = localStorage.hasOwnProperty('mode') ? localStorage.getItem('mode') : 'layout';
+    saveSettings('mode', currentMode)
 
-        // config (mode, theme, kb vis)
-        const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
-        currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : preferred_color_scheme;
+    kbVisibility = localStorage.hasOwnProperty('kb_visible') ? localStorage.getItem('kb_visible') : 'visible'
+    saveSettings('kb_visible', kbVisibility)
+
+    $.querySelector('#theme-toggle').addEventListener('click', () => {
+        currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
         saveSettings('theme', currentTheme)
+    });
 
-        currentMode = localStorage.getItem('mode') ? localStorage.getItem('mode') : 'layout';
-        saveSettings('mode', currentMode)
-
-        kbVisibility = localStorage.getItem('kb_visible') ? localStorage.getItem('kb_visible') : 'visible'
-        saveSettings('kb_visible', kbVisibility)
-
-        const _ = (currentMode === "decomposition") ? initPrac() : initPrac()
-
-        $.querySelector('#theme-toggle').addEventListener('click', () => {
-            currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
-            saveSettings('theme', currentTheme)
-        });
-
-        $.querySelector('#kb-toggle').addEventListener('click', () => {
-            if (currentMode === 'layout') {
-                kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible'
-                saveSettings('kb_visible', kbVisibility)
-            }
-        });
-
-        $.querySelector('#mode-toggle').addEventListener('click', () => {
-            if (currentMode === "decomposition") {
-                currentMode = "layout";
-                initPrac();	
-            } else {
-                currentMode = "decomposition";
-                initPrac();					
-            }
-            saveSettings('mode', currentMode)
-        });
-        
-        if (device_type === 'mobile') {
-            $.addEventListener('click', () => {input.focus()})
-            input.addEventListener('keydown', keydownEvent);
-            input.addEventListener('keyup', keyupEvent);
-        } else {
-            $.addEventListener('keydown', keydownEvent);
-            $.addEventListener('keyup', keyupEvent);
+    $.querySelector('#kb-toggle').addEventListener('click', () => {
+        if (currentMode === 'layout') {
+            kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible'
+            saveSettings('kb_visible', kbVisibility)
         }
     });
+
+    $.querySelector('#mode-toggle').addEventListener('click', () => {
+        if (currentMode === "decomposition") {
+            currentMode = "layout";
+            initPrac();	
+        } else {
+            currentMode = "decomposition";
+            initPrac();					
+        }
+        saveSettings('mode', currentMode)
+    });
+    
+    if (localStorage.hasOwnProperty('cangjieCodeTable'))
+        cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable'))
+    else {
+        await fetch('./resources/cangjieCodeTable.min.json')
+            .then(response => {
+                if (!response.ok) {
+                    alert(`Network request failed with status ${response.status}: ${response.statusText}. See console log output for more details.`)
+                    throw new Error(`Network request failed with status ${response.status}: ${response.statusText}. See console log output for more details.`)
+                }
+
+                return response.json()
+            })
+            .then(data => {
+                cangjieCodeTable = data;
+                localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
+            });
+    }
+
+    const _ = (currentMode === "decomposition") ? initPrac() : initPrac()
+
+    if (device_type === 'mobile') {
+        $.addEventListener('click', () => {input.focus()})
+        input.addEventListener('keydown', keydownEvent);
+        input.addEventListener('keyup', keyupEvent);
+    } else {
+        $.addEventListener('keydown', keydownEvent);
+        $.addEventListener('keyup', keyupEvent);
+    }
+});
 
 function initPrac() {
     decompositionCursor.innerHTML = ''; // unprocessed
@@ -92,7 +97,6 @@ function initPrac() {
     testCharCode = cangjieCodeTable[testChar]
     testCharCodeLength = testCharCode.length;
     charBox.textContent = testChar;
-    console.log(`${testChar} ${testCharCode} ${testCharCodeLength}`)
     currentCodePos = 0;
 
     if (currentMode === 'layout') {
