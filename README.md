@@ -27,5 +27,3 @@ Cangjie code table licnesed under the MIT License under a different name than th
 All fonts in the [fonts](fonts/) directory are licensed under the [SIL OFL 1.1 License](https://openfontlicense.org/open-font-license-official-text/). (Copyright for [NotoSerifTC-Medium](fonts/NotoSerifTC-Medium.otf) belongs to Google, see [here](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license); remaining fonts belong to Fonticons, Inc see [here](LICENSE-FONT-AWESOME))
 
 All further modifications done in this repo is licensed under The Unlicense ([here](LICENSE))
-
-## [學會倉頡](docs/LEARN-zh.md) | [Learning Cangjie](docs/LEARN-en.md)

@@ -1,7 +1,8 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-let cangjieCodeTable;
+let cangjieCodeTable = {};
+let currentIndex = localStorage.hasOwnProperty()
 let testChar;
 let testCharCode;
 let testCharCodeLength;
@@ -73,12 +74,26 @@ $.addEventListener('DOMContentLoaded', async function() {
                 return response.json()
             })
             .then(data => {
-                cangjieCodeTable = data;
+                // Fisher-Yates-Durstenfeld Shuffle (https://stackoverflow.com/questions/3718282/javascript-shuffling-objects-inside-an-object-randomize)
+                const data_keys = Object.keys(data);
+
+                for (let i = 0; i < data_keys.length - 1; i++) {
+                    const j = i + Math.floor(Math.random() * (data_keys.length - i));
+
+                    const temp = data_keys[j];
+                    data_keys[j] = data_keys[i];
+                    data_keys[i] = temp;
+                }
+
+                for (const k of data_keys) {
+                    cangjieCodeTable[k] = data[k];
+                }
+
                 localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
             });
     }
 
-    const _ = (currentMode === "decomposition") ? initPrac() : initPrac()
+    initPrac();
 
     if (device_type === 'mobile') {
         $.addEventListener('click', () => {input.focus()})
@@ -92,8 +107,7 @@ $.addEventListener('DOMContentLoaded', async function() {
 
 function initPrac() {
     decompositionCursor.innerHTML = ''; // unprocessed
-
-    testChar = array_rand(Object.keys(cangjieCodeTable));
+    testChar = Object.keys(cangjieCodeTable)[0];
     testCharCode = cangjieCodeTable[testChar]
     testCharCodeLength = testCharCode.length;
     charBox.textContent = testChar;
