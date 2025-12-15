@@ -24,6 +24,8 @@ Original work licensed under the MIT License ([here](LICENSE-ORIGINAL))
 
 Cangjie code table licnesed under the MIT License under a different name than the former ([here](LICENSE-CANGJIE5)), modifications were done to the code table
 
-All fonts in the [fonts](fonts/) directory are licensed under the [SIL OFL 1.1 License](https://openfontlicense.org/open-font-license-official-text/). (Copyright for [NotoSerifTC-Medium](fonts/NotoSerifTC-Medium.otf) belongs to Google, see [here](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license); remaining fonts belong to Fonticons, Inc see [here](LICENSE-FONT-AWESOME))
+Licensing for [NotoSerifTC-Medium](fonts/NotoSerifTC-Medium.otf) under the SIL OFL 1.1 license [here](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license).
+
+Icons in the [`/resources/fa-icons`](/resources/fa-icons/) directory licensed by Fonticons, Inc ([license](LICENSE-FONT-AWESOME)) under the [CC BY 4.0 License](https://creativecommons.org/licenses/by/4.0/). 
 
 All further modifications done in this repo is licensed under The Unlicense ([here](LICENSE))

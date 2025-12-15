@@ -1,13 +1,22 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
+const saveSettings = (k, v, isDocumentAttribute = true) => {
+    if (isDocumentAttribute) $.documentElement.setAttribute(k, v);
+    localStorage.setItem(k, v);
+
+    return v
+}
+const shake_box = () => { charBox.classList.add('shake'); setTimeout(() => { charBox.classList.remove('shake'); }, 200) };
+
 let cangjieCodeTable = {};
-let currentIndex = localStorage.hasOwnProperty()
+let practicedIndex = localStorage.hasOwnProperty('practicedIndex') ? saveSettings('practicedIndex', localStorage.getItem('practicedIndex'), false) : saveSettings('practicedIndex', 0, false);
 let testChar;
 let testCharCode;
 let testCharCodeLength;
 let currentCodePos;
 
+let regionalPreference;
 let currentTheme;
 let currentMode;
 let kbVisibility;
@@ -23,31 +32,22 @@ let pressed_meta = false;
 
 const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? "mobile" : "desktop"
 
-const array_rand = (arr) => { return arr[Math.floor(Math.random() * arr.length)] };
-const saveSettings = (k, v) => { $.documentElement.setAttribute(k, v); localStorage.setItem(k, v); }
-const shake_box = () => { charBox.classList.add('shake'); setTimeout(() => { charBox.classList.remove('shake'); }, 200) }
-
 $.addEventListener('DOMContentLoaded', async function() {
     const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
-    currentTheme = localStorage.hasOwnProperty('theme') ? localStorage.getItem('theme') : preferred_color_scheme;
-    saveSettings('theme', currentTheme)
+    currentTheme = localStorage.hasOwnProperty('theme') ? saveSettings('theme', localStorage.getItem('theme')) : saveSettings('theme', preferred_color_scheme);
 
-    currentMode = localStorage.hasOwnProperty('mode') ? localStorage.getItem('mode') : 'layout';
-    saveSettings('mode', currentMode)
+    currentMode = localStorage.hasOwnProperty('mode') ? saveSettings('mode', localStorage.getItem('mode')) : saveSettings('mode', 'layout');
 
-    kbVisibility = localStorage.hasOwnProperty('kb_visible') ? localStorage.getItem('kb_visible') : 'visible'
-    saveSettings('kb_visible', kbVisibility)
+    kbVisibility = localStorage.hasOwnProperty('kb_visible') ? saveSettings('kb_visible', localStorage.getItem('kb_visible')) : saveSettings('kb_visible', 'visible');
 
     $.querySelector('#theme-toggle').addEventListener('click', () => {
-        currentTheme = (currentTheme === 'light') ? 'dark' : 'light'
-        saveSettings('theme', currentTheme)
+        currentTheme = (currentTheme === 'light') ? 'dark' : 'light';
+        saveSettings('theme', currentTheme);
     });
 
     $.querySelector('#kb-toggle').addEventListener('click', () => {
-        if (currentMode === 'layout') {
-            kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible'
-            saveSettings('kb_visible', kbVisibility)
-        }
+        kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible';
+        saveSettings('kb_visible', kbVisibility);
     });
 
     $.querySelector('#mode-toggle').addEventListener('click', () => {
@@ -106,8 +106,12 @@ $.addEventListener('DOMContentLoaded', async function() {
 });
 
 function initPrac() {
-    decompositionCursor.innerHTML = ''; // unprocessed
-    testChar = Object.keys(cangjieCodeTable)[0];
+    decompositionCursor.innerHTML = ''; // reset decomposition cursor
+    testChar = Object.keys(cangjieCodeTable)[practicedIndex];
+    if (typeof(testChar) === 'object') {
+
+    }
+
     testCharCode = cangjieCodeTable[testChar]
     testCharCodeLength = testCharCode.length;
     charBox.textContent = testChar;
@@ -167,6 +171,7 @@ function keydownEvent(e) {
                 currentCodePos++;
 
                 if (currentCodePos == testCharCodeLength) {
+                    practicedIndex++;
                     initPrac();
                 } else {
                     decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
@@ -189,8 +194,10 @@ function keydownEvent(e) {
             decompositionCursorCharacter.textContent = keyToRadical[keyname];
             currentCodePos++;
 
-            if(currentCodePos == testCharCodeLength)
+            if(currentCodePos == testCharCodeLength) {
+                practicedIndex++;
                 initPrac();
+            }
             
         } else if (keyname === ' ') {
             decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
