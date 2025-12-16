@@ -1,6 +1,16 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
+// constants
+const $ = document;
+let decompositionCursor = $.getElementsByClassName('decomposition-cursor')[0];
+const charBox = $.querySelector('#test-char');
+const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z",",":"，",".":"。",";":"；"};
+const enKeys = Object.keys(keyToRadical)
+const input = $.querySelector('#input-box');
+const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? "mobile" : "desktop"
+
+// small helper functions
 const saveSettings = (k, v, isDocumentAttribute = true) => {
     if (isDocumentAttribute) $.documentElement.setAttribute(k, v);
     localStorage.setItem(k, v);
@@ -21,16 +31,7 @@ let currentTheme;
 let currentMode;
 let kbVisibility;
 
-const $ = document
-let decompositionCursor = $.getElementsByClassName('decomposition-cursor')[0];
-const charBox = $.querySelector('#test-char');
-
-const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z",",":"，",".":"。",";":"；"};
-const enKeys = Object.keys(keyToRadical)
-const input = $.querySelector('#input-box');
 let pressed_meta = false;
-
-const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? "mobile" : "desktop"
 
 $.addEventListener('DOMContentLoaded', async function() {
     const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
@@ -41,24 +42,16 @@ $.addEventListener('DOMContentLoaded', async function() {
     kbVisibility = localStorage.hasOwnProperty('kb_visible') ? saveSettings('kb_visible', localStorage.getItem('kb_visible')) : saveSettings('kb_visible', 'visible');
 
     $.querySelector('#theme-toggle').addEventListener('click', () => {
-        currentTheme = (currentTheme === 'light') ? 'dark' : 'light';
-        saveSettings('theme', currentTheme);
+        currentTheme = (currentTheme === 'light') ? saveSettings('theme', 'dark') : saveSettings('theme', 'light');;
     });
 
     $.querySelector('#kb-toggle').addEventListener('click', () => {
-        kbVisibility = (kbVisibility === 'visible') ? 'hidden' : 'visible';
-        saveSettings('kb_visible', kbVisibility);
+        kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
     });
 
     $.querySelector('#mode-toggle').addEventListener('click', () => {
-        if (currentMode === "decomposition") {
-            currentMode = "layout";
-            initPrac();	
-        } else {
-            currentMode = "decomposition";
-            initPrac();					
-        }
-        saveSettings('mode', currentMode)
+        currentMode = (currentMode === 'decomposition') ? saveSettings('mode', 'layout') : saveSettings('mode', 'decomposition');;
+        initPrac();
     });
     
     if (localStorage.hasOwnProperty('cangjieCodeTable'))
@@ -71,10 +64,15 @@ $.addEventListener('DOMContentLoaded', async function() {
                     throw new Error(`Network request failed with status ${response.status}: ${response.statusText}. See console log output for more details.`)
                 }
 
-                return response.json()
+                return response.json();
             })
             .then(data => {
                 // Fisher-Yates-Durstenfeld Shuffle (https://stackoverflow.com/questions/3718282/javascript-shuffling-objects-inside-an-object-randomize)
+                if (!data) {
+                    alert(`Something went wrong with the resource fetch request. See console log output for more details`);
+                    throw new Error(`Request data parse encountered an error. See console log output for more details`);
+                }
+
                 const data_keys = Object.keys(data);
 
                 for (let i = 0; i < data_keys.length - 1; i++) {
@@ -105,9 +103,15 @@ $.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
-function initPrac() {
-    decompositionCursor.innerHTML = ''; // reset decomposition cursor
-    testChar = Object.keys(cangjieCodeTable)[practicedIndex];
+function initPrac(char = '') {
+    // ressetting some ui elements
+    decompositionCursor.innerHTML = '';
+
+    if (!char)
+        testChar = Object.keys(cangjieCodeTable)[practicedIndex];
+    else
+        testChar = char;
+
     if (typeof(testChar) === 'object') {
 
     }
@@ -227,5 +231,5 @@ function keyupEvent(e) {
         }
     }
 
-    input.value = '';
+    if (device_type === 'mobile') input.value = '';
 }
