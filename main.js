@@ -47,10 +47,12 @@ $.addEventListener('DOMContentLoaded', async () => {
         initPrac();
     });
 
+    $.getElementsByName(`region-${regionPreference}`)[0].selected = true;
+
     cangjie_region_select.addEventListener('change', (event) => {
-        console.log(event.target.value);
         regionPreference = saveSettings('region_preference', event.target.value, false);
         initPrac();
+        cangjie_region_select.blur();
     })
     
     if (localStorage.hasOwnProperty('cangjieCodeTable'))
@@ -107,15 +109,14 @@ function initPrac() {
     decompositionCursor.innerHTML = '';
     cangjie_region_select.disabled = true;
 
-    console.log('init prac')
-
     const char = Object.keys(cangjieCodeTable)[practicedIndex];
+    const charCode = cangjieCodeTable[char]
 
-    if (typeof(cangjieCodeTable[char]) === 'object') {
+    if (typeof(charCode) === 'object') {
         cangjie_region_select.disabled = false;
-        testCharCode = cangjieCodeTable[char][regionPreference];
+        testCharCode = charCode[regionPreference];
     } else {
-        testCharCode = cangjieCodeTable[char];
+        testCharCode = charCode;
     }
 
     testCharCodeLength = testCharCode.length;
@@ -141,7 +142,6 @@ function initPrac() {
 
 function keydownEvent(e) {
     const keyname = (e.key).toLowerCase();
-    console.log(keyname);
 
     if (currentMode === "layout") {
         if (keyname === ' ') {
@@ -166,35 +166,33 @@ function keydownEvent(e) {
 
                 currentCodePos++;
 
-                if (currentCodePos == testCharCodeLength) {
+                if (currentCodePos === testCharCodeLength) {
                     practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
                     initPrac();
                 } else {
                     decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
                     
-                    let keyboardNextKey = $.getElementsByClassName(`keyboard__key-${testCharCode[currentCodePos]}`)[0];
-                    keyboardNextKey.classList.add("keyboard__key--blink");
+                    $.getElementsByClassName(`keyboard__key-${testCharCode[currentCodePos]}`)[0].classList.add("keyboard__key--blink");
                 }
             } else {
                 keyboardKey.classList.add("keyboard__key--activated-incorrect");
             }
         }
     } else {
-        let decompositionCursorCharacter = $.getElementsByClassName('decomposition-cursor__character')[currentCodePos];
+        const decompositionCursorCharacter = $.getElementsByClassName('decomposition-cursor__character')[currentCodePos];
 
         if(keyname === testCharCode[currentCodePos]){
-
             if(decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
                 decompositionCursorCharacter.classList.remove("decomposition-cursor__character--hint");
 
             decompositionCursorCharacter.textContent = keyToRadical[keyname];
             currentCodePos++;
 
-            if(currentCodePos == testCharCodeLength) {
+            if(currentCodePos === testCharCodeLength) {
                 practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
                 initPrac();
             }
-            
+
         } else if (keyname === ' ') {
             decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
             if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
@@ -215,7 +213,7 @@ function keyupEvent(e) {
         const keyname = (e.key).toLowerCase();
 
         if (keyname === 'meta') { pressed_meta = false }
-        let keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
+        const keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
         if (keyboardKey) {
             keyboardKey.classList.remove("keyboard__key--activated-correct");
             keyboardKey.classList.remove("keyboard__key--activated-incorrect");
