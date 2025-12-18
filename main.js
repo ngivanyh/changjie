@@ -3,44 +3,37 @@
 
 // constants
 const $ = document;
+const input = $.querySelector('#input-box');
 let decompositionCursor = $.getElementsByClassName('decomposition-cursor')[0];
+const cangjie_region_select = $.querySelector('#cangjie-select');
 const charBox = $.querySelector('#test-char');
 const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"z",",":"，",".":"。",";":"；"};
-const enKeys = Object.keys(keyToRadical)
-const input = $.querySelector('#input-box');
 const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? "mobile" : "desktop"
+const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
 
 // small helper functions
 const saveSettings = (k, v, isDocumentAttribute = true) => {
     if (isDocumentAttribute) $.documentElement.setAttribute(k, v);
     localStorage.setItem(k, v);
 
-    return v
+    return v;
 }
 const shake_box = () => { charBox.classList.add('shake'); setTimeout(() => { charBox.classList.remove('shake'); }, 200) };
 
 let cangjieCodeTable = {};
-let practicedIndex = localStorage.hasOwnProperty('practicedIndex') ? saveSettings('practicedIndex', localStorage.getItem('practicedIndex'), false) : saveSettings('practicedIndex', 0, false);
-let testChar;
+let practicedIndex = localStorage.hasOwnProperty('practiced_index') ? Number(saveSettings('practiced_index', localStorage.getItem('practiced_index'), false)) : saveSettings('practiced_index', 0, false);
 let testCharCode;
 let testCharCodeLength;
 let currentCodePos;
 
-let regionalPreference;
-let currentTheme;
-let currentMode;
-let kbVisibility;
+let regionPreference = localStorage.hasOwnProperty('region_preference') ? saveSettings('region_preference', localStorage.getItem('region_preference'), false) : saveSettings('region_preference', 'hk', false);
+let currentTheme = localStorage.hasOwnProperty('theme') ? saveSettings('theme', localStorage.getItem('theme')) : saveSettings('theme', preferred_color_scheme);
+let currentMode = localStorage.hasOwnProperty('mode') ? saveSettings('mode', localStorage.getItem('mode')) : saveSettings('mode', 'layout');
+let kbVisibility = localStorage.hasOwnProperty('kb_visible') ? saveSettings('kb_visible', localStorage.getItem('kb_visible')) : saveSettings('kb_visible', 'visible');
 
 let pressed_meta = false;
 
-$.addEventListener('DOMContentLoaded', async function() {
-    const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
-    currentTheme = localStorage.hasOwnProperty('theme') ? saveSettings('theme', localStorage.getItem('theme')) : saveSettings('theme', preferred_color_scheme);
-
-    currentMode = localStorage.hasOwnProperty('mode') ? saveSettings('mode', localStorage.getItem('mode')) : saveSettings('mode', 'layout');
-
-    kbVisibility = localStorage.hasOwnProperty('kb_visible') ? saveSettings('kb_visible', localStorage.getItem('kb_visible')) : saveSettings('kb_visible', 'visible');
-
+$.addEventListener('DOMContentLoaded', async () => {
     $.querySelector('#theme-toggle').addEventListener('click', () => {
         currentTheme = (currentTheme === 'light') ? saveSettings('theme', 'dark') : saveSettings('theme', 'light');;
     });
@@ -53,6 +46,12 @@ $.addEventListener('DOMContentLoaded', async function() {
         currentMode = (currentMode === 'decomposition') ? saveSettings('mode', 'layout') : saveSettings('mode', 'decomposition');;
         initPrac();
     });
+
+    cangjie_region_select.addEventListener('change', (event) => {
+        console.log(event.target.value);
+        regionPreference = saveSettings('region_preference', event.target.value, false);
+        initPrac();
+    })
     
     if (localStorage.hasOwnProperty('cangjieCodeTable'))
         cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable'))
@@ -67,7 +66,7 @@ $.addEventListener('DOMContentLoaded', async function() {
                 return response.json();
             })
             .then(data => {
-                // Fisher-Yates-Durstenfeld Shuffle (https://stackoverflow.com/questions/3718282/javascript-shuffling-objects-inside-an-object-randomize)
+                // Fisher-Yates-Durstenfeld Shuffle (https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm)
                 if (!data) {
                     alert(`Something went wrong with the resource fetch request. See console log output for more details`);
                     throw new Error(`Request data parse encountered an error. See console log output for more details`);
@@ -94,7 +93,7 @@ $.addEventListener('DOMContentLoaded', async function() {
     initPrac();
 
     if (device_type === 'mobile') {
-        $.addEventListener('click', () => {input.focus()})
+        $.addEventListener('click', () => { input.focus() })
         input.addEventListener('keydown', keydownEvent);
         input.addEventListener('keyup', keyupEvent);
     } else {
@@ -103,47 +102,40 @@ $.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
-function initPrac(char = '') {
+function initPrac() {
     // ressetting some ui elements
     decompositionCursor.innerHTML = '';
+    cangjie_region_select.disabled = true;
 
-    if (!char)
-        testChar = Object.keys(cangjieCodeTable)[practicedIndex];
-    else
-        testChar = char;
+    console.log('init prac')
 
-    if (typeof(testChar) === 'object') {
+    const char = Object.keys(cangjieCodeTable)[practicedIndex];
 
+    if (typeof(cangjieCodeTable[char]) === 'object') {
+        cangjie_region_select.disabled = false;
+        testCharCode = cangjieCodeTable[char][regionPreference];
+    } else {
+        testCharCode = cangjieCodeTable[char];
     }
 
-    testCharCode = cangjieCodeTable[testChar]
     testCharCodeLength = testCharCode.length;
-    charBox.textContent = testChar;
+    charBox.textContent = char;
     currentCodePos = 0;
 
-    if (currentMode === 'layout') {
-        for (const k of enKeys) {
-            let keyboardKey = $.getElementsByClassName(`keyboard__key-${k}`)[0];
-            keyboardKey.classList.remove("keyboard__key--blink");
-        }
-        
-        $.getElementsByClassName(`keyboard__key-${testCharCode[0]}`)[0].classList.add("keyboard__key--blink");
+    // decomp cursor generation
+    for (let i = 0; i < testCharCodeLength; i++) {
+        let decompositionCursorCharacter = $.createElement('span');
+        decompositionCursorCharacter.classList.add('decomposition-cursor__character');
+        if (currentMode === 'layout') decompositionCursorCharacter.textContent = keyToRadical[testCharCode[i]];
+        decompositionCursor.appendChild(decompositionCursorCharacter);
+    }
 
-        // remove decomp cursor character blink and just have one overarching css class, then move the entire for loop before the if
-        for (let i = 0; i < testCharCodeLength; i++) {
-            let decompositionCursorCharacter = $.createElement('span');
-            decompositionCursorCharacter.classList.add('decomposition-cursor__character');
-            
-            if (!i) decompositionCursorCharacter.className += " decomposition-cursor__character--blink";
-            decompositionCursorCharacter.textContent = keyToRadical[testCharCode[i]];
-            decompositionCursor.appendChild(decompositionCursorCharacter);					
-        }
-    } else {
-        for (let i = 0; i < testCharCodeLength; i++) {
-            let decompositionCursorCharacter = $.createElement('span');
-            decompositionCursorCharacter.classList.add('decomposition-cursor__character');
-            decompositionCursor.appendChild(decompositionCursorCharacter);					
-        }
+    // misc tasks needed for layout mode
+    if (currentMode === 'layout') {
+        $.querySelectorAll('.keyboard__key--blink').forEach(key => key.classList.remove('keyboard__key--blink'))
+
+        $.getElementsByClassName(`keyboard__key-${testCharCode[0]}`)[0].classList.add('keyboard__key--blink');
+        decompositionCursor.children[0].classList.add('decomposition-cursor__character--blink')
     }
 }
 
@@ -175,7 +167,7 @@ function keydownEvent(e) {
                 currentCodePos++;
 
                 if (currentCodePos == testCharCodeLength) {
-                    practicedIndex++;
+                    practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
                     initPrac();
                 } else {
                     decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
@@ -199,7 +191,7 @@ function keydownEvent(e) {
             currentCodePos++;
 
             if(currentCodePos == testCharCodeLength) {
-                practicedIndex++;
+                practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
                 initPrac();
             }
             
@@ -208,8 +200,7 @@ function keydownEvent(e) {
             if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character--hint"))
                 decompositionCursorCharacter.classList.add("decomposition-cursor__character--hint");
         } else if (keyname === 'enter') {
-            const decompositionCharacterBar = $.getElementsByClassName("decomposition-cursor")[0]
-            for (const [i, decompositionCharacter] of decompositionCharacterBar.childNodes.entries()) {
+            for (const [i, decompositionCharacter] of Object.entries(decompositionCursor.children)) {
                 if (!decompositionCharacter.classList.contains("decomposition-cursor__character--hint") && !decompositionCharacter.textContent) {
                     decompositionCharacter.textContent = keyToRadical[testCharCode[i]];
                     decompositionCharacter.classList.add("decomposition-cursor__character--hint");

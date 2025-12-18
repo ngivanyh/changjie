@@ -13,15 +13,16 @@
     <body>
         <main>
             <section id="testing-section">
-                <span id="test-char"></span>
-                <textarea id="input-box" autofocus></textarea>
-            </section>
-            <div id="decomposition-row">
-                <select id="canjie-select">
-                    
+                <select id="cangjie-select" name="cangjie-select" disabled>
+                    <option value="" selected disabled>---</option>
+                    <option value="hk">HK</option>
+                    <option value="tw">TW</option>
                 </select>
-                <section class="decomposition-cursor"></section>
-            </div>
+                <br/>
+                <span id="test-char"></span>
+                <textarea id="input-box" autofocus spellcheck="false" autocomplete="off" autocorrect="off"></textarea>
+            </section>
+            <section class="decomposition-cursor"></section>
             <section id="keyboard">
                 <div id="keyboard__row-1">
                     <span class="keyboard__key-q">手</span>
