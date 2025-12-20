@@ -9,7 +9,7 @@ body {
 }
 
 .shake {
-    animation: shake 0.3s ease-in-out;
+    animation: shake 0.2s ease-in-out;
 }
 
 #testing-section {
@@ -23,6 +23,7 @@ body {
     border: 2px solid var(--font-color);
     font-size: 172px;
     padding: 0px 30px;
+    will-change: transform;
 }
 
 #input-box {
@@ -37,7 +38,7 @@ body {
     margin: 0;
 }
 
-.decomposition-cursor {
+#decomposition-cursor {
     text-align: center;
     margin-top: var(--practice-mode-cursor-margin-size); 
     transition: margin-top 0.2s ease;
@@ -92,7 +93,7 @@ body {
     margin-left: 25px;
 }
 
-[kb_visible] [class^='keyboard__key-'] {
+[kb_visible] .keyboard-key {
     display: inline-block;
     color: var(--font-color);
     font-size: 40px;
@@ -104,7 +105,7 @@ body {
     user-select: none;
 }
 
-[kb_visible='hidden'] [class^='keyboard__key-'] {
+[kb_visible='hidden'] .keyboard-key {
     color: transparent;
 }
 

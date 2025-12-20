@@ -2,8 +2,8 @@
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
 @font-face {
-    font-family: 'Noto Serif TC';
-    src: url('../fonts/NotoSerifTC-Medium.ttf');
+    font-family: 'Noto Serif TC (Medium)';
+    src: url('../fonts/NotoSerifTC-Medium.woff2') format('woff2');
     font-display: fallback;
 }
 
@@ -15,7 +15,7 @@
     --blink-font-color: white;
     /* layout mode */
     --keyboard-display: block;
-    --quest-frame-margin-size: 8vh;
+    --quest-frame-margin-size: 6vh;
     --practice-mode-cursor-margin-size: 4vh;
     --practice-mode-border-bottom-width: 0;
     --practice-mode-border-bottom-style: solid;
@@ -23,7 +23,7 @@
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
     /* fonts */
-    --fonts: 'Noto Serif TC';
+    --fonts: 'Noto Serif TC (Medium)', serif;
     --key-height: 67.2px;
     /* icon displays */
     --display-kb-invisibility-icon: inherit;

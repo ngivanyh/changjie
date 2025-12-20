@@ -4,10 +4,16 @@
 // constants
 const $ = document;
 const input = $.querySelector('#input-box');
-let decompositionCursor = $.getElementsByClassName('decomposition-cursor')[0];
+const decompositionCursor = $.querySelector('#decomposition-cursor');
 const cangjie_region_select = $.querySelector('#cangjie-select');
 const charBox = $.querySelector('#test-char');
 const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"重",",":"，",".":"。",";":"；"};
+const kbKeys = Object.fromEntries(
+    Array.from(
+        Object.keys(keyToRadical),
+        k => [k, $.getElementById(`keyboard__key-${k}`)]
+    )
+);
 const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? "mobile" : "desktop";
 const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light';
 
@@ -23,12 +29,14 @@ const shake_box = () => {
     setTimeout(() => { charBox.classList.remove('shake'); }, 200);
 };
 
+// app related variables
 let cangjieCodeTable = {};
 let practicedIndex = Number(saveSettings('practiced_index', localStorage.getItem('practiced_index') || 0, false));
 let testCharCode;
 let testCharCodeLength;
 let currentCodePos;
 
+// settings
 let regionPreference = saveSettings('region_preference', localStorage.getItem('region_preference') || 'hk', false);
 let currentTheme = saveSettings('theme', localStorage.getItem('theme') || preferred_color_scheme);
 let currentMode = saveSettings('mode', localStorage.getItem('mode') || 'layout');
@@ -82,9 +90,7 @@ $.addEventListener('DOMContentLoaded', async () => {
                 for (let i = 0; i < data_keys.length - 1; i++) {
                     const j = i + Math.floor(Math.random() * (data_keys.length - i));
 
-                    const temp = data_keys[j];
-                    data_keys[j] = data_keys[i];
-                    data_keys[i] = temp;
+                    [data_keys[i], data_keys[j]] = [data_keys[j], data_keys[i]];
                 }
 
                 for (const k of data_keys) {
@@ -128,7 +134,7 @@ function initPrac() {
 
     // decomp cursor generation
     for (let i = 0; i < testCharCodeLength; i++) {
-        let decompositionCursorCharacter = $.createElement('span');
+        const decompositionCursorCharacter = $.createElement('span');
         decompositionCursorCharacter.classList.add('decomposition-cursor__character');
         if (currentMode === 'layout') decompositionCursorCharacter.textContent = keyToRadical[testCharCode[i]];
         decompositionCursor.appendChild(decompositionCursorCharacter);
@@ -138,7 +144,7 @@ function initPrac() {
     if (currentMode === 'layout') {
         $.querySelectorAll('.keyboard__key--blink').forEach(key => key.classList.remove('keyboard__key--blink'));
 
-        $.getElementsByClassName(`keyboard__key-${testCharCode[0]}`)[0].classList.add('keyboard__key--blink');
+        kbKeys[testCharCode[0]].classList.add('keyboard__key--blink');
         decompositionCursor.children[0].classList.add('decomposition-cursor__character--blink')
     }
 }
@@ -149,12 +155,19 @@ function keydownEvent(e) {
     if (currentMode === "layout") {
         if (keyname === ' ') {
             kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
+            return;
         }
 
-        if (keyname === 'meta') { pressed_meta = true }
-        if (pressed_meta) { shake_box() }
+        if (keyname === 'meta') {
+            pressed_meta = true;
+            return;
+        }
+        if (pressed_meta) {
+            shake_box();
+            return;
+        }
         
-        const keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
+        const keyboardKey = kbKeys[keyname];
         if (keyboardKey && !pressed_meta) {
             const decompositionCursorCharacter = decompositionCursor.children[currentCodePos];
 
@@ -173,7 +186,7 @@ function keydownEvent(e) {
                 } else {
                     decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
                     
-                    $.getElementsByClassName(`keyboard__key-${testCharCode[currentCodePos]}`)[0].classList.add("keyboard__key--blink");
+                    kbKeys[testCharCode[currentCodePos]].classList.add("keyboard__key--blink");
                 }
             } else {
                 keyboardKey.classList.add("keyboard__key--activated-incorrect");
@@ -212,12 +225,13 @@ function keyupEvent(e) {
     if (currentMode === 'layout') {
         const keyname = (e.key).toLowerCase();
 
-        if (keyname === 'meta') { pressed_meta = false }
-        const keyboardKey = $.getElementsByClassName(`keyboard__key-${keyname}`)[0];
-        if (keyboardKey) {
-            keyboardKey.classList.remove("keyboard__key--activated-correct");
-            keyboardKey.classList.remove("keyboard__key--activated-incorrect");
+        if (keyname === 'meta') {
+            pressed_meta = false;
+            return;
         }
+
+        if (kbKeys[keyname])
+            kbKeys[keyname].classList.remove('keyboard__key--activated-correct', 'keyboard__key--activated-incorrect');
     }
 
     if (device_type === 'mobile') input.value = '';
