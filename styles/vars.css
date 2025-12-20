@@ -13,25 +13,27 @@
     --font-color: black;
     --blink-bg-color: black;
     --blink-font-color: white;
-    --display-dark-mode-icon: inherit;
-    --display-light-mode-icon: none;
     /* layout mode */
     --keyboard-display: block;
     --quest-frame-margin-size: 8vh;
     --practice-mode-cursor-margin-size: 4vh;
     --practice-mode-border-bottom-width: 0;
     --practice-mode-border-bottom-style: solid;
-    --display-layout-mode-icon: none;
-    --display-decomposition-mode-icon: inherit;
     /* keyboard keypress highlight */
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
     /* fonts */
     --fonts: 'Noto Serif TC';
     --key-height: 67.2px;
-    /* keyboard visible */
+    /* icon displays */
     --display-kb-invisibility-icon: inherit;
     --display-kb-visibility-icon: none;
+
+    --display-layout-mode-icon: none;
+    --display-decomposition-mode-icon: inherit;
+
+    --display-dark-mode-icon: inherit;
+    --display-light-mode-icon: none;
 }
 
 [theme="dark"] {
