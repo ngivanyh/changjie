@@ -104,7 +104,9 @@ $.addEventListener('DOMContentLoaded', async () => {
     initPrac();
 
     if (device_type === 'mobile') {
-        $.addEventListener('click', () => { input.focus() })
+        $.querySelector('main').addEventListener('click', () => {
+            if ($.activeElement != input) input.focus();
+        });
         input.addEventListener('keydown', keydownEvent);
         input.addEventListener('keyup', keyupEvent);
     } else {
@@ -114,15 +116,14 @@ $.addEventListener('DOMContentLoaded', async () => {
 });
 
 function initPrac() {
-    // ressetting some ui elements
-    decompositionCursor.innerHTML = '';
+    // resetting the region selection
     cangjie_region_select.disabled = true;
 
     const char = Object.keys(cangjieCodeTable)[practicedIndex];
     const charCode = cangjieCodeTable[char]
 
     if (typeof(charCode) === 'object') {
-        cangjie_region_select.disabled = false;
+        cangjie_region_select.disabled = false; // re-enable selection
         testCharCode = charCode[regionPreference];
     } else {
         testCharCode = charCode;
@@ -133,12 +134,14 @@ function initPrac() {
     currentCodePos = 0;
 
     // decomp cursor generation
-    for (let i = 0; i < testCharCodeLength; i++) {
-        const decompositionCursorCharacter = $.createElement('span');
-        decompositionCursorCharacter.classList.add('decomposition-cursor__character');
-        if (currentMode === 'layout') decompositionCursorCharacter.textContent = keyToRadical[testCharCode[i]];
-        decompositionCursor.appendChild(decompositionCursorCharacter);
+    for (const [i, decompCursorChar] of Object.entries(decompositionCursor.children)) {
+        decompCursorChar.style.display = 'inline-block';
+        decompCursorChar.classList.remove('decomposition-cursor__character-grayed');
+
+        if (currentMode === 'layout')
+            decompCursorChar.textContent = keyToRadical[testCharCode[i]];
     }
+    Array.from(decompositionCursor.children).slice(testCharCodeLength).forEach(unused_cursor_char => unused_cursor_char.style.display = 'none');
 
     // misc tasks needed for layout mode
     if (currentMode === 'layout') {
@@ -172,10 +175,10 @@ function keydownEvent(e) {
             const decompositionCursorCharacter = decompositionCursor.children[currentCodePos];
 
             if (keyname === testCharCode[currentCodePos]) {
-                keyboardKey.classList.add("keyboard__key--activated-correct");
+                keyboardKey.classList.add('keyboard__key--activated-correct');
 
-                decompositionCursorCharacter.classList.remove("decomposition-cursor__character--blink");
-                decompositionCursorCharacter.classList.add("decomposition-cursor__character-grayed");
+                decompositionCursorCharacter.classList.remove('decomposition-cursor__character--blink');
+                decompositionCursorCharacter.classList.add('decomposition-cursor__character-grayed');
                 keyboardKey.classList.remove("keyboard__key--blink");
 
                 currentCodePos++;
