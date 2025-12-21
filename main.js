@@ -67,7 +67,53 @@ cangjie_region_select.addEventListener('change', (event) => {
 });
 
 async function retrieveCodeTable() {
+    const segmentDetails = localStorage.getItem('segment_details');
 
+    // reset practiced index back to the starting point
+    practicedIndex = saveSettings('practiced_index', 0, false);
+
+    // default fetch id and index (will be used when there is no previous record of a code table)
+    const fetch_id = 'a';
+
+    if (segmentDetails) {
+        const segmentIndex = JSON.parse(segmentDetails)['segment-index'];
+
+        if (segmentIndex === 4)
+            fetch_id = String.fromCharCode(97); // id: 'a' (ascii/unicode: 97 + 0 -> index restarts at 0)
+        else
+            fetch_id = String.fromCharCode(97 + segmentIndex + 1);
+    }
+
+    await fetch(`./resources/cangjieCodeTable-segments/cangjieCodeTable-${fetch_id}.min.json`)
+        .then(response => {
+            if (!response.ok) {
+                alert(`A network error occurred, the request to fetch a certain program resource has failed with ${reponse.status}: ${response.statusText}.`);
+                throw new Error(`A network error occurred, the request to fetch a certain program resource has failed with ${reponse.status}: ${response.statusText}.`);
+            }
+
+            return reponse.json();
+        })
+        .then(data => {
+            if (!data || typeof(data) != 'object') {
+                alert('An error occurred whilst processing a certain program resource.');
+                throw new Error('An error occurred whilst processing a certain program resource.');
+            }
+
+            const data_keys = Object.keys(data.data);
+
+            for (let i = 0; i < data_keys.length - 1; i++) {
+                const j = i + Math.floor(Math.random() * (data_keys.length - i));
+
+                [data_keys[i], data_keys[j]] = [data_keys[j], data_keys[i]];
+            }
+
+            for (const k of data_keys) {
+                cangjieCodeTable[k] = data.data[k];
+            }
+
+            localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
+            localStorage.setItem('segment_details', JSON.stringify(data.details));
+        });
 }
 
 $.addEventListener('DOMContentLoaded', async () => {
@@ -145,7 +191,7 @@ async function initPrac() {
     for (const [i, decompCursorChar] of Object.entries(decompositionCursor.children)) {
         decompCursorChar.style.display = 'inline-block';
         decompCursorChar.classList.remove('decomposition-cursor__character-grayed');
-        decompCursorChar.classList.remove('decomposition-cursor__character--blink')
+        decompCursorChar.classList.remove('decomposition-cursor__character--blink');
 
         if (currentMode === 'layout')
             decompCursorChar.textContent = keyToRadical[testCharCode[i]];
@@ -161,7 +207,7 @@ async function initPrac() {
         $.querySelectorAll('.keyboard__key--blink').forEach(key => key.classList.remove('keyboard__key--blink'));
 
         kbKeys[testCharCode[0]].classList.add('keyboard__key--blink');
-        decompositionCursor.children[0].classList.add('decomposition-cursor__character--blink')
+        decompositionCursor.children[0].classList.add('decomposition-cursor__character--blink');
     }
 }
 

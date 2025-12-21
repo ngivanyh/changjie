@@ -36,4 +36,4 @@ This will spin up an instance that will be available on [`localhost:8080`](http:
 > An installation of `npm` or similar must be present in order to use [`http-server`](https://www.npmjs.com/package/http-server/v/13.0.1).
 
 > [!TIP]
-> [`http-server`](https://www.npmjs.com/package/http-server/v/13.0.1) is not the **only** tool you can use
+> [`http-server`](https://www.npmjs.com/package/http-server/v/13.0.1) is not the **only** tool you can use, as long as it can serve these static files, it is an adequate tool.
