@@ -28,7 +28,7 @@ body {
 
 #input-box {
     /* css to make it invisible (cannot be seen and doesn't take up space) */
-    opacity: 0; 
+    opacity: 0;
     height: 1px;
     width: 1px;
     overflow: hidden;
@@ -95,7 +95,6 @@ body {
 
 [kb_visible] .keyboard-key {
     display: inline-block;
-    color: var(--font-color);
     font-size: 40px;
     border: 2px solid var(--font-color);
     width: 60px;
@@ -110,7 +109,6 @@ body {
 }
 
 .home_dot {
-    opacity: 1;
     display: block; 
     width: 6px; 
     height: 6px; 

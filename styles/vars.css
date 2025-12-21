@@ -49,7 +49,7 @@
 
 [mode="decomposition"] {
     --keyboard-display: none;
-    --quest-frame-margin-size: 10vh;
+    --quest-frame-margin-size: 6vh;
     --practice-mode-cursor-margin-size: 10vh;
     --practice-mode-border-bottom-width: 1px;
     --practice-mode-border-bottom-style: solid;

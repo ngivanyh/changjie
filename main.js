@@ -44,28 +44,33 @@ let kbVisibility = saveSettings('kb_visible', localStorage.getItem('kb_visible')
 
 let pressed_meta = false;
 
+// ui setup
+$.querySelector('#theme-toggle').addEventListener('click', () => {
+    currentTheme = (currentTheme === 'light') ? saveSettings('theme', 'dark') : saveSettings('theme', 'light');;
+});
+
+$.querySelector('#kb-toggle').addEventListener('click', () => {
+    kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
+});
+
+$.querySelector('#mode-toggle').addEventListener('click', () => {
+    currentMode = (currentMode === 'decomposition') ? saveSettings('mode', 'layout') : saveSettings('mode', 'decomposition');;
+    initPrac();
+});
+
+$.getElementsByName(`region-${regionPreference}`)[0].selected = true;
+
+cangjie_region_select.addEventListener('change', (event) => {
+    regionPreference = saveSettings('region_preference', event.target.value, false);
+    initPrac();
+    cangjie_region_select.blur();
+});
+
+async function retrieveCodeTable() {
+
+}
+
 $.addEventListener('DOMContentLoaded', async () => {
-    $.querySelector('#theme-toggle').addEventListener('click', () => {
-        currentTheme = (currentTheme === 'light') ? saveSettings('theme', 'dark') : saveSettings('theme', 'light');;
-    });
-
-    $.querySelector('#kb-toggle').addEventListener('click', () => {
-        kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
-    });
-
-    $.querySelector('#mode-toggle').addEventListener('click', () => {
-        currentMode = (currentMode === 'decomposition') ? saveSettings('mode', 'layout') : saveSettings('mode', 'decomposition');;
-        initPrac();
-    });
-
-    $.getElementsByName(`region-${regionPreference}`)[0].selected = true;
-
-    cangjie_region_select.addEventListener('change', (event) => {
-        regionPreference = saveSettings('region_preference', event.target.value, false);
-        initPrac();
-        cangjie_region_select.blur();
-    });
-    
     if (localStorage.hasOwnProperty('cangjieCodeTable'))
         cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable'))
     else {
@@ -115,12 +120,15 @@ $.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-function initPrac() {
+async function initPrac() {
     // resetting the region selection
     cangjie_region_select.disabled = true;
 
+    if (!Object.keys(cangjieCodeTable)[practicedIndex]) {
+        await retrieveCodeTable();
+    }
     const char = Object.keys(cangjieCodeTable)[practicedIndex];
-    const charCode = cangjieCodeTable[char]
+    const charCode = cangjieCodeTable[char];
 
     if (typeof(charCode) === 'object') {
         cangjie_region_select.disabled = false; // re-enable selection
@@ -137,6 +145,7 @@ function initPrac() {
     for (const [i, decompCursorChar] of Object.entries(decompositionCursor.children)) {
         decompCursorChar.style.display = 'inline-block';
         decompCursorChar.classList.remove('decomposition-cursor__character-grayed');
+        decompCursorChar.classList.remove('decomposition-cursor__character--blink')
 
         if (currentMode === 'layout')
             decompCursorChar.textContent = keyToRadical[testCharCode[i]];
