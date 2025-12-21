@@ -64,7 +64,7 @@ $.addEventListener('DOMContentLoaded', async () => {
         regionPreference = saveSettings('region_preference', event.target.value, false);
         initPrac();
         cangjie_region_select.blur();
-    })
+    });
     
     if (localStorage.hasOwnProperty('cangjieCodeTable'))
         cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable'))
@@ -140,8 +140,12 @@ function initPrac() {
 
         if (currentMode === 'layout')
             decompCursorChar.textContent = keyToRadical[testCharCode[i]];
+        else
+            decompCursorChar.textContent = '';
     }
-    Array.from(decompositionCursor.children).slice(testCharCodeLength).forEach(unused_cursor_char => unused_cursor_char.style.display = 'none');
+    Array.from(decompositionCursor.children).slice(testCharCodeLength).forEach(
+        unused_cursor_char => unused_cursor_char.style.display = 'none'
+    );
 
     // misc tasks needed for layout mode
     if (currentMode === 'layout') {
