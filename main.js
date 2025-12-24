@@ -23,18 +23,14 @@ const saveSettings = (k, v, isDocumentAttribute = true) => {
     localStorage.setItem(k, v);
 
     return v;
-};
+}
 const shake_box = () => {
     charBox.classList.add('shake');
     setTimeout(() => { charBox.classList.remove('shake'); }, 200);
-};
+}
 
 // app related variables
-let cangjieCodeTable = {};
-if (localStorage.hasOwnProperty('cangjieCodeTable'))
-    cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable'));
-else
-    retrieveCodeTable();
+let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
 let practicedIndex = Number(saveSettings('practiced_index', localStorage.getItem('practiced_index') || 0, false));
 let testCharCode;
 let testCharCodeLength;
@@ -86,6 +82,11 @@ if (device_type === 'mobile') {
 initPrac();
 
 async function retrieveCodeTable() {
+    const report_err = (err_msg) => {
+        alert(err_msg);
+        console.error(err_msg);
+    }
+
     const segmentDetails = localStorage.getItem('segment_details');
 
     // default fetch id and index (will be used when there is no previous record of a code table)
@@ -93,19 +94,13 @@ async function retrieveCodeTable() {
 
     if (segmentDetails) {
         const segmentIndex = JSON.parse(segmentDetails)['segment-index'];
-
-        if (segmentIndex === 4)
-            fetch_id = String.fromCharCode(97); // id: 'a' (ascii/unicode: 97 + 0 -> index restarts at 0)
-        else
-            fetch_id = String.fromCharCode(97 + segmentIndex + 1);
+        fetch_id = (segmentIndex === 4) ? String.fromCharCode(97) : String.fromCharCode(98 + segmentIndex);
     }
 
     await fetch(`./resources/codeTable-gzipped/cangjieCodeTable-${fetch_id}.min.json.gz`)
         .then(response => {
             if (!response.ok) {
-                const err_msg = `A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`
-                alert(err_msg);
-                console.error(err_msg);
+                report_err(`A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`);
                 throw new Error(err_msg);
             }
 
@@ -118,9 +113,7 @@ async function retrieveCodeTable() {
         })
         .then(data => {
             if (!data || typeof(data) != 'object') {
-                const err_msg = 'An error occurred whilst processing a certain program resource.'
-                alert(err_msg);
-                console.error(err_msg);
+                report_err('An error occurred whilst processing a certain program resource.');
                 throw new Error(err_msg);
             }
 
@@ -145,8 +138,9 @@ async function retrieveCodeTable() {
 }
 
 async function initPrac() {
-    // resetting the region selection
+    // resetting ui
     cangjie_region_select.disabled = true;
+    $.querySelectorAll('.keyboard__key--blink').forEach(key => key.classList.remove('keyboard__key--blink'));
 
     if (!Object.keys(cangjieCodeTable)[practicedIndex]) {
         await retrieveCodeTable();
@@ -171,10 +165,7 @@ async function initPrac() {
         decompCursorChar.style.display = 'inline-block';
         decompCursorChar.classList.remove('decomposition-cursor__character-grayed', 'decomposition-cursor__character--blink');
 
-        if (currentMode === 'layout')
-            decompCursorChar.textContent = keyToRadical[testCharCode[i]];
-        else
-            decompCursorChar.textContent = '';
+        decompCursorChar.textContent = (currentMode === 'layout') ? keyToRadical[testCharCode[i]] : '';
     }
     Array.from(decompositionCursor.children).slice(testCharCodeLength).forEach(
         unused_cursor_char => unused_cursor_char.style.display = 'none'
@@ -182,8 +173,6 @@ async function initPrac() {
 
     // misc tasks needed for layout mode
     if (currentMode === 'layout') {
-        $.querySelectorAll('.keyboard__key--blink').forEach(key => key.classList.remove('keyboard__key--blink'));
-
         kbKeys[testCharCode[0]].classList.add('keyboard__key--blink');
         decompositionCursor.children[0].classList.add('decomposition-cursor__character--blink');
     }
@@ -192,6 +181,13 @@ async function initPrac() {
 function keydownEvent(e) {
     const keyname = (e.key).toLowerCase();
 
+    if (currentMode === 'layout')
+        handleInput_layout(keyname);
+    else
+        handleInput_decomposition(keyname);
+}
+
+function handleInput_layout(keyname = '') {
     if (currentMode === "layout") {
         if (keyname === ' ') {
             kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
@@ -232,30 +228,32 @@ function keydownEvent(e) {
                 keyboardKey.classList.add("keyboard__key--activated-incorrect");
             }
         }
-    } else { // mode: decomposition
-        const decompositionCursorCharacter = decompositionCursor.children[currentCodePos];
+    }
+}
 
-        if(keyname === testCharCode[currentCodePos]){
-            decompositionCursorCharacter.classList.remove("decomposition-cursor__character-grayed");
+function handleInput_decomposition(keyname = '') {
+    const decompositionCursorCharacter = decompositionCursor.children[currentCodePos];
 
-            decompositionCursorCharacter.textContent = keyToRadical[keyname];
-            currentCodePos++;
+    if(keyname === testCharCode[currentCodePos]){
+        decompositionCursorCharacter.classList.remove("decomposition-cursor__character-grayed");
 
-            if(currentCodePos === testCharCodeLength) {
-                practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
-                initPrac();
-            }
+        decompositionCursorCharacter.textContent = keyToRadical[keyname];
+        currentCodePos++;
 
-        } else if (keyname === ' ') {
-            decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
-            if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character-grayed"))
-                decompositionCursorCharacter.classList.add("decomposition-cursor__character-grayed");
-        } else if (keyname === 'enter') {
-            for (const [i, decompositionCharacter] of Object.entries(decompositionCursor.children)) {
-                if (!decompositionCharacter.classList.contains("decomposition-cursor__character-grayed") && !decompositionCharacter.textContent) {
-                    decompositionCharacter.textContent = keyToRadical[testCharCode[i]];
-                    decompositionCharacter.classList.add("decomposition-cursor__character-grayed");
-                }
+        if(currentCodePos === testCharCodeLength) {
+            practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
+            initPrac();
+        }
+
+    } else if (keyname === ' ') {
+        decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
+        if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character-grayed"))
+            decompositionCursorCharacter.classList.add("decomposition-cursor__character-grayed");
+    } else if (keyname === 'enter') {
+        for (const [i, decompositionCharacter] of Object.entries(decompositionCursor.children)) {
+            if (!decompositionCharacter.classList.contains("decomposition-cursor__character-grayed") && !decompositionCharacter.textContent) {
+                decompositionCharacter.textContent = keyToRadical[testCharCode[i]];
+                decompositionCharacter.classList.add("decomposition-cursor__character-grayed");
             }
         }
     }
