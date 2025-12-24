@@ -31,6 +31,10 @@ const shake_box = () => {
 
 // app related variables
 let cangjieCodeTable = {};
+if (localStorage.hasOwnProperty('cangjieCodeTable'))
+    cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable'));
+else
+    retrieveCodeTable();
 let practicedIndex = Number(saveSettings('practiced_index', localStorage.getItem('practiced_index') || 0, false));
 let testCharCode;
 let testCharCodeLength;
@@ -96,19 +100,28 @@ async function retrieveCodeTable() {
             fetch_id = String.fromCharCode(97 + segmentIndex + 1);
     }
 
-    await fetch(`./resources/cangjieCodeTable-segments/cangjieCodeTable-${fetch_id}.min.json`)
+    await fetch(`./resources/codeTable-gzipped/cangjieCodeTable-${fetch_id}.min.json.gz`)
         .then(response => {
             if (!response.ok) {
-                alert(`A network error occurred, the request to fetch a certain program resource has failed with ${reponse.status}: ${response.statusText}.`);
-                throw new Error(`A network error occurred, the request to fetch a certain program resource has failed with ${reponse.status}: ${response.statusText}.`);
+                const err_msg = `A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`
+                alert(err_msg);
+                console.error(err_msg);
+                throw new Error(err_msg);
             }
 
-            return response.json();
+            if (response.headers.get('Content-Encoding') === 'gzip')
+                return response.json();
+            else {
+                const ds = new DecompressionStream('gzip');
+                return new Response(response.body.pipeThrough(ds)).json();
+            }
         })
         .then(data => {
             if (!data || typeof(data) != 'object') {
-                alert('An error occurred whilst processing a certain program resource.');
-                throw new Error('An error occurred whilst processing a certain program resource.');
+                const err_msg = 'An error occurred whilst processing a certain program resource.'
+                alert(err_msg);
+                console.error(err_msg);
+                throw new Error(err_msg);
             }
 
             const data_keys = Object.keys(data.data);
@@ -138,6 +151,7 @@ async function initPrac() {
     if (!Object.keys(cangjieCodeTable)[practicedIndex]) {
         await retrieveCodeTable();
     }
+
     const char = Object.keys(cangjieCodeTable)[practicedIndex];
     const charCode = cangjieCodeTable[char];
 
