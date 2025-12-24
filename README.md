@@ -3,29 +3,37 @@
 # 暢頡 | `changjie`
 
 ## Description
-<details>
-<summary><b>English</b></summary>
+`changjie` is a project designed to help you practice and learn Cangjie, an input method of Chinese that relies on typing different word "roots" that's based on how the character is written. Simplicity is this project's core philosophy, that means minimalist styling; no backends (just a simple server that hosts these static files); little to no external dependencies; and clean, concise code that makes this project hackable and extendable.
 
-`changjie` is a project designed to help you practice and learn Cangjie, an input method of Chinese that relies on typing different word "roots" that's based on how the character is written. This program derives from others in its simplicity, but still has all the features needed to practice and learn the Cangjie input method.
+This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), but it extends the original functionality and adds some QOL improvements. These include:
+- A more complete keyboard as a reference when learning the positions of the different keys
+- Hiding the keyboard in layout mode to practice touch typing
+- Smoother transitions between mode/theme switching
+- Improved page performance (loading times and resource consumption)
 
-This project was originally forked from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), but it extends the original functionality and adds some QOL improvements.
-</details>
-
-<details>
-<summary><b>中文</b></summary>
-
-暢頡是一個倉頡練習軟體，幫助您更好的練習和學習倉頡。風格簡潔，但是需要學會一個輸入法的所有功能都有在此。
-
-這個軟體原從[`Cycatz/cangzen`](https://github.com/Cycatz/cangzen)fork過來而產生，但這個軟體衍生了原本的一些功能，有些地方並加以改善。
-</details>
-
-## License
+## Attribution
 Original work licensed under the MIT License ([here](LICENSE-ORIGINAL))
 
-Cangjie code table licnesed under the MIT License under a different name than the former ([here](LICENSE-CANGJIE5)), modifications were done to the code table
+All further modifications (that differ from the original) is licensed under The Unlicense ([here](LICENSE))
 
-All fonts in the [fonts](fonts/) directory are licensed under the [SIL OFL 1.1 License](https://openfontlicense.org/open-font-license-official-text/). (Copyright for [NotoSerifTC-Medium](fonts/NotoSerifTC-Medium.otf) belongs to Google, see [here](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license); remaining fonts belong to Fonticons, Inc see [here](LICENSE-FONT-AWESOME))
+Cangjie code table licnesed under the MIT License under a different name ([here](LICENSE-CANGJIE5)), some modifications were done to the code table.
 
-All further modifications done in this repo is licensed under The Unlicense ([here](LICENSE))
+[NotoSerifTC-Medium.woff2](fonts/NotoSerifTC-Medium.woff2) downloaded and then converted from [this](https://fonts.google.com/noto/specimen/Noto+Serif+TC) font which is licensed under the SIL OFL 1.1 license ([here](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license)). (This font at first came from Google in `.ttf` format, later converted using [this tool](https://kombu.kanejaku.org/))
 
-## [學會倉頡](docs/LEARN-zh.md) | [Learning Cangjie](docs/LEARN-en.md)
+Icons in the [`/resources/fa-icons`](/resources/fa-icons/) directory licensed by Fonticons, Inc ([license](LICENSE-FONT-AWESOME)) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). 
+
+## Testing/Development
+
+Since this project relies on external resources (the Cangjie code table), you cannot put in the path to [`index.html`](index.html) in the browser and expect it to work. It must be hosted via something like [`http-server`](https://www.npmjs.com/package/http-server/v/13.0.1) with:
+
+```
+$ npx http-server
+```
+
+This will spin up an instance that will be available on [`localhost:8080`](http://localhost:8080). Or any other port on your machine with the `-p` option (if available).
+
+> [!NOTE]
+> An installation of `npm` or similar must be present in order to use [`http-server`](https://www.npmjs.com/package/http-server/v/13.0.1).
+
+> [!TIP]
+> [`http-server`](https://www.npmjs.com/package/http-server/v/13.0.1) is not the **only** tool you can use, as long as it can serve these static files, it is an adequate tool.

@@ -5,10 +5,11 @@ body {
     background-color: var(--bg-color);
     transition: background-color 0.2s ease;
     color: var(--font-color);
+    font-family: var(--fonts);
 }
 
 .shake {
-    animation: shake 0.3s ease-in-out;
+    animation: shake 0.2s ease-in-out;
 }
 
 #testing-section {
@@ -19,15 +20,15 @@ body {
 
 #test-char {
     display: inline-block;
-    border: 2px solid black;
+    border: 2px solid var(--font-color);
     font-size: 172px;
     padding: 0px 30px;
-    font-family: var(--fonts);
-    color: var(--font-color);
+    will-change: transform;
 }
 
 #input-box {
-    opacity: 0; 
+    /* css to make it invisible (cannot be seen and doesn't take up space) */
+    opacity: 0;
     height: 1px;
     width: 1px;
     overflow: hidden;
@@ -37,7 +38,7 @@ body {
     margin: 0;
 }
 
-.decomposition-cursor {
+#decomposition-cursor {
     text-align: center;
     margin-top: var(--practice-mode-cursor-margin-size); 
     transition: margin-top 0.2s ease;
@@ -49,22 +50,17 @@ body {
     height: 100px;
     width: 100px;
     line-height: 100px;
-    font-family: var(--fonts);
     font-size: 56px;
     margin: 0 4px;
-    color: var(--font-color);
     border-bottom-width: var(--practice-mode-border-bottom-width);
     border-bottom-style: var(--practice-mode-border-bottom-style);
+    border-bottom-color: var(--font-color);
     transition: border-bottom-width 0.2s ease;
 }
 
-.decomposition-cursor__character--finished {
+.decomposition-cursor__character-grayed { 
+    /* either because it is a hint (in decomp mode) or because it is completed (in layout mode) */
     color: gray;
-}
-
-.decomposition-cursor__character--hint {
-    color: gray;
-    border-bottom-color: var(--font-color);	
 }
 
 .decomposition-cursor__character--blink {
@@ -97,33 +93,28 @@ body {
     margin-left: 25px;
 }
 
-[kb_visible] [class^='keyboard__key-'] {
+[kb_visible] .keyboard-key {
     display: inline-block;
-    user-select: none;
-    border: 2px solid black;
+    font-size: 40px;
+    border: 2px solid var(--font-color);
     width: 60px;
     height: var(--key-height);
-    margin: 0 3px 0 3px;
     line-height: var(--key-height);
-    font: 40px var(--fonts);
+    margin: 0 3px 0 3px;
+    user-select: none;
 }
 
-[kb_visible='visible'] [class^='keyboard__key-'] {
-    color: var(--font-color);
-}
-
-[kb_visible='hidden'] [class^='keyboard__key-'] {
+[kb_visible='hidden'] .keyboard-key {
     color: transparent;
 }
 
 .home_dot {
-    opacity: 1;
     display: block; 
     width: 6px; 
     height: 6px; 
     border-radius: 50%; 
     background: var(--font-color); 
-    margin: 0 auto;
+    margin: -7.5px auto;
 }
 
 [kb_visible='visible'] .keyboard__key--blink {
@@ -138,14 +129,16 @@ body {
     background-color: var(--key-incorrect);
 }
 
-.ui-toggle {
+.ui-toggle-row {
+    fill: var(--font-color);
     display: block;
+}
+
+.ui-toggle {
     position: fixed;
     bottom: 10px;
     width: 30px;
     height: 30px;
-    color: var(--font-color);
-    font-size: 30px;
 }
 
 #theme-toggle {
