@@ -66,14 +66,26 @@ cangjie_region_select.addEventListener('change', (event) => {
     cangjie_region_select.blur();
 });
 
+// event listeners for the typing
+if (device_type === 'mobile') {
+    $.querySelector('main').addEventListener('click', () => {
+        if ($.activeElement != input) input.focus();
+    });
+    input.addEventListener('keydown', keydownEvent);
+    input.addEventListener('keyup', keyupEvent);
+} else {
+    $.addEventListener('keydown', keydownEvent);
+    $.addEventListener('keyup', keyupEvent);
+}
+
+// init
+initPrac();
+
 async function retrieveCodeTable() {
     const segmentDetails = localStorage.getItem('segment_details');
 
-    // reset practiced index back to the starting point
-    practicedIndex = saveSettings('practiced_index', 0, false);
-
     // default fetch id and index (will be used when there is no previous record of a code table)
-    const fetch_id = 'a';
+    let fetch_id = 'a';
 
     if (segmentDetails) {
         const segmentIndex = JSON.parse(segmentDetails)['segment-index'];
@@ -91,7 +103,7 @@ async function retrieveCodeTable() {
                 throw new Error(`A network error occurred, the request to fetch a certain program resource has failed with ${reponse.status}: ${response.statusText}.`);
             }
 
-            return reponse.json();
+            return response.json();
         })
         .then(data => {
             if (!data || typeof(data) != 'object') {
@@ -114,57 +126,10 @@ async function retrieveCodeTable() {
             localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
             localStorage.setItem('segment_details', JSON.stringify(data.details));
         });
+    
+    // reset practiced index back to the starting point
+    practicedIndex = Number(saveSettings('practiced_index', 0, false));
 }
-
-$.addEventListener('DOMContentLoaded', async () => {
-    if (localStorage.hasOwnProperty('cangjieCodeTable'))
-        cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable'))
-    else {
-        await fetch('./resources/cangjieCodeTable.min.json')
-            .then(response => {
-                if (!response.ok) {
-                    alert(`Network request failed with status ${response.status}: ${response.statusText}. See console log output for more details.`)
-                    throw new Error(`Network request failed with status ${response.status}: ${response.statusText}. See console log output for more details.`)
-                }
-
-                return response.json();
-            })
-            .then(data => {
-                // Fisher-Yates-Durstenfeld Shuffle (https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm)
-                if (!data) {
-                    alert(`Something went wrong with the resource fetch request. See console log output for more details`);
-                    throw new Error(`Request data parse encountered an error. See console log output for more details`);
-                }
-
-                const data_keys = Object.keys(data);
-
-                for (let i = 0; i < data_keys.length - 1; i++) {
-                    const j = i + Math.floor(Math.random() * (data_keys.length - i));
-
-                    [data_keys[i], data_keys[j]] = [data_keys[j], data_keys[i]];
-                }
-
-                for (const k of data_keys) {
-                    cangjieCodeTable[k] = data[k];
-                }
-
-                localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
-            });
-    }
-
-    initPrac();
-
-    if (device_type === 'mobile') {
-        $.querySelector('main').addEventListener('click', () => {
-            if ($.activeElement != input) input.focus();
-        });
-        input.addEventListener('keydown', keydownEvent);
-        input.addEventListener('keyup', keyupEvent);
-    } else {
-        $.addEventListener('keydown', keydownEvent);
-        $.addEventListener('keyup', keyupEvent);
-    }
-});
 
 async function initPrac() {
     // resetting the region selection
@@ -190,8 +155,7 @@ async function initPrac() {
     // decomp cursor generation
     for (const [i, decompCursorChar] of Object.entries(decompositionCursor.children)) {
         decompCursorChar.style.display = 'inline-block';
-        decompCursorChar.classList.remove('decomposition-cursor__character-grayed');
-        decompCursorChar.classList.remove('decomposition-cursor__character--blink');
+        decompCursorChar.classList.remove('decomposition-cursor__character-grayed', 'decomposition-cursor__character--blink');
 
         if (currentMode === 'layout')
             decompCursorChar.textContent = keyToRadical[testCharCode[i]];
