@@ -232,6 +232,23 @@ function handleInput_layout(keyname = '') {
 function handleInput_decomposition(keyname = '') {
     const decompositionCursorCharacter = decompositionCursor.children[currentCodePos];
 
+    if (keyname === ' ') {
+        decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
+        if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character-grayed"))
+            decompositionCursorCharacter.classList.add("decomposition-cursor__character-grayed");
+        return;
+    }
+
+    if (keyname === 'enter') {
+        for (const [i, decompositionCharacter] of Object.entries(decompositionCursor.children)) {
+            if (!decompositionCharacter.classList.contains("decomposition-cursor__character-grayed") && !decompositionCharacter.textContent) {
+                decompositionCharacter.textContent = keyToRadical[testCharCode[i]];
+                decompositionCharacter.classList.add("decomposition-cursor__character-grayed");
+            }
+        }
+        return;
+    }
+
     if(keyname === testCharCode[currentCodePos]){
         decompositionCursorCharacter.classList.remove("decomposition-cursor__character-grayed");
 
@@ -242,33 +259,22 @@ function handleInput_decomposition(keyname = '') {
             practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
             initPrac();
         }
-
-    } else if (keyname === ' ') {
-        decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
-        if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character-grayed"))
-            decompositionCursorCharacter.classList.add("decomposition-cursor__character-grayed");
-    } else if (keyname === 'enter') {
-        for (const [i, decompositionCharacter] of Object.entries(decompositionCursor.children)) {
-            if (!decompositionCharacter.classList.contains("decomposition-cursor__character-grayed") && !decompositionCharacter.textContent) {
-                decompositionCharacter.textContent = keyToRadical[testCharCode[i]];
-                decompositionCharacter.classList.add("decomposition-cursor__character-grayed");
-            }
-        }
     }
 }
 
 function keyupEvent(e) {
-    if (currentMode === 'layout') {
-        const keyname = (e.key).toLowerCase();
+    if (currentMode != 'layout')
+        return;
+    
+    const keyname = (e.key).toLowerCase();
 
-        if (keyname === 'meta') {
-            pressed_meta = false;
-            return;
-        }
-
-        if (kbKeys[keyname])
-            kbKeys[keyname].classList.remove('keyboard__key--activated-correct', 'keyboard__key--activated-incorrect');
+    if (keyname === 'meta') {
+        pressed_meta = false;
+        return;
     }
+
+    if (kbKeys[keyname])
+        kbKeys[keyname].classList.remove('keyboard__key--activated-correct', 'keyboard__key--activated-incorrect');
 
     if (device_type === 'mobile') input.value = '';
 }

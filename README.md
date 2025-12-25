@@ -6,10 +6,20 @@
 `changjie` is a project designed to help you practice and learn Cangjie, an input method of Chinese that relies on typing different word "roots" that's based on how the character is written. Simplicity is this project's core philosophy, that means minimalist styling; no backends (just a simple server that hosts these static files); little to no external dependencies; and clean, concise code that makes this project hackable and extendable.
 
 This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), but it extends the original functionality and adds some QOL improvements. These include:
-- A more complete keyboard as a reference when learning the positions of the different keys
+- A more complete keyboard to reference when learning the key positions
 - Hiding the keyboard in layout mode to practice touch typing
 - Smoother transitions between mode/theme switching
 - Improved page performance (loading times and resource consumption)
+- A wider breadth of characters to practice (≒30K characters)
+
+But that won't be all, these features are soon coming:
+- More themes
+- Decomposition mode revamp
+- Drastically improved mobile experience
+- Practicing in sentences, rather than individual words
+
+## Usage
+
 
 ## Attribution
 Original work licensed under the MIT License ([here](LICENSE-ORIGINAL))
@@ -20,7 +30,7 @@ Cangjie code table licnesed under the MIT License under a different name ([here]
 
 [NotoSerifTC-Medium.woff2](fonts/NotoSerifTC-Medium.woff2) downloaded and then converted from [this](https://fonts.google.com/noto/specimen/Noto+Serif+TC) font which is licensed under the SIL OFL 1.1 license ([here](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license)). (This font at first came from Google in `.ttf` format, later converted using [this tool](https://kombu.kanejaku.org/))
 
-Icons in the [`/resources/fa-icons`](/resources/fa-icons/) directory licensed by Fonticons, Inc ([license](LICENSE-FONT-AWESOME)) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). 
+Icons in the [`/resources/fa-icons`](/resources/fa-icons/) directory licensed by Fonticons, Inc ([license](LICENSE-FONT-AWESOME)) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## Testing/Development
 
