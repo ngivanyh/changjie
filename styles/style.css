@@ -8,6 +8,16 @@ body {
     font-family: var(--fonts);
 }
 
+a {
+    all: unset;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--link-hover);
+}
+
 .shake {
     animation: shake 0.2s ease-in-out;
 }

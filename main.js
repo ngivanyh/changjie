@@ -106,10 +106,8 @@ async function retrieveCodeTable() {
 
             if (response.headers.get('Content-Encoding') === 'gzip')
                 return response.json();
-            else {
-                const ds = new DecompressionStream('gzip');
-                return new Response(response.body.pipeThrough(ds)).json();
-            }
+            const ds = new DecompressionStream('gzip');
+            return new Response(response.body.pipeThrough(ds)).json();
         })
         .then(data => {
             if (!data || typeof(data) != 'object') {
@@ -158,6 +156,7 @@ async function initPrac() {
 
     testCharCodeLength = testCharCode.length;
     charBox.textContent = char;
+    charBox.href = `https://www.hkcards.com/cj/cj-char-${char}.html`
     currentCodePos = 0;
 
     // decomp cursor generation
@@ -167,6 +166,7 @@ async function initPrac() {
 
         decompCursorChar.textContent = (currentMode === 'layout') ? keyToRadical[testCharCode[i]] : '';
     }
+    // hide unused decomposition cursor characters
     Array.from(decompositionCursor.children).slice(testCharCodeLength).forEach(
         unused_cursor_char => unused_cursor_char.style.display = 'none'
     );
@@ -188,45 +188,43 @@ function keydownEvent(e) {
 }
 
 function handleInput_layout(keyname = '') {
-    if (currentMode === "layout") {
-        if (keyname === ' ') {
-            kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
-            return;
-        }
+    if (keyname === ' ') {
+        kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
+        return;
+    }
 
-        if (keyname === 'meta') {
-            pressed_meta = true;
-            return;
-        }
-        if (pressed_meta) {
-            shake_box();
-            return;
-        }
-        
-        const keyboardKey = kbKeys[keyname];
-        if (keyboardKey && !pressed_meta) {
-            const decompositionCursorCharacter = decompositionCursor.children[currentCodePos];
+    if (keyname === 'meta') {
+        pressed_meta = true;
+        return;
+    }
+    if (pressed_meta) {
+        shake_box();
+        return;
+    }
+    
+    const keyboardKey = kbKeys[keyname];
+    if (keyboardKey && !pressed_meta) {
+        const decompositionCursorCharacter = decompositionCursor.children[currentCodePos];
 
-            if (keyname === testCharCode[currentCodePos]) {
-                keyboardKey.classList.add('keyboard__key--activated-correct');
+        if (keyname === testCharCode[currentCodePos]) {
+            keyboardKey.classList.add('keyboard__key--activated-correct');
 
-                decompositionCursorCharacter.classList.remove('decomposition-cursor__character--blink');
-                decompositionCursorCharacter.classList.add('decomposition-cursor__character-grayed');
-                keyboardKey.classList.remove("keyboard__key--blink");
+            decompositionCursorCharacter.classList.remove('decomposition-cursor__character--blink');
+            decompositionCursorCharacter.classList.add('decomposition-cursor__character-grayed');
+            keyboardKey.classList.remove("keyboard__key--blink");
 
-                currentCodePos++;
+            currentCodePos++;
 
-                if (currentCodePos === testCharCodeLength) {
-                    practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
-                    initPrac();
-                } else {
-                    decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
-                    
-                    kbKeys[testCharCode[currentCodePos]].classList.add("keyboard__key--blink");
-                }
+            if (currentCodePos === testCharCodeLength) {
+                practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
+                initPrac();
             } else {
-                keyboardKey.classList.add("keyboard__key--activated-incorrect");
+                decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
+                
+                kbKeys[testCharCode[currentCodePos]].classList.add("keyboard__key--blink");
             }
+        } else {
+            keyboardKey.classList.add("keyboard__key--activated-incorrect");
         }
     }
 }
