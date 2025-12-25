@@ -156,7 +156,7 @@ async function initPrac() {
 
     testCharCodeLength = testCharCode.length;
     charBox.textContent = char;
-    charBox.href = `https://www.hkcards.com/cj/cj-char-${char}.html`
+    charBox.href = `https://www.hkcards.com/cj/cj-char-${char}.html`;
     currentCodePos = 0;
 
     // decomp cursor generation
@@ -206,25 +206,26 @@ function handleInput_layout(keyname = '') {
     if (keyboardKey && !pressed_meta) {
         const decompositionCursorCharacter = decompositionCursor.children[currentCodePos];
 
-        if (keyname === testCharCode[currentCodePos]) {
-            keyboardKey.classList.add('keyboard__key--activated-correct');
+        if (keyname != testCharCode[currentCodePos]){
+            keyboardKey.classList.add('keyboard__key--activated-incorrect');
+            return;
+        }
+        
+        keyboardKey.classList.add('keyboard__key--activated-correct');
 
-            decompositionCursorCharacter.classList.remove('decomposition-cursor__character--blink');
-            decompositionCursorCharacter.classList.add('decomposition-cursor__character-grayed');
-            keyboardKey.classList.remove("keyboard__key--blink");
+        decompositionCursorCharacter.classList.remove('decomposition-cursor__character--blink');
+        decompositionCursorCharacter.classList.add('decomposition-cursor__character-grayed');
+        keyboardKey.classList.remove("keyboard__key--blink");
 
-            currentCodePos++;
+        currentCodePos++;
 
-            if (currentCodePos === testCharCodeLength) {
-                practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
-                initPrac();
-            } else {
-                decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
-                
-                kbKeys[testCharCode[currentCodePos]].classList.add("keyboard__key--blink");
-            }
+        if (currentCodePos === testCharCodeLength) {
+            practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
+            initPrac();
         } else {
-            keyboardKey.classList.add("keyboard__key--activated-incorrect");
+            decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
+            
+            kbKeys[testCharCode[currentCodePos]].classList.add("keyboard__key--blink");
         }
     }
 }
