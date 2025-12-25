@@ -171,7 +171,7 @@ async function initPrac() {
         unused_cursor_char => unused_cursor_char.style.display = 'none'
     );
 
-    // misc tasks needed for layout mode
+    // set blinking key and cursor char
     if (currentMode === 'layout') {
         kbKeys[testCharCode[0]].classList.add('keyboard__key--blink');
         decompositionCursor.children[0].classList.add('decomposition-cursor__character--blink');
