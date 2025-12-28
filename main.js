@@ -7,14 +7,14 @@ const input = $.querySelector('#input-box');
 const decompositionCursor = $.querySelector('#decomposition-cursor');
 const cangjie_region_select = $.querySelector('#cangjie-select');
 const charBox = $.querySelector('#test-char');
-const keyToRadical = {"a":"日","b":"月","c":"金","d":"木","e":"水","f":"火","g":"土","h":"竹","i":"戈","j":"十","k":"大","l":"中","m":"一","n":"弓","o":"人","p":"心","q":"手","r":"口","s":"尸","t":"廿","u":"山","v":"女","w":"田","x":"難","y":"卜","z":"重",",":"，",".":"。",";":"；"};
+const keyToRadical = {'a':'日','b':'月','c':'金','d':'木','e':'水','f':'火','g':'土','h':'竹','i':'戈','j':'十','k':'大','l':'中','m':'一','n':'弓','o':'人','p':'心','q':'手','r':'口','s':'尸','t':'廿','u':'山','v':'女','w':'田','x':'難','y':'卜','z':'重',',':'，','.':'。',';':'；'};
 const kbKeys = Object.fromEntries(
     Array.from(
         Object.keys(keyToRadical),
         k => [k, $.getElementById(`keyboard__key-${k}`)]
     )
 );
-const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? "mobile" : "desktop";
+const device_type = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? 'mobile' : 'desktop';
 const preferred_color_scheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light';
 
 // small helper functions
@@ -31,7 +31,7 @@ const shake_box = () => {
 
 // app related variables
 let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
-let practicedIndex = Number(saveSettings('practiced_index', localStorage.getItem('practiced_index') || 0, false));
+let practicedIndex = saveSettings('practiced_index', Number(localStorage.getItem('practiced_index')) || 0, false);
 let testCharCode;
 let testCharCodeLength;
 let currentCodePos;
@@ -114,6 +114,8 @@ async function retrieveCodeTable() {
                 report_err('An error occurred whilst processing a certain program resource.');
                 throw new Error(err_msg);
             }
+            
+            cangjieCodeTable = {};
 
             const data_keys = Object.keys(data.data);
 
@@ -132,7 +134,7 @@ async function retrieveCodeTable() {
         });
     
     // reset practiced index back to the starting point
-    practicedIndex = Number(saveSettings('practiced_index', 0, false));
+    practicedIndex = saveSettings('practiced_index', 0, false);
 }
 
 async function initPrac() {
@@ -215,7 +217,7 @@ function handleInput_layout(keyname = '') {
 
         decompositionCursorCharacter.classList.remove('decomposition-cursor__character--blink');
         decompositionCursorCharacter.classList.add('decomposition-cursor__character-grayed');
-        keyboardKey.classList.remove("keyboard__key--blink");
+        keyboardKey.classList.remove('keyboard__key--blink');
 
         currentCodePos++;
 
@@ -223,9 +225,9 @@ function handleInput_layout(keyname = '') {
             practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
             initPrac();
         } else {
-            decompositionCursorCharacter.nextElementSibling.classList.add("decomposition-cursor__character--blink");
+            decompositionCursorCharacter.nextElementSibling.classList.add('decomposition-cursor__character--blink');
             
-            kbKeys[testCharCode[currentCodePos]].classList.add("keyboard__key--blink");
+            kbKeys[testCharCode[currentCodePos]].classList.add('keyboard__key--blink');
         }
     }
 }
@@ -235,23 +237,23 @@ function handleInput_decomposition(keyname = '') {
 
     if (keyname === ' ') {
         decompositionCursorCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
-        if (!decompositionCursorCharacter.classList.contains("decomposition-cursor__character-grayed"))
-            decompositionCursorCharacter.classList.add("decomposition-cursor__character-grayed");
+        if (!decompositionCursorCharacter.classList.contains('decomposition-cursor__character-grayed'))
+            decompositionCursorCharacter.classList.add('decomposition-cursor__character-grayed');
         return;
     }
 
     if (keyname === 'enter') {
         for (const [i, decompositionCharacter] of Object.entries(decompositionCursor.children)) {
-            if (!decompositionCharacter.classList.contains("decomposition-cursor__character-grayed") && !decompositionCharacter.textContent) {
+            if (!decompositionCharacter.classList.contains('decomposition-cursor__character-grayed') && !decompositionCharacter.textContent) {
                 decompositionCharacter.textContent = keyToRadical[testCharCode[i]];
-                decompositionCharacter.classList.add("decomposition-cursor__character-grayed");
+                decompositionCharacter.classList.add('decomposition-cursor__character-grayed');
             }
         }
         return;
     }
 
     if(keyname === testCharCode[currentCodePos]){
-        decompositionCursorCharacter.classList.remove("decomposition-cursor__character-grayed");
+        decompositionCursorCharacter.classList.remove('decomposition-cursor__character-grayed');
 
         decompositionCursorCharacter.textContent = keyToRadical[keyname];
         currentCodePos++;

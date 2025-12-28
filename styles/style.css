@@ -85,7 +85,7 @@ a:hover {
     opacity: 1;
 }
 
-[mode="decomposition"] #keyboard {
+[mode='decomposition'] #keyboard {
     opacity: 0;
 }
 
