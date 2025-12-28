@@ -64,6 +64,7 @@
     --display-kb-visibility-icon: inherit;
 }
 
+/* used for shaking the character box */
 @keyframes shake {
   0%   { transform: translateX(0); }
   10%  { transform: translateX(-8px); }

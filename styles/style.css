@@ -9,8 +9,8 @@ body {
 }
 
 a {
-    all: unset;
-    cursor: pointer;
+    all: unset; /* unset all default styling from os/browser (should be available on all major browsers) */
+    cursor: pointer; /* set back the pointer settings */
 }
 
 a:hover {
@@ -33,7 +33,7 @@ a:hover {
     border: 2px solid var(--font-color);
     font-size: 172px;
     padding: 0px 30px;
-    will-change: transform;
+    will-change: transform; /* offloads transform changes to gpu */
 }
 
 #input-box {
@@ -95,10 +95,12 @@ a:hover {
     margin-bottom: 6px;
 }
 
+/* stagger keyboard row */
 #keyboard__row-2 {
     margin-left: 45px;
 }
 
+/* stagger keyboard row */
 #keyboard__row-3 {
     margin-left: 25px;
 }
@@ -139,6 +141,7 @@ a:hover {
     background-color: var(--key-incorrect);
 }
 
+/* bottom toggle row */
 .ui-toggle-row {
     fill: var(--font-color);
     display: block;
