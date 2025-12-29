@@ -284,6 +284,6 @@ function keyupEvent(e) {
     if (kbKeys[keyname])
         kbKeys[keyname].classList.remove('keyboard__key--activated-correct', 'keyboard__key--activated-incorrect');
 
-    // resetting input box value 
+    // resetting input box value
     if (device_type === 'mobile') input.value = '';
 }

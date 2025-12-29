@@ -1,0 +1,80 @@
+/* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
+/* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
+
+@font-face {
+    font-family: 'Noto Serif TC (Medium)';
+    src: url('../fonts/NotoSerifTC-Medium.woff2') format('woff2');
+    font-display: fallback;
+}
+
+:root {
+    /* light mode */
+    --bg-color: transparent;
+    --font-color: black;
+    --blink-bg-color: black;
+    --blink-font-color: white;
+    /* layout mode */
+    --keyboard-display: block;
+    --quest-frame-margin-size: 6vh;
+    --practice-mode-cursor-margin-size: 4vh;
+    --practice-mode-border-bottom-width: 0;
+    --practice-mode-border-bottom-style: solid;
+    /* keyboard keypress highlight */
+    --key-correct: #44fc11;
+    --key-incorrect: #ff0010;
+    /* fonts */
+    --fonts: 'Noto Serif TC (Medium)', serif;
+    --key-height: 67.2px;
+    /* icon displays */
+    --display-kb-invisibility-icon: inherit;
+    --display-kb-visibility-icon: none;
+
+    --display-layout-mode-icon: none;
+    --display-decomposition-mode-icon: inherit;
+
+    --display-dark-mode-icon: inherit;
+    --display-light-mode-icon: none;
+    /* link hover color */
+    --link-hover: #1d75e0;
+}
+
+[theme="dark"] {
+    --bg-color: black;
+    --font-color: white;
+    --blink-bg-color: white;
+    --blink-font-color: black;
+    --key-correct: #1ece2a;
+    --key-incorrect: #ed0414;
+    --display-dark-mode-icon: none;
+    --display-light-mode-icon: inherit;
+}
+
+[mode="decomposition"] {
+    --keyboard-display: none;
+    --quest-frame-margin-size: 6vh;
+    --practice-mode-cursor-margin-size: 10vh;
+    --practice-mode-border-bottom-width: 1px;
+    --practice-mode-border-bottom-style: solid;
+    --display-layout-mode-icon: inherit;
+    --display-decomposition-mode-icon: none;
+}
+
+[kb_visible="hidden"] {
+    --display-kb-invisibility-icon: none;
+    --display-kb-visibility-icon: inherit;
+}
+
+/* used for shaking the character box */
+@keyframes shake {
+  0%   { transform: translateX(0); }
+  10%  { transform: translateX(-8px); }
+  20%  { transform: translateX(8px); }
+  30%  { transform: translateX(-8px); }
+  40%  { transform: translateX(8px); }
+  50%  { transform: translateX(-8px); }
+  60%  { transform: translateX(8px); }
+  70%  { transform: translateX(-8px); }
+  80%  { transform: translateX(8px); }
+  90%  { transform: translateX(-8px); }
+  100% { transform: translateX(0); }
+}
