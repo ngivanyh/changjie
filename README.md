@@ -1,13 +1,13 @@
 <!-- Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) -->
 
-# 暢頡 | `changjie`
+# `changjie`
+### [繁體中文版本](README_zh-Hant.md)
 
 ## Table of Contents
-1. [ToC](#table-of-contents)
-2. [Description](#description)
-3. [Usage](#usage)
-4. [Attribution](#attribution)
-5. [Testing/Development](#testingdevelopment)
+1. [Description](#description)
+2. [Usage](#usage)
+3. [Attribution](#attribution)
+4. [Testing/Development](#testingdevelopment)
 
 ## Description
 `changjie` is a project designed to help you practice and learn Cangjie, an input method of Chinese that relies on typing different word "roots" that's based on how the character is written. Simplicity is this project's core philosophy, that means minimalist styling; no backends (just a simple server that hosts these static files, data is stored in `localStorage`); little to no external dependencies; and clean, concise code that makes this project hackable and extendable.
