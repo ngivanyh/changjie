@@ -2,7 +2,7 @@
 
 # 暢頡 | `changjie`
 
-## Table of Contents {#table-of-contents}
+## Table of Contents
 1. [ToC](#table-of-contents)
 2. [Description](#description)
 3. [Usage](#usage)
