@@ -122,6 +122,7 @@ async function retrieveCodeTable() {
 
             const data_keys = Object.keys(data.data);
 
+            // Fisher-Yates-Durstenfeld Shuffle
             for (let i = 0; i < data_keys.length - 1; i++) {
                 const j = i + Math.floor(Math.random() * (data_keys.length - i));
 
@@ -192,12 +193,12 @@ function keydownEvent(e) {
 
     // offload event handling to separate functions
     if (currentMode === 'layout')
-        handleInput_layout(keyname);
+        layoutHandleInput(keyname);
     else
-        handleInput_decomposition(keyname);
+        decompositionHandleInput(keyname);
 }
 
-function handleInput_layout(keyname = '') {
+function layoutHandleInput(keyname = '') {
     // special circumstances (keystrokes) for space and meta
     if (keyname === ' ') {
         kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
@@ -214,43 +215,42 @@ function handleInput_layout(keyname = '') {
     }
     
     const keyboardKey = kbKeys[keyname];
-    if (keyboardKey && !pressed_meta) {
-        if (keyname != testCharCode[currentCodePos]){
-            keyboardKey.classList.add('keyboard__key--activated-incorrect');
-            return;
-        }
-        
-        keyboardKey.classList.add('keyboard__key--activated-correct');
 
-        currentDecompositionCharacter.classList.remove('decomposition-cursor__character--blink');
-        currentDecompositionCharacter.classList.add('decomposition-cursor__character-grayed');
-        keyboardKey.classList.remove('keyboard__key--blink');
+    if (!keyboardKey || pressed_meta)
+        return;
 
-        currentCodePos++;
+    if (keyname != testCharCode[currentCodePos]){
+        keyboardKey.classList.add('keyboard__key--activated-incorrect');
+        return;
+    }
+    
+    // user typed correct key
+    keyboardKey.classList.add('keyboard__key--activated-correct');
 
-        if (currentCodePos === testCharCodeLength) {
-            practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
-            initPrac();
-        } else {
-            currentDecompositionCharacter.nextElementSibling.classList.add('decomposition-cursor__character--blink');
-            kbKeys[testCharCode[currentCodePos]].classList.add('keyboard__key--blink');
-        }
+    currentDecompositionCharacter.classList.remove('decomposition-cursor__character--blink');
+    currentDecompositionCharacter.classList.add('decomposition-cursor__character-grayed');
+    keyboardKey.classList.remove('keyboard__key--blink');
+
+    currentCodePos++;
+
+    if (currentCodePos === testCharCodeLength) {
+        practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
+        initPrac();
+    } else {
+        currentDecompositionCharacter.nextElementSibling.classList.add('decomposition-cursor__character--blink');
+        kbKeys[testCharCode[currentCodePos]].classList.add('keyboard__key--blink');
     }
 }
 
-function handleInput_decomposition(keyname = '') {
+function decompositionHandleInput(keyname = '') {
     // special circumstances (keystrokes) for space and enter
-    if (keyname === ' ') {
-        currentDecompositionCharacter.textContent = keyToRadical[testCharCode[currentCodePos]];
-        if (!currentDecompositionCharacter.classList.contains('decomposition-cursor__character-grayed'))
-            currentDecompositionCharacter.classList.add('decomposition-cursor__character-grayed');
-        return;
-    }
+    if (keyname === ' ' || keyname === 'enter') {
+        const revealChars = (keyname === ' ') ? 1 : testCharCodeLength;
 
-    if (keyname === 'enter') {
         for (const [i, decompositionCharacter] of Object.entries(decompositionCursor.children)) {
+            if (i == revealChars) break; // soft comparison as i is a string
             if (!decompositionCharacter.classList.contains('decomposition-cursor__character-grayed') && !decompositionCharacter.textContent) {
-                decompositionCharacter.textContent = keyToRadical[testCharCode[i]];
+                decompositionCharacter.textContent = keyToRadical[testCharCode[i]]; // js is weird
                 decompositionCharacter.classList.add('decomposition-cursor__character-grayed');
             }
         }
