@@ -65,7 +65,7 @@ $.getElementsByName(`region-${regionPreference}`)[0].selected = true;
 cangjie_region_select.addEventListener('change', (event) => {
     regionPreference = saveSettings('region_preference', event.target.value, false);
     initPrac();
-    cangjie_region_select.blur();
+    cangjie_region_select.blur(); // de-focus
 });
 
 // event listeners for the typing
@@ -129,9 +129,8 @@ async function retrieveCodeTable() {
                 [data_keys[i], data_keys[j]] = [data_keys[j], data_keys[i]];
             }
 
-            for (const k of data_keys) {
+            for (const k of data_keys)
                 cangjieCodeTable[k] = data.data[k];
-            }
 
             localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
             localStorage.setItem('segment_details', JSON.stringify(data.details));
@@ -257,13 +256,13 @@ function decompositionHandleInput(keyname = '') {
         return;
     }
 
-    if(keyname === testCharCode[currentCodePos]){
+    if (keyname === testCharCode[currentCodePos]) {
         currentDecompositionCharacter.classList.remove('decomposition-cursor__character-grayed');
 
         currentDecompositionCharacter.textContent = keyToRadical[keyname];
         currentCodePos++;
 
-        if(currentCodePos === testCharCodeLength) {
+        if (currentCodePos === testCharCodeLength) {
             practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
             initPrac();
         }
