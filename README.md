@@ -51,7 +51,7 @@ Icons in the [`/resources/fa-icons`](./resources/fa-icons/) directory licensed b
 Since this project relies on external resources (the Cangjie code table), you cannot put in the path to [`index.html`](index.html) in the browser and expect it to work. It must be hosted via something like [`http-server`](https://www.npmjs.com/package/http-server/v/13.0.1) with:
 
 ```
-$ npx http-server
+$ npx http-server src
 ```
 
 This will spin up an instance that will be available on [`localhost:8080`](http://localhost:8080). Or any other port on your machine with the `-p` option (if available).

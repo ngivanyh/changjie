@@ -24,6 +24,7 @@ const saveSettings = (k, v, isDocumentAttribute = true) => {
 
     return v;
 }
+
 const shake_box = () => {
     charBox.classList.add('shake');
     setTimeout(() => { charBox.classList.remove('shake'); }, 200);
@@ -32,6 +33,7 @@ const shake_box = () => {
 // program related data
 let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
 let practicedIndex = saveSettings('practiced_index', Number(localStorage.getItem('practiced_index')) || 0, false);
+
 // state variables
 let testCharCode;
 let testCharCodeLength;
@@ -169,7 +171,10 @@ async function initPrac() {
     // decomposition cursor character generation
     for (const [i, decompCursorChar] of Object.entries(decompositionCursor.children)) {
         decompCursorChar.style.display = 'inline-block';
-        decompCursorChar.classList.remove('decomposition-cursor__character-grayed', 'decomposition-cursor__character--blink');
+        decompCursorChar.classList.remove(
+            'decomposition-cursor__character-grayed', 
+            'decomposition-cursor__character--blink'
+        );
 
         decompCursorChar.textContent = (currentMode === 'layout') ? keyToRadical[testCharCode[i]] : '';
     }
@@ -256,16 +261,18 @@ function decompositionHandleInput(keyname = '') {
         return;
     }
 
-    if (keyname === testCharCode[currentCodePos]) {
-        currentDecompositionCharacter.classList.remove('decomposition-cursor__character-grayed');
+    if (keyname != testCharCode[currentCodePos])
+        return;
 
-        currentDecompositionCharacter.textContent = keyToRadical[keyname];
-        currentCodePos++;
+    // user typed correct key
+    currentDecompositionCharacter.classList.remove('decomposition-cursor__character-grayed');
 
-        if (currentCodePos === testCharCodeLength) {
-            practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
-            initPrac();
-        }
+    currentDecompositionCharacter.textContent = keyToRadical[keyname];
+    currentCodePos++;
+
+    if (currentCodePos === testCharCodeLength) {
+        practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
+        initPrac();
     }
 }
 
@@ -280,8 +287,12 @@ function keyupEvent(e) {
         return;
     }
 
-    if (kbKeys[keyname])
-        kbKeys[keyname].classList.remove('keyboard__key--activated-correct', 'keyboard__key--activated-incorrect');
+    if (kbKeys[keyname]) {
+        kbKeys[keyname].classList.remove(
+            'keyboard__key--activated-correct', 
+            'keyboard__key--activated-incorrect'
+        );
+    }
 
     // resetting input box value
     if (device_type === 'mobile') input.value = '';
