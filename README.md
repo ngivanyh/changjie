@@ -43,7 +43,7 @@ Cangjie code table licnesed under the [MIT License](src/resources/LICENSE-CANGJI
 
 [`NotoSerifTC-Medium.woff2`](fonts/NotoSerifTC-Medium.woff2) was first downloaded (in `.ttf`) then converted to `.woff2` from [this font](https://fonts.google.com/noto/specimen/Noto+Serif+TC) which is licensed under the [SIL OFL 1.1 license](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license). (conversion using [this tool](https://kombu.kanejaku.org/))
 
-Icons in the [`/resources/fa-icons`](./src/resources/fa-icons/) directory licensed by Fonticons, Inc under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Icons licensed by Fonticons, Inc under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## Testing/Development
 
