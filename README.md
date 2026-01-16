@@ -14,10 +14,9 @@
 
 This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), but it extends the original functionality and adds some QOL improvements. These include:
 - A more complete keyboard to reference when learning the key positions
-- Hiding the keyboard in layout mode to practice touch typing
+- Leaving only the silhouette of the keyboard in layout mode to practice touch typing
 - Smoother transitions between mode/theme switching
-- Improved page performance (loading times and resource consumption)
-- A wider breadth of characters to practice (≒30K characters)
+- Similar or improved page performance whilst having more to practice (≒ 30K characters!)
 
 But that won't be all, these features are soon coming:
 - More themes (#9)
@@ -40,24 +39,24 @@ Original work licensed under the [MIT License](LICENSE-ORIGINAL).
 
 All further modifications (that differ from the original) licensed under [The Unlicense](LICENSE).
 
-Cangjie code table licnesed under the [MIT License](LICENSE-CANGJIE5) under a different name, some modifications were done to the code table.
+Cangjie code table licnesed under the [MIT License](src/resources/LICENSE-CANGJIE5) under a different name, some modifications were done to the code table.
 
-[`NotoSerifTC-Medium.woff2`](fonts/NotoSerifTC-Medium.woff2) was first downloaded (in `.ttf`) then converted to `.woff2` from this font [here](https://fonts.google.com/noto/specimen/Noto+Serif+TC) font which is licensed under the SIL OFL 1.1 license ([here](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license)). (conversion using [this tool](https://kombu.kanejaku.org/))
+[`NotoSerifTC-Medium.woff2`](fonts/NotoSerifTC-Medium.woff2) was first downloaded (in `.ttf`) then converted to `.woff2` from [this font](https://fonts.google.com/noto/specimen/Noto+Serif+TC) which is licensed under the [SIL OFL 1.1 license](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license). (conversion using [this tool](https://kombu.kanejaku.org/))
 
-Icons in the [`/resources/fa-icons`](./resources/fa-icons/) directory licensed by Fonticons, Inc under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Icons in the [`/resources/fa-icons`](./src/resources/fa-icons/) directory licensed by Fonticons, Inc under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## Testing/Development
 
-Since this project relies on external resources (the Cangjie code table), you cannot put in the path to [`index.html`](index.html) in the browser and expect it to work. It must be hosted via something like [`http-server`](https://www.npmjs.com/package/http-server/v/13.0.1) with:
+Since this project relies on external resources (the Cangjie code table), you cannot put in the path to [`index.html`](./src/index.html) in the browser, it will not function properly. It must be hosted via something like [`http-server`](https://www.npmjs.com/package/http-server/) with:
 
 ```
-$ npx http-server src
+npx http-server src
 ```
 
-This will spin up an instance that will be available on [`localhost:8080`](http://localhost:8080). Or any other port on your machine with the `-p` option (if available).
+Assuming you are in the root directory of this repository and run that command. This will spin up an instance that will be available on [`localhost:8080`](http://localhost:8080). Or any other port on your machine with the `-p` option (if available).
 
 > [!NOTE]
 > An installation of `npm` or similar must be present in order to use [`http-server`](https://www.npmjs.com/package/http-server/).
 
 > [!TIP]
-> [`http-server`](https://www.npmjs.com/package/http-server/v/13.0.1) is not the **only** tool you can use, as long as it can serve these static files, it is an adequate tool.
+> [`http-server`](https://www.npmjs.com/package/http-server/) is not the **only** tool you can use, as long as it can serve these static files, it is an adequate tool.

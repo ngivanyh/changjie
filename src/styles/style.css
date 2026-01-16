@@ -54,7 +54,7 @@ a:hover {
     transition: margin-top 0.2s ease;
 }
 
-.decomposition-cursor__character {
+.decomposition-cursor-character {
     display: inline-block;
     vertical-align: top;
     height: 100px;
@@ -68,12 +68,12 @@ a:hover {
     transition: border-bottom-width 0.2s ease;
 }
 
-.decomposition-cursor__character-grayed { 
+.decomposition-cursor-character-grayed { 
     /* either because it is a hint (in decomp mode) or because it is completed (in layout mode) */
     color: gray;
 }
 
-.decomposition-cursor__character--blink {
+.decomposition-cursor-character-blink {
     background-color: var(--blink-bg-color);
     color: var(--blink-font-color);
 }
@@ -89,19 +89,19 @@ a:hover {
     opacity: 0;
 }
 
-[id^='keyboard__row-'] {
+.keyboard-row {
     text-align: center;
     height: calc(6px + var(--key-height));
     margin-bottom: 6px;
 }
 
 /* stagger keyboard row */
-#keyboard__row-2 {
+#keyboard-row-2 {
     margin-left: 45px;
 }
 
 /* stagger keyboard row */
-#keyboard__row-3 {
+#keyboard-row-3 {
     margin-left: 25px;
 }
 
@@ -129,15 +129,15 @@ a:hover {
     margin: -7.5px auto;
 }
 
-[kb_visible='visible'] .keyboard__key--blink {
+[kb_visible='visible'] .keyboard-key-blink {
     box-shadow: inset 0 0 13px 0;
 }
 
-.keyboard__key--activated-correct {
+.keyboard-key-activated-correct {
     background-color: var(--key-correct);
 }
 
-.keyboard__key--activated-incorrect {
+.keyboard-key-activated-incorrect {
     background-color: var(--key-incorrect);
 }
 
