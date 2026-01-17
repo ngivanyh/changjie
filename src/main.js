@@ -75,12 +75,17 @@ if (deviceType === 'mobile') {
     $.querySelector('main').addEventListener('click', () => {
         if ($.activeElement != input) input.focus();
     });
-    input.addEventListener('keydown', keydownEvent);
-    input.addEventListener('keyup', keyupEvent);
+    input.addEventListener('keydown', handleKeyInput);
+    input.addEventListener('keyup', handleKeyRelease);
 } else {
-    $.addEventListener('keydown', keydownEvent);
-    $.addEventListener('keyup', keyupEvent);
+    $.addEventListener('keydown', handleKeyInput);
+    $.addEventListener('keyup', handleKeyRelease);
 }
+
+$.querySelectorAll('.keyboard-key').forEach(keyboardKey => {
+    keyboardKey.addEventListener('mousedown', handleKeyInput);
+    keyboardKey.addEventListener('mouseup', handleKeyRelease);
+});
 
 // init
 initPrac();
@@ -190,8 +195,13 @@ async function initPrac() {
     }
 }
 
-function keydownEvent(e) {
-    const keyname = (e.key).toLowerCase();
+function nextCharacter() {
+    practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
+    initPrac();
+}
+
+function handleKeyInput(e) {
+    const keyname = (e.type === 'keydown') ? (e.key).toLowerCase() : e.originalTarget.id.slice(-1);
 
     currentDecompositionCharacter = decomposedChars.children[currentCodePos];
 
@@ -237,10 +247,9 @@ function layoutHandleInput(keyname = '') {
 
     currentCodePos++;
 
-    if (currentCodePos === testCharCodeLength) {
-        practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
-        initPrac();
-    } else {
+    if (currentCodePos === testCharCodeLength)
+        nextCharacter()
+    else {
         currentDecompositionCharacter.nextElementSibling.classList.add('decomposition-cursor-character-blink');
         kbKeys[testCharCode[currentCodePos]].classList.add('keyboard-key-blink');
     }
@@ -252,12 +261,15 @@ function decompositionHandleInput(keyname = '') {
         const revealChars = (keyname === ' ') ? 1 : testCharCodeLength;
 
         for (const [i, decompositionCharacter] of Object.entries(decomposedChars.children)) {
-            if (i == revealChars) break; // soft comparison as i is a string
-            if (!decompositionCharacter.classList.contains('decomposed-character-grayed') && !decompositionCharacter.textContent) {
-                decompositionCharacter.textContent = keyToRadicalTable[testCharCode[i]]; // js is weird
-                decompositionCharacter.classList.add('decomposed-character-grayed');
-            }
+            if (i == revealChars) return; // soft comparison as i is a string
+            if (
+                decompositionCharacter.classList.contains('decomposed-character-grayed')
+                || decompositionCharacter.textContent
+            ) return;
+            decompositionCharacter.textContent = keyToRadicalTable[testCharCode[i]]; // js is weird
+            decompositionCharacter.classList.add('decomposed-character-grayed');
         }
+        
         return;
     }
 
@@ -270,17 +282,15 @@ function decompositionHandleInput(keyname = '') {
     currentDecompositionCharacter.textContent = keyToRadicalTable[keyname];
     currentCodePos++;
 
-    if (currentCodePos === testCharCodeLength) {
-        practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
-        initPrac();
-    }
+    if (currentCodePos === testCharCodeLength)
+        nextCharacter()
 }
 
-function keyupEvent(e) {
+function handleKeyRelease(e) {
     if (currentMode != 'layout')
         return;
     
-    const keyname = (e.key).toLowerCase();
+    const keyname = (e.type === 'keyup') ? (e.key).toLowerCase() : e.originalTarget.id.slice(-1);
 
     if (keyname === 'meta') {
         pressedMeta = false;

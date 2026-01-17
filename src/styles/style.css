@@ -125,12 +125,13 @@ a:hover {
     user-select: none;
 }
 
-[kb_visible] .keyboard-key:hover {
-    box-shadow: var(--keyboard-key-shadow);
-}
-
 [kb_visible='hidden'] .keyboard-key {
     color: transparent;
+}
+
+[kb_visible] .keyboard-key:hover {
+    box-shadow: var(--keyboard-key-shadow);
+    animation: none;
 }
 
 /* home dot */
@@ -148,7 +149,7 @@ a:hover {
 }
 
 [kb_visible='visible'] .keyboard-key-blink {
-    box-shadow: var(--keyboard-key-shadow);
+    animation: blinking 1s infinite ease;
 }
 
 [kb_visible] .keyboard-key-activated-correct {
