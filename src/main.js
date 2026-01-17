@@ -4,7 +4,7 @@
 // constants
 const $ = document;
 const input = $.querySelector('#input-box');
-const decompositionCursor = $.querySelector('#decomposition-cursor');
+const decomposedChars = $.querySelector('#decomposed-characters');
 const cangjieRegionSelection = $.querySelector('#cangjie-select');
 const charBox = $.querySelector('#test-char');
 const keyToRadicalTable = {'a':'日','b':'月','c':'金','d':'木','e':'水','f':'火','g':'土','h':'竹','i':'戈','j':'十','k':'大','l':'中','m':'一','n':'弓','o':'人','p':'心','q':'手','r':'口','s':'尸','t':'廿','u':'山','v':'女','w':'田','x':'難','y':'卜','z':'重',',':'，','.':'。',';':'；'};
@@ -169,31 +169,31 @@ async function initPrac() {
     currentCodePos = 0;
 
     // decomposition cursor character generation
-    for (const [i, decompCursorChar] of Object.entries(decompositionCursor.children)) {
+    for (const [i, decompCursorChar] of Object.entries(decomposedChars.children)) {
         decompCursorChar.style.display = 'inline-block';
         decompCursorChar.classList.remove(
-            'decomposition-cursor-character-grayed', 
+            'decomposed-character-grayed', 
             'decomposition-cursor-character-blink'
         );
 
         decompCursorChar.textContent = (currentMode === 'layout') ? keyToRadicalTable[testCharCode[i]] : '';
     }
     // hide unused decomposition cursor characters
-    Array.from(decompositionCursor.children).slice(testCharCodeLength).forEach(
+    Array.from(decomposedChars.children).slice(testCharCodeLength).forEach(
         unused_cursor_char => unused_cursor_char.style.display = 'none'
     );
 
     // set blinking key and decomposition cursor char
     if (currentMode === 'layout') {
         kbKeys[testCharCode[0]].classList.add('keyboard-key-blink');
-        decompositionCursor.children[0].classList.add('decomposition-cursor-character-blink');
+        decomposedChars.children[0].classList.add('decomposition-cursor-character-blink');
     }
 }
 
 function keydownEvent(e) {
     const keyname = (e.key).toLowerCase();
 
-    currentDecompositionCharacter = decompositionCursor.children[currentCodePos];
+    currentDecompositionCharacter = decomposedChars.children[currentCodePos];
 
     // offload event handling to separate functions
     if (currentMode === 'layout')
@@ -232,7 +232,7 @@ function layoutHandleInput(keyname = '') {
     keyboardKey.classList.add('keyboard-key-activated-correct');
 
     currentDecompositionCharacter.classList.remove('decomposition-cursor-character-blink');
-    currentDecompositionCharacter.classList.add('decomposition-cursor-character-grayed');
+    currentDecompositionCharacter.classList.add('decomposed-character-grayed');
     keyboardKey.classList.remove('keyboard-key-blink');
 
     currentCodePos++;
@@ -251,11 +251,11 @@ function decompositionHandleInput(keyname = '') {
     if (keyname === ' ' || keyname === 'enter') {
         const revealChars = (keyname === ' ') ? 1 : testCharCodeLength;
 
-        for (const [i, decompositionCharacter] of Object.entries(decompositionCursor.children)) {
+        for (const [i, decompositionCharacter] of Object.entries(decomposedChars.children)) {
             if (i == revealChars) break; // soft comparison as i is a string
-            if (!decompositionCharacter.classList.contains('decomposition-cursor-character-grayed') && !decompositionCharacter.textContent) {
+            if (!decompositionCharacter.classList.contains('decomposed-character-grayed') && !decompositionCharacter.textContent) {
                 decompositionCharacter.textContent = keyToRadicalTable[testCharCode[i]]; // js is weird
-                decompositionCharacter.classList.add('decomposition-cursor-character-grayed');
+                decompositionCharacter.classList.add('decomposed-character-grayed');
             }
         }
         return;
@@ -265,7 +265,7 @@ function decompositionHandleInput(keyname = '') {
         return;
 
     // user typed correct key
-    currentDecompositionCharacter.classList.remove('decomposition-cursor-character-grayed');
+    currentDecompositionCharacter.classList.remove('decomposed-character-grayed');
 
     currentDecompositionCharacter.textContent = keyToRadicalTable[keyname];
     currentCodePos++;

@@ -5,7 +5,7 @@ body {
     background-color: var(--bg-color);
     transition: background-color 0.2s ease;
     color: var(--font-color);
-    font-family: var(--fonts);
+    font-family: var(--font);
 }
 
 a {
@@ -48,13 +48,13 @@ a:hover {
     margin: 0;
 }
 
-#decomposition-cursor {
+#decomposed-characters {
     text-align: center;
     margin-top: var(--practice-mode-cursor-margin-size); 
     transition: margin-top 0.2s ease;
 }
 
-.decomposition-cursor-character {
+.decomposed-character {
     display: inline-block;
     vertical-align: top;
     height: 100px;
@@ -68,7 +68,7 @@ a:hover {
     transition: border-bottom-width 0.2s ease;
 }
 
-.decomposition-cursor-character-grayed { 
+.decomposed-character-grayed { 
     /* either because it is a hint (in decomp mode) or because it is completed (in layout mode) */
     color: gray;
 }
@@ -106,7 +106,16 @@ a:hover {
 }
 
 [kb_visible] .keyboard-key {
+    /* remove browser styling for button etc */
+    all: unset;
+    /* re-setting the uninherited styles */
+    text-align: center;
+    color: var(--font-color);
+    background-color: var(--bg-color);
+    font-family: var(--font);
+    /* real styling */
     display: inline-block;
+    position: relative;
     font-size: 40px;
     border: 2px solid var(--font-color);
     width: 60px;
@@ -116,28 +125,37 @@ a:hover {
     user-select: none;
 }
 
+[kb_visible] .keyboard-key:hover {
+    box-shadow: var(--keyboard-key-shadow);
+}
+
 [kb_visible='hidden'] .keyboard-key {
     color: transparent;
 }
 
-.home_dot {
-    display: block; 
-    width: 6px; 
-    height: 6px; 
-    border-radius: 50%; 
-    background: var(--font-color); 
-    margin: -7.5px auto;
+/* home dot */
+#keyboard-key-f::after,
+#keyboard-key-j::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--font-color);
 }
 
 [kb_visible='visible'] .keyboard-key-blink {
-    box-shadow: inset 0 0 13px 0;
+    box-shadow: var(--keyboard-key-shadow);
 }
 
-.keyboard-key-activated-correct {
+[kb_visible] .keyboard-key-activated-correct {
     background-color: var(--key-correct);
 }
 
-.keyboard-key-activated-incorrect {
+[kb_visible] .keyboard-key-activated-incorrect {
     background-color: var(--key-incorrect);
 }
 

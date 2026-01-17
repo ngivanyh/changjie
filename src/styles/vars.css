@@ -3,7 +3,7 @@
 
 @font-face {
     font-family: 'Noto Serif TC (Medium)';
-    src: url('../fonts/NotoSerifTC-Medium.woff2') format('woff2');
+    src: url('../font/NotoSerifTC-Medium.woff2') format('woff2');
     font-display: fallback;
 }
 
@@ -23,7 +23,7 @@
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
     /* fonts */
-    --fonts: 'Noto Serif TC (Medium)', serif;
+    --font: 'Noto Serif TC (Medium)', serif;
     --key-height: 67.2px;
     /* icon displays */
     --display-kb-invisibility-icon: inherit;
@@ -36,6 +36,8 @@
     --display-light-mode-icon: none;
     /* link hover color */
     --link-hover: #1d75e0;
+    /* keyboard key hover/blink box shadow */
+    --keyboard-key-shadow: inset 0 0 13px 0;
 }
 
 [theme="dark"] {
