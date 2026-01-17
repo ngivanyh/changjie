@@ -5,7 +5,17 @@ body {
     background-color: var(--bg-color);
     transition: background-color 0.2s ease;
     color: var(--font-color);
-    font-family: var(--fonts);
+    font-family: var(--font);
+}
+
+a {
+    all: unset; /* unset all default styling from os/browser (should be available on all major browsers) */
+    cursor: pointer; /* set back the pointer settings */
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--link-hover);
 }
 
 .shake {
@@ -23,7 +33,7 @@ body {
     border: 2px solid var(--font-color);
     font-size: 172px;
     padding: 0px 30px;
-    will-change: transform;
+    will-change: transform; /* offloads transform changes to gpu */
 }
 
 #input-box {
@@ -38,13 +48,13 @@ body {
     margin: 0;
 }
 
-#decomposition-cursor {
+#decomposed-characters {
     text-align: center;
     margin-top: var(--practice-mode-cursor-margin-size); 
     transition: margin-top 0.2s ease;
 }
 
-.decomposition-cursor__character {
+.decomposed-character {
     display: inline-block;
     vertical-align: top;
     height: 100px;
@@ -58,12 +68,12 @@ body {
     transition: border-bottom-width 0.2s ease;
 }
 
-.decomposition-cursor__character-grayed { 
+.decomposed-character-grayed { 
     /* either because it is a hint (in decomp mode) or because it is completed (in layout mode) */
     color: gray;
 }
 
-.decomposition-cursor__character--blink {
+.decomposition-cursor-character-blink {
     background-color: var(--blink-bg-color);
     color: var(--blink-font-color);
 }
@@ -75,26 +85,37 @@ body {
     opacity: 1;
 }
 
-[mode="decomposition"] #keyboard {
+[mode='decomposition'] #keyboard {
     opacity: 0;
 }
 
-[id^='keyboard__row-'] {
+.keyboard-row {
     text-align: center;
     height: calc(6px + var(--key-height));
     margin-bottom: 6px;
 }
 
-#keyboard__row-2 {
+/* stagger keyboard row */
+#keyboard-row-2 {
     margin-left: 45px;
 }
 
-#keyboard__row-3 {
+/* stagger keyboard row */
+#keyboard-row-3 {
     margin-left: 25px;
 }
 
 [kb_visible] .keyboard-key {
+    /* remove browser styling for button etc */
+    all: unset;
+    /* re-setting the uninherited styles */
+    text-align: center;
+    color: var(--font-color);
+    background-color: var(--bg-color);
+    font-family: var(--font);
+    /* real styling */
     display: inline-block;
+    position: relative;
     font-size: 40px;
     border: 2px solid var(--font-color);
     width: 60px;
@@ -108,27 +129,38 @@ body {
     color: transparent;
 }
 
-.home_dot {
-    display: block; 
-    width: 6px; 
-    height: 6px; 
-    border-radius: 50%; 
-    background: var(--font-color); 
-    margin: -7.5px auto;
+[kb_visible] .keyboard-key:hover {
+    box-shadow: var(--keyboard-key-shadow);
+    animation: none;
 }
 
-[kb_visible='visible'] .keyboard__key--blink {
-    box-shadow: inset 0 0 13px 0;
+/* home dot */
+#keyboard-key-f::after,
+#keyboard-key-j::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--font-color);
 }
 
-.keyboard__key--activated-correct {
+[kb_visible='visible'] .keyboard-key-blink {
+    animation: blinking 1s infinite ease;
+}
+
+[kb_visible] .keyboard-key-activated-correct {
     background-color: var(--key-correct);
 }
 
-.keyboard__key--activated-incorrect {
+[kb_visible] .keyboard-key-activated-incorrect {
     background-color: var(--key-incorrect);
 }
 
+/* bottom toggle row */
 .ui-toggle-row {
     fill: var(--font-color);
     display: block;
