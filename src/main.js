@@ -38,6 +38,7 @@ let practicedIndex = saveSettings('practiced_index', Number(localStorage.getItem
 let testCharCode;
 let testCharCodeLength;
 let currentCodePos;
+let currentCodeChar;
 let currentDecomposedChar;
 
 // settings
@@ -176,6 +177,7 @@ async function initPrac() {
     charBox.textContent = char;
     charBox.href = `https://www.hkcards.com/cj/cj-char-${char}.html`;
     currentCodePos = 0;
+    currentCodeChar = testCharCode[currentCodePos];
 
     // decomposition cursor character generation
     for (const [i, decompCursorChar] of Object.entries(decomposedChars)) {
@@ -194,7 +196,7 @@ async function initPrac() {
 
     // set blinking key and decomposition cursor char
     if (currentMode === 'layout') {
-        kbKeys[testCharCode[0]].classList.add('keyboard-key-blink');
+        kbKeys[currentCodeChar].classList.add('keyboard-key-blink');
         decomposedChars[0].classList.add('decomposed-character-selected');
     }
 }
@@ -237,7 +239,7 @@ function layoutHandleInput(keyname = '') {
     if (!keyboardKey || pressedMeta)
         return;
 
-    if (keyname != testCharCode[currentCodePos]){
+    if (keyname != currentCodeChar){
         keyboardKey.classList.add('keyboard-key-activated-incorrect');
         return;
     }
@@ -250,12 +252,13 @@ function layoutHandleInput(keyname = '') {
     keyboardKey.classList.remove('keyboard-key-blink');
 
     currentCodePos++;
+    currentCodeChar = testCharCode[currentCodePos];
 
     if (currentCodePos === testCharCodeLength)
         nextCharacter()
     else {
         currentDecomposedChar.nextElementSibling.classList.add('decomposed-character-selected');
-        kbKeys[testCharCode[currentCodePos]].classList.add('keyboard-key-blink');
+        kbKeys[currentCodeChar].classList.add('keyboard-key-blink');
     }
 }
 
@@ -266,7 +269,7 @@ function decompositionHandleInput(keyname = '') {
             !currentDecomposedChar.classList.contains('decomposed-character-grayed')
             && !currentDecomposedChar.textContent
         ) {
-            currentDecomposedChar.textContent = keyToRadicalTable[testCharCode[currentCodePos]]; // js is weird
+            currentDecomposedChar.textContent = keyToRadicalTable[currentCodeChar]; // js is weird
             currentDecomposedChar.classList.add('decomposed-character-grayed');
         }
 
@@ -286,7 +289,7 @@ function decompositionHandleInput(keyname = '') {
         return;
     }
 
-    if (keyname != testCharCode[currentCodePos])
+    if (keyname != currentCodeChar)
         return;
 
     // user typed correct key
@@ -294,6 +297,7 @@ function decompositionHandleInput(keyname = '') {
 
     currentDecomposedChar.textContent = keyToRadicalTable[keyname];
     currentCodePos++;
+    currentCodeChar = testCharCode[currentCodePos];
 
     if (currentCodePos === testCharCodeLength)
         nextCharacter()
