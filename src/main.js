@@ -261,7 +261,6 @@ function layoutHandleInput(keyname = '') {
 
 function decompositionHandleInput(keyname = '') {
     // special circumstances (keystrokes) for space and enter
-    console.log(keyname);
     if (keyname === ' ') {
         if (
             !currentDecomposedChar.classList.contains('decomposed-character-grayed')

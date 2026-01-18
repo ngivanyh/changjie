@@ -1,4 +1,4 @@
-# Simple workflow for deploying static content to GitHub Pages
+# Github Action to Deploy Webpage
 name: Deploy Webpage
 
 on:
@@ -36,7 +36,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
+          # Upload src/ directory
           path: 'src/'
       - name: Deploy to GitHub Pages
         id: deployment
