@@ -82,7 +82,7 @@
 }
 
 /* used for keyboard blinking */
-@keyframes blinking {
+@keyframes key-blinking {
   0%   { box-shadow: var(--keyboard-key-shadow); }
   50%  { box-shadow: none; }
   100% { box-shadow: var(--keyboard-key-shadow); }

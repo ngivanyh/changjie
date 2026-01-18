@@ -65,15 +65,26 @@ a:hover {
     border-bottom-width: var(--practice-mode-border-bottom-width);
     border-bottom-style: var(--practice-mode-border-bottom-style);
     border-bottom-color: var(--font-color);
-    transition: border-bottom-width 0.2s ease;
+    transition: border-bottom-width 0.2s ease, background-color 0.15s ease;
+}
+
+/* default: white text when not grayed */
+[mode='decomposition'] .decomposed-character:hover:not(.decomposed-character-grayed) {
+    color: var(--blink-font-color);
+}
+
+[mode='decomposition'] .decomposed-character:hover {
+    background-color: var(--blink-bg-color);
+    color: gray;
 }
 
 .decomposed-character-grayed { 
     /* either because it is a hint (in decomp mode) or because it is completed (in layout mode) */
     color: gray;
+    border-bottom-color: gray;
 }
 
-.decomposition-cursor-character-blink {
+.decomposed-character-selected {
     background-color: var(--blink-bg-color);
     color: var(--blink-font-color);
 }
@@ -123,6 +134,7 @@ a:hover {
     line-height: var(--key-height);
     margin: 0 3px 0 3px;
     user-select: none;
+    transition: box-shadow 0.15s ease;
 }
 
 [kb_visible='hidden'] .keyboard-key {
@@ -149,7 +161,7 @@ a:hover {
 }
 
 [kb_visible='visible'] .keyboard-key-blink {
-    animation: blinking 1s infinite ease;
+    animation: key-blinking 1s infinite ease;
 }
 
 [kb_visible] .keyboard-key-activated-correct {
