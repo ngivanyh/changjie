@@ -81,7 +81,7 @@ a:hover {
 .decomposed-character-grayed { 
     /* either because it is a hint (in decomp mode) or because it is completed (in layout mode) */
     color: gray;
-    border-bottom-color: gray;
+    border-bottom-color: var(--font-color);
 }
 
 .decomposed-character-selected {

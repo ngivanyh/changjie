@@ -1,34 +1,19 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-// constants
-const $ = document;
-const input = $.querySelector('#input-box');
-const decomposedChars = Array.from($.querySelector('#decomposed-characters').children);
-const cangjieRegionSelection = $.querySelector('#cangjie-select');
-const charBox = $.querySelector('#test-char');
-const keyToRadicalTable = {'a':'日','b':'月','c':'金','d':'木','e':'水','f':'火','g':'土','h':'竹','i':'戈','j':'十','k':'大','l':'中','m':'一','n':'弓','o':'人','p':'心','q':'手','r':'口','s':'尸','t':'廿','u':'山','v':'女','w':'田','x':'難','y':'卜','z':'重',',':'，','.':'。',';':'；'};
-const kbKeys = Object.fromEntries(
-    Array.from(
-        Object.keys(keyToRadicalTable),
-        k => [k, $.getElementById(`keyboard-key-${k}`)]
-    )
-);
-const deviceType = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? 'mobile' : 'desktop';
-const preferredColorScheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light';
-
-// small helper functions
-const saveSettings = (k, v, isDocumentAttribute = true) => {
-    if (isDocumentAttribute) $.documentElement.setAttribute(k, v);
-    localStorage.setItem(k, v);
-
-    return v;
-}
-
-const shake_box = () => {
-    charBox.classList.add('shake');
-    setTimeout(() => { charBox.classList.remove('shake'); }, 200);
-}
+// imports
+import {
+    input,
+    kbKeys,
+    charBox,
+    deviceType,
+    decomposedChars,
+    keyToRadicalTable,
+    preferredColorScheme,
+    cangjieRegionSelection,
+    saveSettings,
+    shake_box
+} from './helper.js';
 
 // program related data
 let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
@@ -50,20 +35,20 @@ let kbVisibility = saveSettings('kb_visible', localStorage.getItem('kb_visible')
 let pressedMeta = false;
 
 // ui setup
-$.querySelector('#theme-toggle').addEventListener('click', () => {
+document.querySelector('#theme-toggle').addEventListener('click', () => {
     currentTheme = (currentTheme === 'light') ? saveSettings('theme', 'dark') : saveSettings('theme', 'light');
 });
 
-$.querySelector('#kb-toggle').addEventListener('click', () => {
+document.querySelector('#kb-toggle').addEventListener('click', () => {
     kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
 });
 
-$.querySelector('#mode-toggle').addEventListener('click', () => {
+document.querySelector('#mode-toggle').addEventListener('click', () => {
     currentMode = (currentMode === 'decomposition') ? saveSettings('mode', 'layout') : saveSettings('mode', 'decomposition');
     initPrac();
 });
 
-$.getElementsByName(`region-${regionPreference}`)[0].selected = true;
+document.getElementsByName(`region-${regionPreference}`)[0].selected = true;
 
 cangjieRegionSelection.addEventListener('change', (event) => {
     regionPreference = saveSettings('region_preference', event.target.value, false);
@@ -73,20 +58,22 @@ cangjieRegionSelection.addEventListener('change', (event) => {
 
 // event listeners for the typing
 if (deviceType === 'mobile') {
-    $.querySelector('main').addEventListener('click', () => {
-        if ($.activeElement != input) input.focus();
+    document.querySelector('main').addEventListener('click', () => {
+        if (document.activeElement != input) input.focus();
     });
     input.addEventListener('keydown', handleKeyInput);
     input.addEventListener('keyup', handleKeyRelease);
 } else {
-    $.addEventListener('keydown', handleKeyInput);
-    $.addEventListener('keyup', handleKeyRelease);
+    document.addEventListener('keydown', handleKeyInput);
+    document.addEventListener('keyup', handleKeyRelease);
 }
 
 // make keyboard keys clickable
-$.querySelectorAll('.keyboard-key').forEach(keyboardKey => {
+document.querySelectorAll('.keyboard-key').forEach(keyboardKey => {
     keyboardKey.addEventListener('mousedown', handleKeyInput);
     keyboardKey.addEventListener('mouseup', handleKeyRelease);
+    keyboardKey.addEventListener('touchstart', handleKeyInput);
+    keyboardKey.addEventListener('touchend', handleKeyRelease);
 });
 
 for (const decomposedChar of decomposedChars)
@@ -155,7 +142,7 @@ async function retrieveCodeTable() {
 async function initPrac() {
     // resetting ui
     cangjieRegionSelection.disabled = true;
-    $.querySelectorAll('.keyboard-key-blink').forEach(key => key.classList.remove('keyboard-key-blink'));
+    document.querySelectorAll('.keyboard-key-blink').forEach(key => key.classList.remove('keyboard-key-blink'));
 
     let char = Object.keys(cangjieCodeTable)[practicedIndex];
 
@@ -207,7 +194,7 @@ function nextCharacter() {
 }
 
 function handleKeyInput(e) {
-    const keyname = (e.type === 'keydown') ? (e.key).toLowerCase() : e.originalTarget.id.slice(-1);
+    const keyname = (e.type === 'keydown') ? (e.key).toLowerCase() : e.target.id.slice(-1);
 
     currentDecomposedChar = decomposedChars[currentCodePos];
 
@@ -323,7 +310,7 @@ function handleKeyRelease(e) {
     if (currentMode != 'layout')
         return;
     
-    const keyname = (e.type === 'keyup') ? (e.key).toLowerCase() : e.originalTarget.id.slice(-1);
+    const keyname = (e.type === 'keyup') ? (e.key).toLowerCase() : e.target.id.slice(-1);
 
     if (keyname === 'meta') {
         pressedMeta = false;
