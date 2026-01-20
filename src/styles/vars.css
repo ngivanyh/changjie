@@ -61,7 +61,7 @@
     --display-decomposition-mode-icon: none;
 }
 
-[kb_visible="hidden"] {
+[kbVisibility="hidden"] {
     --display-kb-invisibility-icon: none;
     --display-kb-visibility-icon: inherit;
 }

@@ -2,6 +2,7 @@
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
 // imports
+import userSettings from './settings.js';
 import {
     input,
     kbKeys,
@@ -9,7 +10,6 @@ import {
     deviceType,
     decomposedChars,
     keyToRadicalTable,
-    preferredColorScheme,
     cangjieRegionSelection,
     saveSettings,
     shake_box,
@@ -28,20 +28,19 @@ let currentCodeChar;
 let currentDecomposedChar;
 
 // settings
-let regionPreference = saveSettings('region_preference', localStorage.getItem('region_preference') || 'hk', false);
-let currentTheme = saveSettings('theme', localStorage.getItem('theme') || preferredColorScheme);
 let currentMode = saveSettings('mode', localStorage.getItem('mode') || 'layout');
-let kbVisibility = saveSettings('kb_visible', localStorage.getItem('kb_visible') || 'visible');
 
 let pressedMeta = false;
 
 // ui setup
 document.querySelector('#theme-toggle').addEventListener('click', () => {
-    currentTheme = (currentTheme === 'light') ? saveSettings('theme', 'dark') : saveSettings('theme', 'light');
+    userSettings.theme.next();
+    userSettings.theme.save();
 });
 
 document.querySelector('#kb-toggle').addEventListener('click', () => {
-    kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
+    userSettings.kbVisibility.next();
+    userSettings.kbVisibility.save();
 });
 
 document.querySelector('#mode-toggle').addEventListener('click', () => {
@@ -49,10 +48,11 @@ document.querySelector('#mode-toggle').addEventListener('click', () => {
     initPrac();
 });
 
-document.getElementsByName(`region-${regionPreference}`)[0].selected = true;
+document.getElementsByName(`region-${userSettings.regionPreference.currentValue}`)[0].selected = true;
 
 cangjieRegionSelection.addEventListener('change', (event) => {
-    regionPreference = saveSettings('region_preference', event.target.value, false);
+    userSettings.regionPreference.next();
+    userSettings.regionPreference.save(userSettings.regionPreference.savedAs, false);
     initPrac();
     cangjieRegionSelection.blur(); // de-focus
 });
@@ -151,7 +151,7 @@ async function initPrac() {
 
     if (typeof(charCode) === 'object') { // char has regional differences
         cangjieRegionSelection.disabled = false; // re-enable selection
-        testCharCode = charCode[regionPreference];
+        testCharCode = charCode[userSettings.regionPreference.currentValue];
     } else {
         testCharCode = charCode;
     }
@@ -204,7 +204,8 @@ function handleKeyInput(e) {
 function layoutHandleInput(keyname = '') {
     // special circumstances (keystrokes) for space and meta
     if (keyname === ' ') {
-        kbVisibility = (kbVisibility === 'visible') ? saveSettings('kb_visible', 'hidden') : saveSettings('kb_visible', 'visible');
+        userSettings.kbVisibility.next();
+        userSettings.kbVisibility.save();
         return;
     }
 

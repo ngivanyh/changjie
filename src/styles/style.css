@@ -65,7 +65,7 @@ a:hover {
     border-bottom-width: var(--practice-mode-border-bottom-width);
     border-bottom-style: var(--practice-mode-border-bottom-style);
     border-bottom-color: var(--font-color);
-    transition: border-bottom-width 0.2s ease, background-color 0.15s ease;
+    transition: border-bottom-width 0.2s ease;
 }
 
 /* default: white text when not grayed */
@@ -116,7 +116,7 @@ a:hover {
     margin-left: 1.5625rem;
 }
 
-[kb_visible] .keyboard-key {
+[kbVisibility] .keyboard-key {
     /* remove browser styling for button etc */
     all: unset;
     /* re-setting the uninherited styles */
@@ -134,14 +134,13 @@ a:hover {
     line-height: var(--key-height);
     margin: 0 0.1875rem 0 0.1875rem;
     user-select: none;
-    transition: box-shadow 0.15s ease;
 }
 
-[kb_visible='hidden'] .keyboard-key {
+[kbVisibility='hidden'] .keyboard-key {
     color: transparent;
 }
 
-[kb_visible] .keyboard-key:hover {
+[kbVisibility] .keyboard-key:hover {
     box-shadow: var(--keyboard-key-shadow);
     animation: none;
 }
@@ -160,15 +159,15 @@ a:hover {
     background: var(--font-color);
 }
 
-[kb_visible='visible'] .keyboard-key-blink {
+[kbVisibility='visible'] .keyboard-key-blink {
     animation: key-blinking 1s infinite ease;
 }
 
-[kb_visible] .keyboard-key-activated-correct {
+[kbVisibility] .keyboard-key-activated-correct {
     background-color: var(--key-correct);
 }
 
-[kb_visible] .keyboard-key-activated-incorrect {
+[kbVisibility] .keyboard-key-activated-incorrect {
     background-color: var(--key-incorrect);
 }
 
