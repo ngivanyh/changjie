@@ -12,7 +12,8 @@ import {
     preferredColorScheme,
     cangjieRegionSelection,
     saveSettings,
-    shake_box
+    shake_box,
+    reportErr
 } from './helper.js';
 
 // program related data
@@ -83,11 +84,6 @@ for (const decomposedChar of decomposedChars)
 initPrac();
 
 async function retrieveCodeTable() {
-    const reportErr = (err_msg) => {
-        alert(err_msg);
-        console.error(err_msg);
-    }
-
     const segmentDetails = localStorage.getItem('segment_details');
 
     // default fetch id and index (will be used when there is no previous record of a code table)
@@ -294,7 +290,7 @@ function decomposedCharacterClicked(e) {
     if (currentMode != 'decomposition')
         return;
 
-    const characterIndex = Number(e.originalTarget.id.slice(-1)) - 1;
+    const characterIndex = Number(e.target.id.slice(-1)) - 1;
     const decomposedChar = decomposedChars[characterIndex];
 
     if (

@@ -1,48 +1,66 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-export class CangjiePracticeState {
-    constructor() {
-        this.cangjieCodeTable = {};
-        if (localStorage.hasOwnProperty('cangjieCodeTable')){
-            this.cangjieCodeTable = localStorage.getItem('cangjieCodeTable');
-        else {
-            await fetch(`./resources/codeTable-gzipped/cangjieCodeTable-a.min.json.gz`)
-                .then(response => {
-                    if (!response.ok) {
-                        reportErr(`A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`);
-                        throw new Error(err_msg);
-                    }
+import { reportErr } from "./helper.js";
 
-                    if (response.headers.get('Content-Encoding') === 'gzip')
-                        return response.json();
-
-                    const ds = new DecompressionStream('gzip');
-                    return new Response(response.body.pipeThrough(ds)).json();
-                })
-                .then(data => {
-                    if (!data || typeof(data) != 'object') {
-                        reportErr('An error occurred whilst processing a certain program resource.');
-                        throw new Error(err_msg);
-                    }
-                    
-                    cangjieCodeTable = {};
-
-                    const data_keys = Object.keys(data.data);
-
-                    // Fisher-Yates-Durstenfeld Shuffle
-                    for (let i = 0; i < data_keys.length - 1; i++) {
-                        const j = i + Math.floor(Math.random() * (data_keys.length - i));
-
-                        [data_keys[i], data_keys[j]] = [data_keys[j], data_keys[i]];
-                    }
-
-                    for (const k of data_keys)
-                        cangjieCodeTable[k] = data.data[k];
-
-                    localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
-                    localStorage.setItem('segment_details', JSON.stringify(data.details));
-                });
+// cycle, default value is the first element of the list provided
+class Cycle {
+    constructor(values = []) {
+        if (values.length === 0) {
+            reportErr('No values passed for cycling', false);
+            throw new Error('No values passed for cycling');
         }
+
+        this.currentIndex = 0;
+        this.values = values;
+        this.quantity = this.values.length;
+        this.currentValue = this.values[this.currentIndex];
+    }
+
+    next() {
+        this.currentIndex = (this.currentIndex + 1) % this.quantity;
+        this.currentValue = this.values[this.currentIndex];
+    }
+
+    prev() {
+        this.currentIndex = (this.currentIndex - 1 + this.quantity) % this.quantity;
+        this.currentValue = this.values[this.currentIndex];
+    }
+
+    start() {
+        this.currentIndex = 0;
+        this.currentValue = this.values[this.currentIndex];
+    }
+
+    end() {
+        this.currentIndex = this.quantity - 1;
+        this.currentValue = this.values[this.currentIndex];
+    }
+
+    setByIndex(index = 0) {
+        if (!(this.quantity - 1 >= index >= 0)) {
+            reportErr('Index out of range of Cycle', false);
+            throw new Error('Index out of range of Cycle');
+        }
+
+        this.currentIndex = index;
+        this.currentValue = this.values[this.currentIndex];
+    }
+
+    setByValue(value) {
+
+    }
+}
+
+export class CangjiePracticeStates {
+    constructor() {
+        // user definable settings
+        this.regionalPreference = new Cycle(['hk', 'tw']);
+        this.mode = new Cycle(['layout', 'decomposition']);
+        this.theme = new Cycle(['light', 'dark']);
+        this.kbVisibility = new Cycle(['visible', 'hidden']);
+
+        // program state variables
+        // this.currentTestChar = 
     }
 }

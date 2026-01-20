@@ -28,3 +28,8 @@ export const shake_box = () => {
     charBox.classList.add('shake');
     setTimeout(() => { charBox.classList.remove('shake'); }, 200);
 }
+
+export const reportErr = (err_msg, alert = true) => {
+    if (alert) alert(err_msg);
+    console.error(err_msg);
+}
