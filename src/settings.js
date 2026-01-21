@@ -5,7 +5,7 @@ import { reportErr, saveSettings, preferredColorScheme } from "./helper.js";
 
 // cycle, default value is the first element of the list provided
 class Setting {
-    constructor(values = [], savedAs = '', autosave = false, saveParams = []) {
+    constructor(values = [], savedAs = '') {
         if (values.length === 0) {
             reportErr('No values passed for cycling', false);
             throw new Error('No values passed for cycling');
@@ -16,14 +16,6 @@ class Setting {
         this.values = values;
         this.quantity = this.values.length;
         this.currentValue = this.values[this.currentIndex];
-    
-        if (!autosave) {
-            this.autosave = false;
-            this.saveParams = [];
-        } else {
-            this.autosave = true;
-            this.saveParams = saveParams;
-        }
 
         if (!savedAs) console.warn('Alias to use when saving setting has not been set')
         this.savedAs = savedAs;

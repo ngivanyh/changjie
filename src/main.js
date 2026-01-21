@@ -27,9 +27,6 @@ let currentCodePos;
 let currentCodeChar;
 let currentDecomposedChar;
 
-// settings
-let currentMode = saveSettings('mode', localStorage.getItem('mode') || 'layout');
-
 let pressedMeta = false;
 
 // ui setup
@@ -44,7 +41,8 @@ document.querySelector('#kb-toggle').addEventListener('click', () => {
 });
 
 document.querySelector('#mode-toggle').addEventListener('click', () => {
-    currentMode = (currentMode === 'decomposition') ? saveSettings('mode', 'layout') : saveSettings('mode', 'decomposition');
+    userSettings.mode.next();
+    userSettings.mode.save();
     initPrac();
 });
 
@@ -170,7 +168,7 @@ async function initPrac() {
             'decomposed-character-selected'
         );
 
-        decompCursorChar.textContent = (currentMode === 'layout') ? keyToRadicalTable[testCharCode[i]] : '';
+        decompCursorChar.textContent = (userSettings.mode.currentValue === 'layout') ? keyToRadicalTable[testCharCode[i]] : '';
     }
     // hide unused decomposition cursor characters
     Array.from(decomposedChars).slice(testCharCodeLength).forEach(
@@ -178,7 +176,7 @@ async function initPrac() {
     );
 
     // set blinking key and decomposition cursor char
-    if (currentMode === 'layout') {
+    if (userSettings.mode.currentValue === 'layout') {
         kbKeys[currentCodeChar].classList.add('keyboard-key-blink');
         decomposedChars[0].classList.add('decomposed-character-selected');
     }
@@ -195,7 +193,7 @@ function handleKeyInput(e) {
     currentDecomposedChar = decomposedChars[currentCodePos];
 
     // offload event handling to separate functions
-    if (currentMode === 'layout')
+    if (userSettings.mode.currentValue === 'layout')
         layoutHandleInput(keyname);
     else
         decompositionHandleInput(keyname);
@@ -288,7 +286,7 @@ function decompositionHandleInput(keyname = '') {
 }
 
 function decomposedCharacterClicked(e) {
-    if (currentMode != 'decomposition')
+    if (userSettings.mode.currentValue != 'decomposition')
         return;
 
     const characterIndex = Number(e.target.id.slice(-1)) - 1;
@@ -304,7 +302,7 @@ function decomposedCharacterClicked(e) {
 }
 
 function handleKeyRelease(e) {
-    if (currentMode != 'layout')
+    if (userSettings.mode.currentValue != 'layout')
         return;
     
     const keyname = (e.type === 'keyup') ? (e.key).toLowerCase() : e.target.id.slice(-1);
