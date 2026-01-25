@@ -13,7 +13,9 @@ import {
     cangjieRegionSelection,
     saveSettings,
     shake_box,
-    reportErr
+    reportErr,
+    decomposedCharClasses,
+    keyboardKeyClasses
 } from './helper.js';
 
 // program related data
@@ -75,8 +77,8 @@ document.querySelectorAll('.keyboard-key').forEach(keyboardKey => {
     keyboardKey.addEventListener('touchend', handleKeyRelease);
 });
 
-for (const decomposedChar of decomposedChars)
-    decomposedChar.addEventListener('click', decomposedCharacterClicked);
+// event listener for decomposed character click in decomposition mode
+document.addEventListener('click', decomposedCharacterClicked);
 
 // init
 initPrac();
@@ -112,7 +114,7 @@ async function retrieveCodeTable() {
                 reportErr(err_msg);
                 throw new Error(err_msg);
             }
-            
+
             cangjieCodeTable = {};
 
             const data_keys = Object.keys(data.data);
@@ -130,7 +132,7 @@ async function retrieveCodeTable() {
             localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
             localStorage.setItem('segment_details', JSON.stringify(data.details));
         });
-    
+
     // reset practiced index back to the starting point
     practicedIndex = saveSettings('practiced_index', 0, false);
 }
@@ -138,7 +140,7 @@ async function retrieveCodeTable() {
 async function initPrac() {
     // resetting ui
     cangjieRegionSelection.disabled = true;
-    document.querySelectorAll('.keyboard-key-blink').forEach(key => key.classList.remove('keyboard-key-blink'));
+    document.querySelectorAll(keyboardKeyClasses.blink).forEach(key => key.classList.remove(keyboardKeyClasses.blink));
 
     let char = Object.keys(cangjieCodeTable)[practicedIndex];
 
@@ -166,8 +168,8 @@ async function initPrac() {
     for (const [i, decompCursorChar] of Object.entries(decomposedChars)) {
         decompCursorChar.style.display = 'inline-block';
         decompCursorChar.classList.remove(
-            'decomposed-character-grayed', 
-            'decomposed-character-selected'
+            decomposedCharClasses.grayed,
+            decomposedCharClasses.selected
         );
 
         decompCursorChar.textContent = (userSettings.mode.currentValue === 'layout') ? keyToRadicalTable[testCharCode[i]] : '';
@@ -179,8 +181,8 @@ async function initPrac() {
 
     // set blinking key and decomposition cursor char
     if (userSettings.mode.currentValue === 'layout') {
-        kbKeys[currentCodeChar].classList.add('keyboard-key-blink');
-        decomposedChars[0].classList.add('decomposed-character-selected');
+        kbKeys[currentCodeChar].classList.add(keyboardKeyClasses.blink);
+        decomposedChars[0].classList.add(decomposedCharClasses.selected);
     }
 }
 
@@ -217,23 +219,23 @@ function layoutHandleInput(keyname = '') {
         shake_box();
         return;
     }
-    
+
     const keyboardKey = kbKeys[keyname];
 
     if (!keyboardKey || pressedMeta)
         return;
 
     if (keyname != currentCodeChar){
-        keyboardKey.classList.add('keyboard-key-activated-incorrect');
+        keyboardKey.classList.add(keyboardKeyClasses.activated.incorrect);
         return;
     }
-    
-    // user typed correct key
-    keyboardKey.classList.add('keyboard-key-activated-correct');
 
-    currentDecomposedChar.classList.remove('decomposed-character-selected');
-    currentDecomposedChar.classList.add('decomposed-character-grayed');
-    keyboardKey.classList.remove('keyboard-key-blink');
+    // user typed correct key
+    keyboardKey.classList.add(keyboardKeyClasses.activated.correct);
+
+    currentDecomposedChar.classList.remove(decomposedCharClasses.selected);
+    currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
+    keyboardKey.classList.remove(keyboardKeyClasses.blink);
 
     currentCodePos++;
     currentCodeChar = testCharCode[currentCodePos];
@@ -241,8 +243,8 @@ function layoutHandleInput(keyname = '') {
     if (currentCodePos === testCharCodeLength)
         nextCharacter()
     else {
-        currentDecomposedChar.nextElementSibling.classList.add('decomposed-character-selected');
-        kbKeys[currentCodeChar].classList.add('keyboard-key-blink');
+        currentDecomposedChar.nextElementSibling.classList.add(decomposedCharClasses.selected);
+        kbKeys[currentCodeChar].classList.add(keyboardKeyClasses.blink);
     }
 }
 
@@ -250,11 +252,11 @@ function decompositionHandleInput(keyname = '') {
     // special circumstances (keystrokes) for space and enter
     if (keyname === ' ') {
         if (
-            !currentDecomposedChar.classList.contains('decomposed-character-grayed')
+            !currentDecomposedChar.classList.contains(decomposedCharClasses.grayed)
             && !currentDecomposedChar.textContent
         ) {
             currentDecomposedChar.textContent = keyToRadicalTable[currentCodeChar]; // js is weird
-            currentDecomposedChar.classList.add('decomposed-character-grayed');
+            currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
         }
 
         return;
@@ -263,11 +265,11 @@ function decompositionHandleInput(keyname = '') {
     if (keyname === 'enter') {
         for (const [i, decomposedChar] of Object.entries(decomposedChars)) {
             if (
-                decomposedChar.classList.contains('decomposed-character-grayed')
+                decomposedChar.classList.contains(decomposedCharClasses.grayed)
                 || decomposedChar.textContent
             ) continue;
             decomposedChar.textContent = keyToRadicalTable[testCharCode[i]]; // js is weird
-            decomposedChar.classList.add('decomposed-character-grayed');
+            decomposedChar.classList.add(decomposedCharClasses.grayed);
         }
 
         return;
@@ -279,7 +281,7 @@ function decompositionHandleInput(keyname = '') {
     }
 
     // user typed correct key
-    currentDecomposedChar.classList.remove('decomposed-character-grayed');
+    currentDecomposedChar.classList.remove(decomposedCharClasses.grayed);
 
     currentDecomposedChar.textContent = keyToRadicalTable[keyname];
     currentCodePos++;
@@ -293,22 +295,26 @@ function decomposedCharacterClicked(e) {
     if (userSettings.mode.currentValue != 'decomposition')
         return;
 
-    const characterIndex = Number(e.target.id.slice(-1)) - 1;
+    const decomposedCharToBeClicked = e.target.closest('.decomposed-character');
+    if (!decomposedCharToBeClicked)
+        return;
+
+    const characterIndex = Number(decomposedCharToBeClicked.id.slice(-1)) - 1;
     const decomposedChar = decomposedChars[characterIndex];
 
     if (
-        !decomposedChar.classList.contains('decomposed-character-grayed')
+        !decomposedChar.classList.contains(decomposedCharClasses.grayed)
         && !decomposedChar.textContent
     ) {
         decomposedChar.textContent = keyToRadicalTable[testCharCode[characterIndex]];
-        decomposedChar.classList.add('decomposed-character-grayed');
+        decomposedChar.classList.add(decomposedCharClasses.grayed);
     }
 }
 
 function handleKeyRelease(e) {
     if (userSettings.mode.currentValue != 'layout')
         return;
-    
+
     const keyname = (e.type === 'keyup') ? (e.key).toLowerCase() : e.target.id.slice(-1);
 
     if (keyname === 'meta') {
@@ -316,12 +322,8 @@ function handleKeyRelease(e) {
         return;
     }
 
-    if (kbKeys[keyname]) {
-        kbKeys[keyname].classList.remove(
-            'keyboard-key-activated-correct', 
-            'keyboard-key-activated-incorrect'
-        );
-    }
+    if (kbKeys[keyname])
+        kbKeys[keyname].classList.remove(Object.values(keyboardKeyClasses.activated));
 
     // resetting input box value
     if (deviceType === 'mobile') input.value = '';

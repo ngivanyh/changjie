@@ -89,6 +89,7 @@ userSettings.theme.setByValue(localStorage.getItem('theme') || preferredColorSch
 userSettings.mode.setByValue(localStorage.getItem('mode') || 'layout');
 userSettings.regionPreference.setByValue(localStorage.getItem('regionPreference') || 'hk');
 userSettings.kbVisibility.setByValue(localStorage.getItem('kbVisibility') || 'visible');
+
 userSettings.saveAll();
 
 export default userSettings;

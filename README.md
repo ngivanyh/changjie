@@ -26,7 +26,6 @@ But that won't be all, these features are soon coming:
 
 Current Todos:
 - [ ] Key stagger option
-- [ ] use `e.target.closest('class')` and less event listeners
 - [ ] new themes
 - [ ] fix icon css implementation to use `:not()`
 

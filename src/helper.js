@@ -15,6 +15,17 @@ export const kbKeys = Object.fromEntries(
         k => [k, document.getElementById(`keyboard-key-${k}`)]
     )
 );
+export const decomposedCharClasses = {
+  'grayed': 'decomposed-character-grayed',
+  'selected': 'decomposed-character-selected'
+};
+export const keyboardKeyClasses = {
+  'blink': 'keyboard-key-blink',
+  'activated': {
+    'correct': 'keyboard-key-activated-correct',
+    'incorrect': 'keyboard-key-activated-incorrect'
+  }
+};
 
 // helper functions
 export const saveSettings = (k, v, isDocumentAttribute = true) => {
