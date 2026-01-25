@@ -27,6 +27,9 @@ But that won't be all, these features are soon coming:
 Current Todos:
 - [ ] Key stagger option
 - [ ] new themes
+    - a dark green theme
+    - a pastel-ish theme
+    - a light blue theme
 - [ ] fix icon css implementation to use `:not()`
 
 ## Usage

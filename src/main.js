@@ -2,7 +2,7 @@
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
 // imports
-import userSettings from './settings.js';
+import userSettings from './js/settings.js';
 import {
     input,
     kbKeys,
@@ -16,7 +16,7 @@ import {
     reportErr,
     decomposedCharClasses,
     keyboardKeyClasses
-} from './helper.js';
+} from './js/helper.js';
 
 // program related data
 let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
@@ -78,7 +78,7 @@ document.querySelectorAll('.keyboard-key').forEach(keyboardKey => {
 });
 
 // event listener for decomposed character click in decomposition mode
-document.addEventListener('click', decomposedCharacterClicked);
+document.querySelector('#decomposed-characters').addEventListener('click', decomposedCharacterClicked);
 
 // init
 initPrac();
@@ -323,7 +323,10 @@ function handleKeyRelease(e) {
     }
 
     if (kbKeys[keyname])
-        kbKeys[keyname].classList.remove(Object.values(keyboardKeyClasses.activated));
+        kbKeys[keyname].classList.remove(
+            keyboardKeyClasses.activated.correct,
+            keyboardKeyClasses.activated.incorrect
+        );
 
     // resetting input box value
     if (deviceType === 'mobile') input.value = '';
