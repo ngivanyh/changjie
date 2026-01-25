@@ -48,7 +48,7 @@ document.querySelector('#mode-toggle').addEventListener('click', () => {
 
 document.getElementsByName(`region-${userSettings.regionPreference.currentValue}`)[0].selected = true;
 
-cangjieRegionSelection.addEventListener('change', (event) => {
+cangjieRegionSelection.addEventListener('change', () => {
     userSettings.regionPreference.next();
     userSettings.regionPreference.save(userSettings.regionPreference.savedAs, false);
     initPrac();
@@ -95,7 +95,8 @@ async function retrieveCodeTable() {
     await fetch(`./resources/codeTable-gzipped/cangjieCodeTable-${fetch_id}.min.json.gz`)
         .then(response => {
             if (!response.ok) {
-                reportErr(`A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`);
+                const err_msg = `A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`;
+                reportErr(err_msg);
                 throw new Error(err_msg);
             }
 
@@ -107,7 +108,8 @@ async function retrieveCodeTable() {
         })
         .then(data => {
             if (!data || typeof(data) != 'object') {
-                reportErr('An error occurred whilst processing a certain program resource.');
+                const err_msg = 'An error occurred whilst processing a certain program resource.';
+                reportErr(err_msg);
                 throw new Error(err_msg);
             }
             
@@ -271,8 +273,10 @@ function decompositionHandleInput(keyname = '') {
         return;
     }
 
-    if (keyname != currentCodeChar)
+    if (keyname != currentCodeChar){
+        shake_box();
         return;
+    }
 
     // user typed correct key
     currentDecomposedChar.classList.remove('decomposed-character-grayed');

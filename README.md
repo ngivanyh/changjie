@@ -26,8 +26,9 @@ But that won't be all, these features are soon coming:
 
 Current Todos:
 - [ ] Key stagger option
-- [ ] Central state class
 - [ ] use `e.target.closest('class')` and less event listeners
+- [ ] new themes
+- [ ] fix icon css implementation to use `:not()`
 
 ## Usage
 You open up the [webpage](https://ngivanyh.github.io/changjie) for the first time and you'll be greeted with the first mode: layout practice. This mode is designed to help you learn the different key positions of the Cangjie word roots.
