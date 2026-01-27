@@ -1,14 +1,8 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-// constants (ui elements, useful lists, etc)
-export const input = document.querySelector('#input-box');
-export const charBox = document.querySelector('#test-char');
-export const cangjieRegionSelection = document.querySelector('#cangjie-select');
-export const decomposedChars = Array.from(
-    document.querySelector('#decomposed-characters').children,
-);
-export const preferredColorScheme = (window.matchMedia('(prefers-color-scheme: dark)')) ? 'dark' : 'light';
+// constants/data
+export const preferredColorScheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
 export const deviceType = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? 'mobile' : 'desktop';
 export const keyToRadicalTable = {
     'a': '日',
@@ -42,13 +36,7 @@ export const keyToRadicalTable = {
     ';': '；',
 };
 
-export const kbKeys = Object.fromEntries(
-    Array.from(Object.keys(keyToRadicalTable), (k) => [
-        k,
-        document.getElementById(`keyboard-key-${k}`),
-    ]),
-);
-
+// saved class names
 export const decomposedCharClasses = {
     'grayed': 'decomposed-character-grayed',
     'selected': 'decomposed-character-selected',
@@ -61,6 +49,19 @@ export const keyboardKeyClasses = {
         'incorrect': 'keyboard-key-activated-incorrect',
     },
 };
+
+// cached ui elements
+export const input = document.querySelector('#input-box');
+export const charBox = document.querySelector('#test-char');
+export const cangjieRegionSelection = document.querySelector('#cangjie-select');
+export const decomposedChars = Array.from(
+    document.querySelector('#decomposed-characters').children,
+);
+export const kbKeys = Object.fromEntries(
+    Array.from(Object.keys(keyToRadicalTable), (k) => [
+        k, document.getElementById(`keyboard-key-${k}`),
+    ]),
+);
 
 // helper functions
 export const saveSettings = (k, v, isDocumentAttribute = true) => {
@@ -77,63 +78,60 @@ export const shake_box = () => {
     }, 200);
 };
 
-export const reportErr = (err_msg, alert = true) => {
-    if (alert) alert(err_msg);
+export const reportErr = (err_msg, alertPopup = true) => {
+    if (alertPopup) alert(err_msg);
     console.error(err_msg);
 };
 
+// Cycler class, used for settings
 export class Cycler {
+    #currentIndex;
+    #values;
+    #quantity;
+    #currentValue;
+
     constructor(values = []) {
         if (values.length === 0) {
             reportErr('No values passed for cycling', false);
             throw new Error('No values passed for cycling');
         }
 
-        // default set to the first item
-        this.currentIndex = 0;
-        this.values = values;
-        this.quantity = this.values.length;
-        this.currentValue = this.values[this.currentIndex];
+        this.#currentIndex = 0;
+        this.#values = values;
+        this.#quantity = this.#values.length;
+        this.#currentValue = this.#values[this.#currentIndex];
     }
 
     next() {
-        this.currentIndex = (this.currentIndex + 1) % this.quantity;
-        this.currentValue = this.values[this.currentIndex];
+        this.#currentIndex = (this.#currentIndex + 1) % this.#quantity;
+        this.#currentValue = this.#values[this.#currentIndex];
     }
 
     prev() {
-        this.currentIndex =
-            (this.currentIndex - 1 + this.quantity) % this.quantity;
-        this.currentValue = this.values[this.currentIndex];
+        this.#currentIndex = (this.#currentIndex - 1 + this.#quantity) % this.#quantity;
+        this.#currentValue = this.#values[this.#currentIndex];
     }
 
     start() {
-        this.currentIndex = 0;
-        this.currentValue = this.values[this.currentIndex];
+        this.#currentIndex = 0;
+        this.#currentValue = this.#values[this.#currentIndex];
     }
 
     end() {
-        this.currentIndex = this.quantity - 1;
-        this.currentValue = this.values[this.currentIndex];
-    }
-
-    setByIndex(index = 0) {
-        if (!(this.quantity - 1 >= index >= 0)) {
-            reportErr('Index out of range of Cycle', false);
-            throw new Error('Index out of range of Cycle');
-        }
-
-        this.currentIndex = index;
-        this.currentValue = this.values[this.currentIndex];
+        this.#currentIndex = this.#quantity - 1;
+        this.#currentValue = this.#values[this.#currentIndex];
     }
 
     setByValue(value) {
-        if (!this.values.includes(value)) {
+        if (!this.#values.includes(value)) {
             reportErr(`${value} not in values to cycle`);
             throw new Error(`${value} not in values to cycle`);
         }
 
-        this.currentIndex = this.values.indexOf(value);
-        this.currentValue = this.values[this.currentIndex];
+        this.#currentIndex = this.#values.indexOf(value);
+        this.#currentValue = this.#values[this.#currentIndex];
     }
+
+    // getters (not all fields exposed because there isn't a need to)
+    get currentValue() { return this.#currentValue; }
 }

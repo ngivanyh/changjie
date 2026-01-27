@@ -44,7 +44,7 @@ document.getElementsByName(`region-${userSettings.regionPreference.currentValue}
 
 cangjieRegionSelection.addEventListener('change', () => {
     userSettings.regionPreference.next();
-    userSettings.regionPreference.save(userSettings.regionPreference.savedAs, false);
+    userSettings.regionPreference.save();
     initPrac();
     cangjieRegionSelection.blur(); // de-focus
 });
@@ -52,7 +52,7 @@ cangjieRegionSelection.addEventListener('change', () => {
 // event listeners for the typing
 if (deviceType === 'mobile') {
     document.querySelector('main').addEventListener('click', () => {
-        if (document.activeElement != input) input.focus();
+        if (document.activeElement !== input) input.focus();
     });
     input.addEventListener('keydown', handleKeyInput);
     input.addEventListener('keyup', handleKeyRelease);
@@ -72,7 +72,7 @@ document.querySelectorAll('.keyboard-key').forEach(keyboardKey => {
 // event listener for decomposed character click in decomposition mode
 document.querySelector('#decomposed-characters').addEventListener('click', decomposedCharacterClicked);
 
-// init
+// start program
 initPrac();
 
 async function retrieveCodeTable() {
@@ -101,7 +101,7 @@ async function retrieveCodeTable() {
             return new Response(response.body.pipeThrough(ds)).json();
         })
         .then(data => {
-            if (!data || typeof(data) != 'object') {
+            if (!data || typeof(data) !== 'object') {
                 const err_msg = 'An error occurred whilst processing a certain program resource.';
                 reportErr(err_msg);
                 throw new Error(err_msg);
@@ -118,8 +118,7 @@ async function retrieveCodeTable() {
                 [data_keys[i], data_keys[j]] = [data_keys[j], data_keys[i]];
             }
 
-            for (const k of data_keys)
-                cangjieCodeTable[k] = data.data[k];
+            for (const k of data_keys) cangjieCodeTable[k] = data.data[k];
 
             localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
             localStorage.setItem('segment_details', JSON.stringify(data.details));
@@ -163,14 +162,15 @@ async function initPrac() {
 
         decompCursorChar.textContent = (userSettings.mode.currentValue === 'layout') ? keyToRadicalTable[appState.testCharCode[i]] : '';
     }
+
     // hide unused decomposition cursor characters
     Array.from(decomposedChars).slice(appState.testCharCodeLength).forEach(
-        unused_cursor_char => unused_cursor_char.style.display = 'none'
+        unusedCursorChar => unusedCursorChar.style.display = 'none'
     );
 
     // set blinking key and decomposition cursor char
     if (userSettings.mode.currentValue === 'layout') {
-        kbKeys[appState.currentCodeChar].classList.add(keyboardKeyClasses.blink);
+        kbKeys[appState.currentChar].classList.add(keyboardKeyClasses.blink);
         decomposedChars[0].classList.add(decomposedCharClasses.selected);
     }
 }
@@ -199,10 +199,11 @@ function layoutHandleInput(keyname = '') {
     }
 
     if (keyname === 'meta') {
-        appState.pressedMeta.setByValue(true);
+        appState.metaState = true;
         return;
     }
-    if (appState.pressedMeta.currentValue) {
+
+    if (appState.metaState) {
         shake_box();
         return;
     }
@@ -212,14 +213,13 @@ function layoutHandleInput(keyname = '') {
     if (!keyboardKey)
         return;
 
-    if (keyname != appState.currentCodeChar){
+    if (keyname !== appState.currentChar){
         keyboardKey.classList.add(keyboardKeyClasses.activated.incorrect);
         return;
     }
 
     // user typed correct key
     keyboardKey.classList.add(keyboardKeyClasses.activated.correct);
-
     appState.currentDecomposedChar.classList.remove(decomposedCharClasses.selected);
     appState.currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
     keyboardKey.classList.remove(keyboardKeyClasses.blink);
@@ -228,7 +228,7 @@ function layoutHandleInput(keyname = '') {
         nextCharacter();
     else {
         appState.currentDecomposedChar.classList.add(decomposedCharClasses.selected);
-        kbKeys[appState.currentCodeChar].classList.add(keyboardKeyClasses.blink);
+        kbKeys[appState.currentChar].classList.add(keyboardKeyClasses.blink);
     }
 }
 
@@ -239,7 +239,7 @@ function decompositionHandleInput(keyname = '') {
             !appState.currentDecomposedChar.classList.contains(decomposedCharClasses.grayed)
             && !appState.currentDecomposedChar.textContent
         ) {
-            appState.currentDecomposedChar.textContent = keyToRadicalTable[appState.currentCodeChar]; // js is weird
+            appState.currentDecomposedChar.textContent = keyToRadicalTable[appState.currentChar];
             appState.currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
         }
 
@@ -259,27 +259,24 @@ function decompositionHandleInput(keyname = '') {
         return;
     }
 
-    if (keyname != appState.currentCodeChar){
+    if (keyname !== appState.currentChar) {
         shake_box();
         return;
     }
 
     // user typed correct key
     appState.currentDecomposedChar.classList.remove(decomposedCharClasses.grayed);
-
     appState.currentDecomposedChar.textContent = keyToRadicalTable[keyname];
 
-    if (!appState.incrementCodePosition())
-        nextCharacter();
+    if (!appState.incrementCodePosition()) nextCharacter();
 }
 
 function decomposedCharacterClicked(e) {
-    if (userSettings.mode.currentValue != 'decomposition')
+    if (userSettings.mode.currentValue !== 'decomposition')
         return;
 
     const decomposedCharToBeClicked = e.target.closest('.decomposed-character');
-    if (!decomposedCharToBeClicked)
-        return;
+    if (!decomposedCharToBeClicked) return;
 
     const characterIndex = Number(decomposedCharToBeClicked.id.slice(-1)) - 1;
     const decomposedChar = decomposedChars[characterIndex];
@@ -294,13 +291,13 @@ function decomposedCharacterClicked(e) {
 }
 
 function handleKeyRelease(e) {
-    if (userSettings.mode.currentValue != 'layout')
+    if (userSettings.mode.currentValue !== 'layout')
         return;
 
     const keyname = (e.type === 'keyup') ? (e.key).toLowerCase() : e.target.id.slice(-1);
 
     if (keyname === 'meta') {
-        appState.pressedMeta.start();
+        appState.metaState = false; // reset value to false
         return;
     }
 
