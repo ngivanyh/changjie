@@ -1,3 +1,5 @@
+<!-- Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) -->
+
 # 暢頡
 ### [English Version](README.md)
 

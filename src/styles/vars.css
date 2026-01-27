@@ -13,6 +13,7 @@
     --font-color: black;
     --blink-bg-color: black;
     --blink-font-color: white;
+    --color-faded: gray;
     /* layout mode */
     --keyboard-display: block;
     --quest-frame-margin-size: 6vh;
@@ -45,6 +46,7 @@
     --font-color: white;
     --blink-bg-color: white;
     --blink-font-color: black;
+    --color-faded: gray;
     --key-correct: #1ece2a;
     --key-incorrect: #ed0414;
     --display-dark-mode-icon: none;

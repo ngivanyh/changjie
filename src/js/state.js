@@ -1,3 +1,6 @@
+/* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
+/* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
+
 import { Cycler, decomposedChars } from "./helper.js";
 
 class State {

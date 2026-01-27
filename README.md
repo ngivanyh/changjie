@@ -1,7 +1,7 @@
 <!-- Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) -->
 
 # `changjie`
-### [繁體中文版本](README_zh-Hant.md)
+### [繁體中文](README_zh-Hant.md)
 
 ## Table of Contents
 1. [Description](#description)

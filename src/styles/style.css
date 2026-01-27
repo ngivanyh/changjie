@@ -42,7 +42,7 @@ a:hover {
     height: 0.0625rem;
     width: 0.0625rem;
     overflow: hidden;
-    clip-path: rect(0, 0, 0, 0); 
+    clip-path: rect(0, 0, 0, 0);
     border: none;
     padding: 0;
     margin: 0;
@@ -50,7 +50,7 @@ a:hover {
 
 #decomposed-characters {
     text-align: center;
-    margin-top: var(--practice-mode-cursor-margin-size); 
+    margin-top: var(--practice-mode-cursor-margin-size);
     transition: margin-top 0.2s ease;
 }
 
@@ -68,19 +68,19 @@ a:hover {
     transition: border-bottom-width 0.2s ease;
 }
 
-/* default: white text when not grayed */
-[mode='decomposition'] .decomposed-character:hover:not(.decomposed-character-grayed) {
+/* default: white text when not faded */
+[mode='decomposition'] .decomposed-character:hover:not(.decomposed-character-faded) {
     color: var(--blink-font-color);
 }
 
 [mode='decomposition'] .decomposed-character:hover {
     background-color: var(--blink-bg-color);
-    color: gray;
+    color: var(--color-faded);
 }
 
-.decomposed-character-grayed { 
+.decomposed-character-faded {
     /* either because it is a hint (in decomp mode) or because it is completed (in layout mode) */
-    color: gray;
+    color: var(--color-faded);
     border-bottom-color: var(--font-color);
 }
 

@@ -38,7 +38,7 @@ export const keyToRadicalTable = {
 
 // saved class names
 export const decomposedCharClasses = {
-    'grayed': 'decomposed-character-grayed',
+    'faded': 'decomposed-character-faded',
     'selected': 'decomposed-character-selected',
 };
 

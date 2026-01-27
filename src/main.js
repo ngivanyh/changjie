@@ -156,7 +156,7 @@ async function initPrac() {
     for (const [i, decompCursorChar] of Object.entries(decomposedChars)) {
         decompCursorChar.style.display = 'inline-block';
         decompCursorChar.classList.remove(
-            decomposedCharClasses.grayed,
+            decomposedCharClasses.faded,
             decomposedCharClasses.selected
         );
 
@@ -221,7 +221,7 @@ function layoutHandleInput(keyname = '') {
     // user typed correct key
     keyboardKey.classList.add(keyboardKeyClasses.activated.correct);
     appState.currentDecomposedChar.classList.remove(decomposedCharClasses.selected);
-    appState.currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
+    appState.currentDecomposedChar.classList.add(decomposedCharClasses.faded);
     keyboardKey.classList.remove(keyboardKeyClasses.blink);
 
     if (!appState.incrementCodePosition())
@@ -236,11 +236,11 @@ function decompositionHandleInput(keyname = '') {
     // special circumstances (keystrokes) for space and enter
     if (keyname === ' ') {
         if (
-            !appState.currentDecomposedChar.classList.contains(decomposedCharClasses.grayed)
+            !appState.currentDecomposedChar.classList.contains(decomposedCharClasses.faded)
             && !appState.currentDecomposedChar.textContent
         ) {
             appState.currentDecomposedChar.textContent = keyToRadicalTable[appState.currentChar];
-            appState.currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
+            appState.currentDecomposedChar.classList.add(decomposedCharClasses.faded);
         }
 
         return;
@@ -249,11 +249,11 @@ function decompositionHandleInput(keyname = '') {
     if (keyname === 'enter') {
         for (const [i, decomposedChar] of Object.entries(decomposedChars)) {
             if (
-                decomposedChar.classList.contains(decomposedCharClasses.grayed)
+                decomposedChar.classList.contains(decomposedCharClasses.faded)
                 || decomposedChar.textContent
             ) continue;
             decomposedChar.textContent = keyToRadicalTable[appState.testCharCode[i]]; // js is weird
-            decomposedChar.classList.add(decomposedCharClasses.grayed);
+            decomposedChar.classList.add(decomposedCharClasses.faded);
         }
 
         return;
@@ -265,7 +265,7 @@ function decompositionHandleInput(keyname = '') {
     }
 
     // user typed correct key
-    appState.currentDecomposedChar.classList.remove(decomposedCharClasses.grayed);
+    appState.currentDecomposedChar.classList.remove(decomposedCharClasses.faded);
     appState.currentDecomposedChar.textContent = keyToRadicalTable[keyname];
 
     if (!appState.incrementCodePosition()) nextCharacter();
@@ -282,11 +282,11 @@ function decomposedCharacterClicked(e) {
     const decomposedChar = decomposedChars[characterIndex];
 
     if (
-        !decomposedChar.classList.contains(decomposedCharClasses.grayed)
+        !decomposedChar.classList.contains(decomposedCharClasses.faded)
         && !decomposedChar.textContent
     ) {
         decomposedChar.textContent = keyToRadicalTable[appState.testCharCode[characterIndex]];
-        decomposedChar.classList.add(decomposedCharClasses.grayed);
+        decomposedChar.classList.add(decomposedCharClasses.faded);
     }
 }
 
