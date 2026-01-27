@@ -2,8 +2,8 @@
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
 // imports
-import userSettings from './js/settings.js';
 import appState from './js/state.js';
+import userSettings from './js/settings.js';
 import {
     input,
     kbKeys,
@@ -22,13 +22,6 @@ import {
 // program related data
 let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
 let practicedIndex = saveSettings('practiced_index', Number(localStorage.getItem('practiced_index')) || 0, false);
-
-// state variables
-let testCharCode;
-let testCharCodeLength;
-let currentCodePos;
-let currentCodeChar;
-let currentDecomposedChar;
 
 // ui setup
 document.querySelector('#theme-toggle').addEventListener('click', () => {
@@ -152,16 +145,13 @@ async function initPrac() {
 
     if (typeof(charCode) === 'object') { // char has regional differences
         cangjieRegionSelection.disabled = false; // re-enable selection
-        testCharCode = charCode[userSettings.regionPreference.currentValue];
+        appState.newTestCharacter(charCode[userSettings.regionPreference.currentValue]);
     } else {
-        testCharCode = charCode;
+        appState.newTestCharacter(charCode);
     }
 
-    testCharCodeLength = testCharCode.length;
     charBox.textContent = char;
     charBox.href = `https://www.hkcards.com/cj/cj-char-${char}.html`;
-    currentCodePos = 0;
-    currentCodeChar = testCharCode[currentCodePos];
 
     // decomposition cursor character generation
     for (const [i, decompCursorChar] of Object.entries(decomposedChars)) {
@@ -171,16 +161,16 @@ async function initPrac() {
             decomposedCharClasses.selected
         );
 
-        decompCursorChar.textContent = (userSettings.mode.currentValue === 'layout') ? keyToRadicalTable[testCharCode[i]] : '';
+        decompCursorChar.textContent = (userSettings.mode.currentValue === 'layout') ? keyToRadicalTable[appState.testCharCode[i]] : '';
     }
     // hide unused decomposition cursor characters
-    Array.from(decomposedChars).slice(testCharCodeLength).forEach(
+    Array.from(decomposedChars).slice(appState.testCharCodeLength).forEach(
         unused_cursor_char => unused_cursor_char.style.display = 'none'
     );
 
     // set blinking key and decomposition cursor char
     if (userSettings.mode.currentValue === 'layout') {
-        kbKeys[currentCodeChar].classList.add(keyboardKeyClasses.blink);
+        kbKeys[appState.currentCodeChar].classList.add(keyboardKeyClasses.blink);
         decomposedChars[0].classList.add(decomposedCharClasses.selected);
     }
 }
@@ -192,8 +182,6 @@ function nextCharacter() {
 
 function handleKeyInput(e) {
     const keyname = (e.type === 'keydown') ? (e.key).toLowerCase() : e.target.id.slice(-1);
-
-    currentDecomposedChar = decomposedChars[currentCodePos];
 
     // offload event handling to separate functions
     if (userSettings.mode.currentValue === 'layout')
@@ -224,7 +212,7 @@ function layoutHandleInput(keyname = '') {
     if (!keyboardKey)
         return;
 
-    if (keyname != currentCodeChar){
+    if (keyname != appState.currentCodeChar){
         keyboardKey.classList.add(keyboardKeyClasses.activated.incorrect);
         return;
     }
@@ -232,18 +220,15 @@ function layoutHandleInput(keyname = '') {
     // user typed correct key
     keyboardKey.classList.add(keyboardKeyClasses.activated.correct);
 
-    currentDecomposedChar.classList.remove(decomposedCharClasses.selected);
-    currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
+    appState.currentDecomposedChar.classList.remove(decomposedCharClasses.selected);
+    appState.currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
     keyboardKey.classList.remove(keyboardKeyClasses.blink);
 
-    currentCodePos++;
-    currentCodeChar = testCharCode[currentCodePos];
-
-    if (currentCodePos === testCharCodeLength)
-        nextCharacter()
+    if (!appState.incrementCodePosition())
+        nextCharacter();
     else {
-        currentDecomposedChar.nextElementSibling.classList.add(decomposedCharClasses.selected);
-        kbKeys[currentCodeChar].classList.add(keyboardKeyClasses.blink);
+        appState.currentDecomposedChar.classList.add(decomposedCharClasses.selected);
+        kbKeys[appState.currentCodeChar].classList.add(keyboardKeyClasses.blink);
     }
 }
 
@@ -251,11 +236,11 @@ function decompositionHandleInput(keyname = '') {
     // special circumstances (keystrokes) for space and enter
     if (keyname === ' ') {
         if (
-            !currentDecomposedChar.classList.contains(decomposedCharClasses.grayed)
-            && !currentDecomposedChar.textContent
+            !appState.currentDecomposedChar.classList.contains(decomposedCharClasses.grayed)
+            && !appState.currentDecomposedChar.textContent
         ) {
-            currentDecomposedChar.textContent = keyToRadicalTable[currentCodeChar]; // js is weird
-            currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
+            appState.currentDecomposedChar.textContent = keyToRadicalTable[appState.currentCodeChar]; // js is weird
+            appState.currentDecomposedChar.classList.add(decomposedCharClasses.grayed);
         }
 
         return;
@@ -267,27 +252,25 @@ function decompositionHandleInput(keyname = '') {
                 decomposedChar.classList.contains(decomposedCharClasses.grayed)
                 || decomposedChar.textContent
             ) continue;
-            decomposedChar.textContent = keyToRadicalTable[testCharCode[i]]; // js is weird
+            decomposedChar.textContent = keyToRadicalTable[appState.testCharCode[i]]; // js is weird
             decomposedChar.classList.add(decomposedCharClasses.grayed);
         }
 
         return;
     }
 
-    if (keyname != currentCodeChar){
+    if (keyname != appState.currentCodeChar){
         shake_box();
         return;
     }
 
     // user typed correct key
-    currentDecomposedChar.classList.remove(decomposedCharClasses.grayed);
+    appState.currentDecomposedChar.classList.remove(decomposedCharClasses.grayed);
 
-    currentDecomposedChar.textContent = keyToRadicalTable[keyname];
-    currentCodePos++;
-    currentCodeChar = testCharCode[currentCodePos];
+    appState.currentDecomposedChar.textContent = keyToRadicalTable[keyname];
 
-    if (currentCodePos === testCharCodeLength)
-        nextCharacter()
+    if (!appState.incrementCodePosition())
+        nextCharacter();
 }
 
 function decomposedCharacterClicked(e) {
@@ -305,7 +288,7 @@ function decomposedCharacterClicked(e) {
         !decomposedChar.classList.contains(decomposedCharClasses.grayed)
         && !decomposedChar.textContent
     ) {
-        decomposedChar.textContent = keyToRadicalTable[testCharCode[characterIndex]];
+        decomposedChar.textContent = keyToRadicalTable[appState.testCharCode[characterIndex]];
         decomposedChar.classList.add(decomposedCharClasses.grayed);
     }
 }
