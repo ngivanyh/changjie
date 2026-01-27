@@ -31,6 +31,7 @@ Current Todos:
     - a pastel-ish theme
     - a light blue theme
 - [ ] fix icon css implementation to use `:not()`
+- [ ] indexeddb
 
 ## Usage
 You open up the [webpage](https://ngivanyh.github.io/changjie) for the first time and you'll be greeted with the first mode: layout practice. This mode is designed to help you learn the different key positions of the Cangjie word roots.

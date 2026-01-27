@@ -3,6 +3,7 @@
 
 // imports
 import userSettings from './js/settings.js';
+import appState from './js/state.js';
 import {
     input,
     kbKeys,
@@ -28,8 +29,6 @@ let testCharCodeLength;
 let currentCodePos;
 let currentCodeChar;
 let currentDecomposedChar;
-
-let pressedMeta = false;
 
 // ui setup
 document.querySelector('#theme-toggle').addEventListener('click', () => {
@@ -212,17 +211,17 @@ function layoutHandleInput(keyname = '') {
     }
 
     if (keyname === 'meta') {
-        pressedMeta = true;
+        appState.pressedMeta.setByValue(true);
         return;
     }
-    if (pressedMeta) {
+    if (appState.pressedMeta.currentValue) {
         shake_box();
         return;
     }
 
     const keyboardKey = kbKeys[keyname];
 
-    if (!keyboardKey || pressedMeta)
+    if (!keyboardKey)
         return;
 
     if (keyname != currentCodeChar){
@@ -318,7 +317,7 @@ function handleKeyRelease(e) {
     const keyname = (e.type === 'keyup') ? (e.key).toLowerCase() : e.target.id.slice(-1);
 
     if (keyname === 'meta') {
-        pressedMeta = false;
+        appState.pressedMeta.start();
         return;
     }
 
