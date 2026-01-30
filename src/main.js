@@ -26,17 +26,14 @@ let practicedIndex = saveSettings('practiced_index', Number(localStorage.getItem
 // ui setup
 document.querySelector('#theme-toggle').addEventListener('click', () => {
     userSettings.theme.next();
-    userSettings.theme.save();
 });
 
 document.querySelector('#kb-toggle').addEventListener('click', () => {
     userSettings.kbVisibility.next();
-    userSettings.kbVisibility.save();
 });
 
 document.querySelector('#mode-toggle').addEventListener('click', () => {
     userSettings.mode.next();
-    userSettings.mode.save();
     initPrac();
 });
 
@@ -44,7 +41,6 @@ document.getElementsByName(`region-${userSettings.regionPreference.currentValue}
 
 cangjieRegionSelection.addEventListener('change', () => {
     userSettings.regionPreference.next();
-    userSettings.regionPreference.save();
     initPrac();
     cangjieRegionSelection.blur(); // de-focus
 });
@@ -189,38 +185,44 @@ function handleKeyInput(e) {
     }
 
     // offload event handling to separate functions
-    if (userSettings.modeValue === 'layout')
-        layoutHandleInput(keyname);
-    else
-        decompositionHandleInput(keyname);
+    const out = (userSettings.modeValue === 'layout') ? layoutHandleInput(keyname) : decompositionHandleInput(keyname);
+
+    if (out) return; // premature return
+
+    // check if we need to move on
+    if (!appState.incrementCodePosition()) // this check also implicitly increments the state
+        nextCharacter();
+    else if (userSettings.modeValue === 'layout') {
+        appState.currentDecomposedChar.classList.add(decomposedCharClasses.selected);
+        kbKeys[appState.currentChar].classList.add(keyboardKeyClasses.blink);
+    }
+
 }
 
 function layoutHandleInput(keyname = '') {
     // special circumstances (keystrokes) for space and meta
     if (keyname === ' ') {
         userSettings.kbVisibility.next();
-        userSettings.kbVisibility.save();
-        return;
+        return 1;
     }
 
     if (keyname === 'meta') {
         appState.metaState.setByValue(true);
-        return;
+        return 1;
     }
 
     if (appState.metaStateValue) {
         shake_box();
-        return;
+        return 1;
     }
 
     const keyboardKey = kbKeys[keyname];
 
-    if (!keyboardKey)
-        return;
+    if (!keyboardKey) return 1;
 
     if (keyname !== appState.currentChar){
         keyboardKey.classList.add(keyboardKeyClasses.activated.incorrect);
-        return;
+        return 1;
     }
 
     // user typed correct key
@@ -229,12 +231,7 @@ function layoutHandleInput(keyname = '') {
     appState.currentDecomposedChar.classList.add(decomposedCharClasses.faded);
     keyboardKey.classList.remove(keyboardKeyClasses.blink);
 
-    if (!appState.incrementCodePosition()) // this check also implicitly increments the state
-        nextCharacter();
-    else {
-        appState.currentDecomposedChar.classList.add(decomposedCharClasses.selected);
-        kbKeys[appState.currentChar].classList.add(keyboardKeyClasses.blink);
-    }
+    return 0;
 }
 
 function decompositionHandleInput(keyname = '') {
@@ -248,7 +245,7 @@ function decompositionHandleInput(keyname = '') {
             appState.currentDecomposedChar.classList.add(decomposedCharClasses.faded);
         }
 
-        return;
+        return 1;
     }
 
     if (keyname === 'enter') {
@@ -261,19 +258,19 @@ function decompositionHandleInput(keyname = '') {
             decomposedChar.classList.add(decomposedCharClasses.faded);
         }
 
-        return;
+        return 1;
     }
 
     if (keyname !== appState.currentChar) {
         shake_box();
-        return;
+        return 1;
     }
 
     // user typed correct key
     appState.currentDecomposedChar.classList.remove(decomposedCharClasses.faded);
     appState.currentDecomposedChar.textContent = keyToRadicalTable[keyname];
 
-    if (!appState.incrementCodePosition()) nextCharacter(); // this check also implicitly increments the state
+    return 0;
 }
 
 function decomposedCharacterClicked(e) {

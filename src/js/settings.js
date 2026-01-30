@@ -1,7 +1,7 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-import { saveSettings, preferredColorScheme, Cycler, reportErr } from "./helper.js";
+import { saveSettings, Cycler, reportErr, loadSettings} from "./helper.js";
 
 class Setting extends Cycler {
     #saveParams;
@@ -17,7 +17,14 @@ class Setting extends Cycler {
         this.#saveParams = saveParams;
     }
 
-    save() { saveSettings(this.#saveParams[0], this.currentValue, this.#saveParams[1]); }
+    #save() { saveSettings(this.#saveParams[0], this.currentValue, this.#saveParams[1]); }
+
+    // the parent methods + autosaving
+    next() { super.next(); this.#save(); }
+    prev() { super.prev(); this.#save(); }
+    start() { super.start(); this.#save(); }
+    end() { super.end(); this.#save(); }
+    setByValue(value) { super.setByValue(value); this.#save(); }
 }
 
 class Settings {
@@ -34,13 +41,6 @@ class Settings {
         this.#kbVisibility = new Setting(['visible', 'hidden'], ['kbVisibility', true]);
     }
 
-    saveAll() {
-        this.#theme.save();
-        this.#mode.save();
-        this.#regionPreference.save();
-        this.#kbVisibility.save();
-    }
-
     // getters (object)
     get mode() { return this.#mode; }
     get theme() { return this.#theme; }
@@ -55,11 +55,11 @@ class Settings {
 
 const userSettings = new Settings();
 
-userSettings.theme.setByValue(localStorage.getItem('theme') || preferredColorScheme);
-userSettings.mode.setByValue(localStorage.getItem('mode') || 'layout');
-userSettings.regionPreference.setByValue(localStorage.getItem('regionPreference') || 'hk');
-userSettings.kbVisibility.setByValue(localStorage.getItem('kbVisibility') || 'visible');
+const preferredColorScheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
 
-userSettings.saveAll();
+userSettings.theme.setByValue(loadSettings('theme', preferredColorScheme));
+userSettings.mode.setByValue(loadSettings('mode', userSettings.modeValue));
+userSettings.regionPreference.setByValue(loadSettings('regionPreference', userSettings.regionPreferenceValue));
+userSettings.kbVisibility.setByValue(loadSettings('kbVisibility', userSettings.kbVisibilityValue));
 
 export default userSettings;

@@ -2,7 +2,6 @@
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
 // constants/data
-export const preferredColorScheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
 export const deviceType = (/Android|webOS|iPhone|iPad|Mobile|Tablet/i.test(navigator.userAgent)) ? 'mobile' : 'desktop';
 export const keyToRadicalTable = {
     'a': '日',
@@ -69,6 +68,10 @@ export const saveSettings = (k, v, isDocumentAttribute = true) => {
     localStorage.setItem(k, v);
 
     return v;
+};
+
+export const loadSettings = (localStorageKey, fallback) => {
+    return localStorage.getItem(localStorageKey) || fallback;
 };
 
 export const shake_box = () => {

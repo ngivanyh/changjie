@@ -15,9 +15,7 @@
     /* keyboard key hover/blink box shadow */
     --keyboard-key-shadow: inset 0 0 0.8125rem 0 var(--font-color);
     --region-select-shadow: inset 0 0 0.625rem 0 var(--font-color);
-}
-
-[theme="light"] {
+    /* fallback theme (light mode) */
     --bg-color: transparent;
     --font-color: black;
     --blink-bg-color: black;
@@ -28,7 +26,18 @@
     --link-hover: #1d75e0;
 }
 
-[theme="dark"] {
+[theme='light'] {
+    --bg-color: transparent;
+    --font-color: black;
+    --blink-bg-color: black;
+    --blink-font-color: white;
+    --color-faded: gray;
+    --key-correct: #44fc11;
+    --key-incorrect: #ff0010;
+    --link-hover: #1d75e0;
+}
+
+[theme='dark'] {
     --bg-color: black;
     --font-color: white;
     --blink-bg-color: white;
@@ -39,7 +48,7 @@
     --link-hover: #1d75e0;
 }
 
-[theme="forest"] {
+[theme='forest'] {
     --bg-color: #203a28;
     --font-color: #ADE25D;
     --blink-bg-color: #ADE25D;
@@ -50,7 +59,7 @@
     --link-hover: #3B7080;
 }
 
-[theme="ocean"] {
+[theme='ocean'] {
     --bg-color: #0153bf;
     --font-color: #05ddff;
     --blink-bg-color: #05ddff;
@@ -61,7 +70,7 @@
     --link-hover: #4074ce;
 }
 
-[theme="apple"] {
+[theme='apple'] {
     --bg-color: #e01d33;
     --font-color: #2d070e;
     --blink-bg-color: #2d070e;
@@ -72,7 +81,7 @@
     --link-hover: #60111e;
 }
 
-[theme="ice"] {
+[theme='ice'] {
     --bg-color: #90e0ef;
     --font-color: #0077b6;
     --blink-bg-color: #0077b6;
@@ -83,14 +92,14 @@
     --link-hover: #0096c7;
 }
 
-[mode="layout"] {
+[mode='layout'] {
     --keyboard-display: block;
     --practice-mode-cursor-margin-size: 4vh;
     --practice-mode-border-bottom-width: 0;
     --practice-mode-border-bottom-style: solid;
 }
 
-[mode="decomposition"] {
+[mode='decomposition'] {
     --keyboard-display: none;
     --practice-mode-cursor-margin-size: 10vh;
     --practice-mode-border-bottom-width: 0.0625rem;
