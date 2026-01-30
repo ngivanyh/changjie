@@ -184,6 +184,10 @@ a:hover {
     height: 1.875rem;
 }
 
+.settings-icon {
+    display: inline-block;
+}
+
 #theme-toggle {
     left: 0.625rem;
 }
@@ -197,26 +201,43 @@ a:hover {
     right: 0.625rem;
 }
 
-#theme-dark {
-    display: var(--display-dark-mode-icon);
+/* light -> dark -> forest -> ocean -> apple -> ice */
+:root:not([theme="light"]) #theme-dark {
+    display: none;
 }
 
-#theme-light {
-    display: var(--display-light-mode-icon);
+:root:not([theme="dark"]) #theme-forest {
+    display: none;
 }
 
-#visibility-visible {
-    display: var(--display-kb-visibility-icon);
+:root:not([theme="forest"]) #theme-ocean {
+    display: none;
 }
 
-#visibility-invisible {
-    display: var(--display-kb-invisibility-icon);
+:root:not([theme="ocean"]) #theme-apple {
+    display: none;
 }
 
-#mode-layout {
-    display: var(--display-layout-mode-icon);
+:root:not([theme="apple"]) #theme-ice {
+    display: none;
 }
 
-#mode-decomposition {
-    display: var(--display-decomposition-mode-icon);
+:root:not([theme="ice"]) #theme-light {
+    display: none;
+}
+
+[kbVisibility="visible"] #visibility-visible {
+    display: none;
+}
+
+[kbVisibility="hidden"] #visibility-invisible {
+    display: none;
+}
+
+[mode="layout"] #mode-layout {
+    display: none;
+}
+
+[mode="decomposition"] #mode-decomposition {
+    display: none;
 }

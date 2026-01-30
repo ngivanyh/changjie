@@ -17,16 +17,15 @@ This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/ca
 - Leaving only the silhouette of the keyboard in layout mode to practice touch typing
 - Smoother transitions between mode/theme switching
 - Similar or improved page performance whilst having more to practice (≒ 30K characters!)
+- More themes! (Light, Dark, Forest, Ocean, Apple, Ice)
 
 But that won't be all, these features are soon coming:
-- More themes (Issue: #9)
 - Decomposition mode revamp (Issue: #7)
 - Drastically improved mobile experience (Issue: #4)
 - Practicing in sentences, rather than individual words (Issue: #10)
 
 Current Todos:
 - [ ] Key stagger option
-- [ ] fix icon css implementation to use `:not()`
 - [ ] indexeddb
 
 ## Usage

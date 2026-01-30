@@ -8,37 +8,28 @@
 }
 
 :root {
-    /* light mode */
-    --bg-color: transparent;
-    --font-color: black;
-    --blink-bg-color: black;
-    --blink-font-color: white;
-    --color-faded: gray;
     /* layout mode */
     --keyboard-display: block;
     --quest-frame-margin-size: 6vh;
     --practice-mode-cursor-margin-size: 4vh;
     --practice-mode-border-bottom-width: 0;
     --practice-mode-border-bottom-style: solid;
-    /* keyboard keypress highlight */
-    --key-correct: #44fc11;
-    --key-incorrect: #ff0010;
     /* fonts */
     --font: 'Noto Serif TC (Medium)', serif;
     --key-height: 4.2rem;
-    /* icon displays */
-    --display-kb-invisibility-icon: inherit;
-    --display-kb-visibility-icon: none;
-
-    --display-layout-mode-icon: none;
-    --display-decomposition-mode-icon: inherit;
-
-    --display-dark-mode-icon: inherit;
-    --display-light-mode-icon: none;
-    /* link hover color */
-    --link-hover: #1d75e0;
     /* keyboard key hover/blink box shadow */
     --keyboard-key-shadow: inset 0 0 0.8125rem 0 var(--font-color);
+}
+
+[theme="light"] {
+    --bg-color: transparent;
+    --font-color: black;
+    --blink-bg-color: black;
+    --blink-font-color: white;
+    --color-faded: gray;
+    --key-correct: #44fc11;
+    --key-incorrect: #ff0010;
+    --link-hover: #1d75e0;
 }
 
 [theme="dark"] {
@@ -49,8 +40,51 @@
     --color-faded: gray;
     --key-correct: #1ece2a;
     --key-incorrect: #ed0414;
-    --display-dark-mode-icon: none;
-    --display-light-mode-icon: inherit;
+    --link-hover: #1d75e0;
+}
+
+[theme="forest"] {
+    --bg-color: #203a28;
+    --font-color: #ADE25D;
+    --blink-bg-color: #ADE25D;
+    --blink-font-color: #203a28;
+    --color-faded: #CFFFB3;
+    --key-correct: #62b3e5;
+    --key-incorrect: #6B0504;
+    --link-hover: #3B7080;
+}
+
+[theme="ocean"] {
+    --bg-color: #0153bf;
+    --font-color: #05ddff;
+    --blink-bg-color: #05ddff;
+    --blink-font-color: #0153bf;
+    --color-faded: #0ea2cc;
+    --key-correct: #43b245;
+    --key-incorrect: #cc5d5b;
+    --link-hover: #4074ce;
+}
+
+[theme="apple"] {
+    --bg-color: #e51d35;
+    --font-color: #60111e;
+    --blink-bg-color: #60111e;
+    --blink-font-color: #e51d35;
+    --color-faded: #b2172b;
+    --key-correct: #406326;
+    --key-incorrect: #ef737d;
+    --link-hover: #3a0a12;
+}
+
+[theme="ice"] {
+    --bg-color: #90e0ef;
+    --font-color: #0077b6;
+    --blink-bg-color: #0077b6;
+    --blink-font-color: #90e0ef;
+    --color-faded: #b5e7fc;
+    --key-correct: #98c379;
+    --key-incorrect: #e06c75;
+    --link-hover: #0096c7;
 }
 
 [mode="decomposition"] {
@@ -59,13 +93,6 @@
     --practice-mode-cursor-margin-size: 10vh;
     --practice-mode-border-bottom-width: 0.0625rem;
     --practice-mode-border-bottom-style: solid;
-    --display-layout-mode-icon: inherit;
-    --display-decomposition-mode-icon: none;
-}
-
-[kbVisibility="hidden"] {
-    --display-kb-invisibility-icon: none;
-    --display-kb-visibility-icon: inherit;
 }
 
 /* used for shaking the character box */

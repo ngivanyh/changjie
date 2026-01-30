@@ -23,7 +23,7 @@ class Setting extends Cycler {
 class Settings {
     constructor() {
     // user definable settings
-        this.theme = new Setting(['light', 'dark'], ['theme', true]);
+        this.theme = new Setting(['light', 'dark', 'forest', 'ocean', 'apple', 'ice'], ['theme', true]);
         this.regionPreference = new Setting(['hk', 'tw'], ['regionPreference', false]);
         this.mode = new Setting(['layout', 'decomposition'], ['mode', true]);
         this.kbVisibility = new Setting(['visible', 'hidden'], ['kbVisibility', true]);
