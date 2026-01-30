@@ -8,17 +8,13 @@
 }
 
 :root {
-    /* layout mode */
-    --keyboard-display: block;
-    --quest-frame-margin-size: 6vh;
-    --practice-mode-cursor-margin-size: 4vh;
-    --practice-mode-border-bottom-width: 0;
-    --practice-mode-border-bottom-style: solid;
     /* fonts */
     --font: 'Noto Serif TC (Medium)', serif;
+    --english-font: Arial, Helvetica, sans-serif;
     --key-height: 4.2rem;
     /* keyboard key hover/blink box shadow */
     --keyboard-key-shadow: inset 0 0 0.8125rem 0 var(--font-color);
+    --region-select-shadow: inset 0 0 0.625rem 0 var(--font-color);
 }
 
 [theme="light"] {
@@ -48,8 +44,8 @@
     --font-color: #ADE25D;
     --blink-bg-color: #ADE25D;
     --blink-font-color: #203a28;
-    --color-faded: #CFFFB3;
-    --key-correct: #62b3e5;
+    --color-faded: #3e774d;
+    --key-correct: #152112 ;
     --key-incorrect: #6B0504;
     --link-hover: #3B7080;
 }
@@ -66,14 +62,14 @@
 }
 
 [theme="apple"] {
-    --bg-color: #e51d35;
-    --font-color: #60111e;
-    --blink-bg-color: #60111e;
-    --blink-font-color: #e51d35;
+    --bg-color: #e01d33;
+    --font-color: #2d070e;
+    --blink-bg-color: #2d070e;
+    --blink-font-color: #e01d33;
     --color-faded: #b2172b;
     --key-correct: #406326;
     --key-incorrect: #ef737d;
-    --link-hover: #3a0a12;
+    --link-hover: #60111e;
 }
 
 [theme="ice"] {
@@ -87,9 +83,15 @@
     --link-hover: #0096c7;
 }
 
+[mode="layout"] {
+    --keyboard-display: block;
+    --practice-mode-cursor-margin-size: 4vh;
+    --practice-mode-border-bottom-width: 0;
+    --practice-mode-border-bottom-style: solid;
+}
+
 [mode="decomposition"] {
     --keyboard-display: none;
-    --quest-frame-margin-size: 6vh;
     --practice-mode-cursor-margin-size: 10vh;
     --practice-mode-border-bottom-width: 0.0625rem;
     --practice-mode-border-bottom-style: solid;

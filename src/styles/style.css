@@ -8,32 +8,8 @@ body {
     font-family: var(--font);
 }
 
-a {
-    all: unset; /* unset all default styling from os/browser (should be available on all major browsers) */
-    cursor: pointer; /* set back the pointer settings */
-}
-
-a:hover {
-    text-decoration: underline;
-    color: var(--link-hover);
-}
-
 .shake {
     animation: shake 0.2s ease-in-out;
-}
-
-#testing-section {
-    margin-top: var(--quest-frame-margin-size);
-    text-align: center;
-    transition: margin-top 0.2s ease;
-}
-
-#test-char {
-    display: inline-block;
-    border: 0.125rem solid var(--font-color);
-    font-size: 10.75rem;
-    padding: 0 1.875rem;
-    will-change: transform; /* offloads transform changes to gpu */
 }
 
 #input-box {
@@ -46,6 +22,69 @@ a:hover {
     border: none;
     padding: 0;
     margin: 0;
+}
+
+#testing-section {
+    margin-top: 2vh;
+    text-align: center;
+    transition: margin-top 0.2s ease;
+}
+
+#cangjie-select {
+    appearance: none;
+    /* match the overall design */
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    font-family: var(--english-font);
+    border: 0.125rem solid var(--font-color);
+    border-radius: 0.25rem;
+    font-size: 1.25rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+    min-width: 4.5rem;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    /* custom dropdown arrow */
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--font-color) 50%),
+        linear-gradient(135deg, var(--font-color) 50%, transparent 50%);
+    background-position:
+        calc(100% - 1.125rem) calc(50% - 0.0625rem),
+        calc(100% - 0.75rem) calc(50% - 0.0625rem);
+    background-size: 0.3125rem 0.3125rem;
+    background-repeat: no-repeat;
+}
+
+#cangjie-select:hover:not(:disabled) {
+    box-shadow: var(--region-select-shadow)
+}
+
+#cangjie-select:focus {
+    outline: none;
+    box-shadow: var(--region-select-shadow)
+}
+
+#cangjie-select:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+#test-char {
+    display: inline-block;
+    border: 0.125rem solid var(--font-color);
+    font-size: 10.75rem;
+    padding: 0 1.875rem;
+    will-change: transform; /* offloads transform changes to gpu */
+}
+
+a {
+    all: unset; /* unset all default styling from os/browser (should be available on all major browsers) */
+    cursor: pointer; /* set back the pointer settings */
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--link-hover);
 }
 
 #decomposed-characters {
@@ -202,30 +241,14 @@ a:hover {
 }
 
 /* light -> dark -> forest -> ocean -> apple -> ice */
-:root:not([theme="light"]) #theme-dark {
-    display: none;
-}
+:root:not([theme="light"]) #theme-dark { display: none; }
+:root:not([theme="dark"]) #theme-forest { display: none; }
+:root:not([theme="forest"]) #theme-ocean { display: none; }
+:root:not([theme="ocean"]) #theme-apple { display: none; }
+:root:not([theme="apple"]) #theme-ice { display: none; }
+:root:not([theme="ice"]) #theme-light { display: none; }
 
-:root:not([theme="dark"]) #theme-forest {
-    display: none;
-}
-
-:root:not([theme="forest"]) #theme-ocean {
-    display: none;
-}
-
-:root:not([theme="ocean"]) #theme-apple {
-    display: none;
-}
-
-:root:not([theme="apple"]) #theme-ice {
-    display: none;
-}
-
-:root:not([theme="ice"]) #theme-light {
-    display: none;
-}
-
+/* kb visibility icon toggle */
 [kbVisibility="visible"] #visibility-visible {
     display: none;
 }
@@ -234,6 +257,7 @@ a:hover {
     display: none;
 }
 
+/* mode icon toggle */
 [mode="layout"] #mode-layout {
     display: none;
 }

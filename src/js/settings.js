@@ -21,20 +21,36 @@ class Setting extends Cycler {
 }
 
 class Settings {
+    #mode;
+    #theme;
+    #regionPreference;
+    #kbVisibility;
+
     constructor() {
     // user definable settings
-        this.theme = new Setting(['light', 'dark', 'forest', 'ocean', 'apple', 'ice'], ['theme', true]);
-        this.regionPreference = new Setting(['hk', 'tw'], ['regionPreference', false]);
-        this.mode = new Setting(['layout', 'decomposition'], ['mode', true]);
-        this.kbVisibility = new Setting(['visible', 'hidden'], ['kbVisibility', true]);
+        this.#theme = new Setting(['light', 'dark', 'forest', 'ocean', 'apple', 'ice'], ['theme', true]);
+        this.#regionPreference = new Setting(['hk', 'tw'], ['regionPreference', false]);
+        this.#mode = new Setting(['layout', 'decomposition'], ['mode', true]);
+        this.#kbVisibility = new Setting(['visible', 'hidden'], ['kbVisibility', true]);
     }
 
     saveAll() {
-        this.theme.save();
-        this.mode.save();
-        this.regionPreference.save();
-        this.kbVisibility.save();
+        this.#theme.save();
+        this.#mode.save();
+        this.#regionPreference.save();
+        this.#kbVisibility.save();
     }
+
+    // getters (object)
+    get mode() { return this.#mode; }
+    get theme() { return this.#theme; }
+    get regionPreference() { return this.#regionPreference; }
+    get kbVisibility() { return this.#kbVisibility; }
+    // getters (value)
+    get modeValue() { return this.#mode.currentValue; }
+    get themeValue() { return this.#theme.currentValue; }
+    get regionPreferenceValue() { return this.#regionPreference.currentValue; }
+    get kbVisibilityValue() { return this.#kbVisibility.currentValue; }
 }
 
 const userSettings = new Settings();

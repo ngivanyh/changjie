@@ -62,12 +62,10 @@ if (deviceType === 'mobile') {
 }
 
 // make keyboard keys clickable
-document.querySelectorAll('.keyboard-key').forEach(keyboardKey => {
-    keyboardKey.addEventListener('mousedown', handleKeyInput);
-    keyboardKey.addEventListener('mouseup', handleKeyRelease);
-    keyboardKey.addEventListener('touchstart', handleKeyInput);
-    keyboardKey.addEventListener('touchend', handleKeyRelease);
-});
+document.querySelector('#keyboard').addEventListener('mousedown', handleKeyInput);
+document.querySelector('#keyboard').addEventListener('mouseup', handleKeyRelease);
+document.querySelector('#keyboard').addEventListener('touchstart', handleKeyInput);
+document.querySelector('#keyboard').addEventListener('touchend', handleKeyRelease);
 
 // event listener for decomposed character click in decomposition mode
 document.querySelector('#decomposed-characters').addEventListener('click', decomposedCharacterClicked);
@@ -144,7 +142,7 @@ async function initPrac() {
 
     if (typeof(charCode) === 'object') { // char has regional differences
         cangjieRegionSelection.disabled = false; // re-enable selection
-        appState.newTestCharacter(charCode[userSettings.regionPreference.currentValue]);
+        appState.newTestCharacter(charCode[userSettings.regionPreferenceValue]);
     } else {
         appState.newTestCharacter(charCode);
     }
@@ -160,7 +158,7 @@ async function initPrac() {
             decomposedCharClasses.selected
         );
 
-        decompCursorChar.textContent = (userSettings.mode.currentValue === 'layout') ? keyToRadicalTable[appState.testCharCode[i]] : '';
+        decompCursorChar.textContent = (userSettings.modeValue === 'layout') ? keyToRadicalTable[appState.testCharCode[i]] : '';
     }
 
     // hide unused decomposition cursor characters
@@ -169,7 +167,7 @@ async function initPrac() {
     );
 
     // set blinking key and decomposition cursor char
-    if (userSettings.mode.currentValue === 'layout') {
+    if (userSettings.modeValue === 'layout') {
         kbKeys[appState.currentChar].classList.add(keyboardKeyClasses.blink);
         decomposedChars[0].classList.add(decomposedCharClasses.selected);
     }
@@ -181,10 +179,17 @@ function nextCharacter() {
 }
 
 function handleKeyInput(e) {
-    const keyname = (e.type === 'keydown') ? (e.key).toLowerCase() : e.target.id.slice(-1);
+    let keyname;
+    if (e.type === 'keydown') {
+        keyname = (e.key).toLowerCase();
+    } else {
+        const clickedKey = e.target.closest('.keyboard-key');
+        if (!clickedKey) return;
+        keyname = clickedKey.id.slice(-1);
+    }
 
     // offload event handling to separate functions
-    if (userSettings.mode.currentValue === 'layout')
+    if (userSettings.modeValue === 'layout')
         layoutHandleInput(keyname);
     else
         decompositionHandleInput(keyname);
@@ -199,11 +204,11 @@ function layoutHandleInput(keyname = '') {
     }
 
     if (keyname === 'meta') {
-        appState.metaState = true;
+        appState.metaState.setByValue(true);
         return;
     }
 
-    if (appState.metaState) {
+    if (appState.metaStateValue) {
         shake_box();
         return;
     }
@@ -224,7 +229,7 @@ function layoutHandleInput(keyname = '') {
     appState.currentDecomposedChar.classList.add(decomposedCharClasses.faded);
     keyboardKey.classList.remove(keyboardKeyClasses.blink);
 
-    if (!appState.incrementCodePosition())
+    if (!appState.incrementCodePosition()) // this check also implicitly increments the state
         nextCharacter();
     else {
         appState.currentDecomposedChar.classList.add(decomposedCharClasses.selected);
@@ -268,15 +273,14 @@ function decompositionHandleInput(keyname = '') {
     appState.currentDecomposedChar.classList.remove(decomposedCharClasses.faded);
     appState.currentDecomposedChar.textContent = keyToRadicalTable[keyname];
 
-    if (!appState.incrementCodePosition()) nextCharacter();
+    if (!appState.incrementCodePosition()) nextCharacter(); // this check also implicitly increments the state
 }
 
 function decomposedCharacterClicked(e) {
-    if (userSettings.mode.currentValue !== 'decomposition')
-        return;
-
     const decomposedCharToBeClicked = e.target.closest('.decomposed-character');
-    if (!decomposedCharToBeClicked) return;
+
+    if (!decomposedCharToBeClicked || userSettings.modeValue !== 'decomposition')
+        return;
 
     const characterIndex = Number(decomposedCharToBeClicked.id.slice(-1)) - 1;
     const decomposedChar = decomposedChars[characterIndex];
@@ -297,15 +301,16 @@ function handleKeyRelease(e) {
     const keyname = (e.type === 'keyup') ? (e.key).toLowerCase() : e.target.id.slice(-1);
 
     if (keyname === 'meta') {
-        appState.metaState = false; // reset value to false
+        appState.metaState.setByValue(false); // reset value to false
         return;
     }
 
-    if (kbKeys[keyname])
+    if (kbKeys[keyname]) {
         kbKeys[keyname].classList.remove(
             keyboardKeyClasses.activated.correct,
             keyboardKeyClasses.activated.incorrect
         );
+    }
 
     // resetting input box value
     if (deviceType === 'mobile') input.value = '';

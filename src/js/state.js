@@ -38,16 +38,15 @@ class State {
         return increment;
     }
 
-    // getters
+    // getters (objects)
     get testCharCode() { return this.#testCharCode; }
     get testCharCodeLength() { return this.#testCharCodeLength; }
     get currentIndex() { return this.#currentCodeIndex; }
     get currentChar() { return this.#currentCodeChar; }
     get currentDecomposedChar() { return this.#currentDecomposedChar; }
-    get metaState() { return this.#pressedMeta.currentValue; }
-
-    // setter for metaState
-    set metaState(value) { this.#pressedMeta.setByValue(value); }
+    get metaState() { return this.#pressedMeta; }
+    // getters (values)
+    get metaStateValue() { return this.#pressedMeta.currentValue; }
 }
 
 const appState = new State();

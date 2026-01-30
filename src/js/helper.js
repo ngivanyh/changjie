@@ -124,7 +124,7 @@ export class Cycler {
 
     setByValue(value) {
         if (!this.#values.includes(value)) {
-            reportErr(`${value} not in values to cycle`);
+            reportErr(`${value} not in values to cycle`, false);
             throw new Error(`${value} not in values to cycle`);
         }
 
