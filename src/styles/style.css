@@ -246,7 +246,9 @@ a:hover {
 :root:not([theme="forest"]) #theme-ocean { display: none; }
 :root:not([theme="ocean"]) #theme-apple { display: none; }
 :root:not([theme="apple"]) #theme-ice { display: none; }
-:root:not([theme="ice"]) #theme-light { display: none; }
+:root:not([theme="ice"]) #theme-fire { display: none; }
+:root:not([theme="fire"]) #theme-royalty { display: none; }
+:root:not([theme="royalty"]) #theme-light { display: none; }
 
 /* kb visibility icon toggle */
 [kbVisibility="visible"] #visibility-visible {

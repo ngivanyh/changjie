@@ -17,7 +17,9 @@ This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/ca
 - Leaving only the silhouette of the keyboard in layout mode to practice touch typing
 - Smoother transitions between mode/theme switching
 - Similar or improved page performance whilst having more to practice (≒ 30K characters!)
-- More themes! (Light, Dark, Forest, Ocean, Apple, Ice)
+- More themes! (Light, Dark, Forest, Ocean, Apple, Ice, Fire, Royalty; a total of **8**)
+
+However, under the hood lies the most significant changes. 
 
 But that won't be all, these features are soon coming:
 - Decomposition mode revamp (Issue: #7)

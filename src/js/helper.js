@@ -84,6 +84,7 @@ export const shake_box = () => {
 export const reportErr = (err_msg, alertPopup = true) => {
     if (alertPopup) alert(err_msg);
     console.error(err_msg);
+    throw new Error(err_msg);
 };
 
 // Cycler class, used for settings
@@ -94,10 +95,8 @@ export class Cycler {
     #currentValue;
 
     constructor(values = []) {
-        if (values.length === 0) {
+        if (values.length === 0)
             reportErr('No values passed for cycling', false);
-            throw new Error('No values passed for cycling');
-        }
 
         this.#currentIndex = 0;
         this.#values = values;
@@ -126,10 +125,8 @@ export class Cycler {
     }
 
     setByValue(value) {
-        if (!this.#values.includes(value)) {
+        if (!this.#values.includes(value))
             reportErr(`${value} not in values to cycle`, false);
-            throw new Error(`${value} not in values to cycle`);
-        }
 
         this.#currentIndex = this.#values.indexOf(value);
         this.#currentValue = this.#values[this.#currentIndex];

@@ -12,7 +12,6 @@ import {
     decomposedChars,
     keyToRadicalTable,
     cangjieRegionSelection,
-    saveSettings,
     shake_box,
     reportErr,
     decomposedCharClasses,
@@ -21,7 +20,6 @@ import {
 
 // program related data
 let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
-let practicedIndex = saveSettings('practiced_index', Number(localStorage.getItem('practiced_index')) || 0, false);
 
 // ui setup
 document.querySelector('#theme-toggle').addEventListener('click', () => {
@@ -57,7 +55,7 @@ if (deviceType === 'mobile') {
     document.addEventListener('keyup', handleKeyRelease);
 }
 
-// make keyboard keys clickable
+// make keyboard keys clickable (using e.target.closest to save eventListeners)
 document.querySelector('#keyboard').addEventListener('mousedown', handleKeyInput);
 document.querySelector('#keyboard').addEventListener('mouseup', handleKeyRelease);
 document.querySelector('#keyboard').addEventListener('touchstart', handleKeyInput);
@@ -85,7 +83,6 @@ async function retrieveCodeTable() {
             if (!response.ok) {
                 const err_msg = `A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`;
                 reportErr(err_msg);
-                throw new Error(err_msg);
             }
 
             if (response.headers.get('Content-Encoding') === 'gzip')
@@ -98,7 +95,6 @@ async function retrieveCodeTable() {
             if (!data || typeof(data) !== 'object') {
                 const err_msg = 'An error occurred whilst processing a certain program resource.';
                 reportErr(err_msg);
-                throw new Error(err_msg);
             }
 
             cangjieCodeTable = {};
@@ -119,7 +115,7 @@ async function retrieveCodeTable() {
         });
 
     // reset practiced index back to the starting point
-    practicedIndex = saveSettings('practiced_index', 0, false);
+    appState.resetPracticeIndex();
 }
 
 async function initPrac() {
@@ -127,11 +123,11 @@ async function initPrac() {
     cangjieRegionSelection.disabled = true;
     document.querySelectorAll(keyboardKeyClasses.blink).forEach(key => key.classList.remove(keyboardKeyClasses.blink));
 
-    let char = Object.keys(cangjieCodeTable)[practicedIndex];
+    let char = Object.keys(cangjieCodeTable)[appState.practiceIndex];
 
-    if (!char) { // char is undefined, should be because cangjieCodeTable has no data
+    if (!char) { // char is undefined, should be because cangjieCodeTable has no data/this set has been completedd
         await retrieveCodeTable();
-        char = Object.keys(cangjieCodeTable)[practicedIndex];
+        char = Object.keys(cangjieCodeTable)[appState.practiceIndex];
     }
 
     const charCode = cangjieCodeTable[char];
@@ -169,11 +165,6 @@ async function initPrac() {
     }
 }
 
-function nextCharacter() {
-    practicedIndex = saveSettings('practiced_index', practicedIndex + 1, false);
-    initPrac();
-}
-
 function handleKeyInput(e) {
     let keyname;
     if (e.type === 'keydown') {
@@ -187,11 +178,11 @@ function handleKeyInput(e) {
     // offload event handling to separate functions
     const out = (userSettings.modeValue === 'layout') ? layoutHandleInput(keyname) : decompositionHandleInput(keyname);
 
-    if (out) return; // premature return
+    if (out) return; // handler prematurely returned
 
     // check if we need to move on
     if (!appState.incrementCodePosition()) // this check also implicitly increments the state
-        nextCharacter();
+        initPrac();
     else if (userSettings.modeValue === 'layout') {
         appState.currentDecomposedChar.classList.add(decomposedCharClasses.selected);
         kbKeys[appState.currentChar].classList.add(keyboardKeyClasses.blink);
