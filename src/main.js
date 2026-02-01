@@ -16,7 +16,6 @@ import {
     reportErr,
     decomposedCharClasses,
     keyboardKeyClasses,
-    baseURL
 } from './js/helper.js';
 
 // program related data
@@ -83,6 +82,7 @@ async function retrieveCodeTable() {
     }
 
     // root is set to src and public is set to ../pubic so a direct path used
+    const baseURL = import.meta.env.BASE_URL;
     await fetch(`${baseURL}cangjieCodeTable-${fetch_id}.min.json.gz`)
         .then(response => {
             if (!response.ok) {
