@@ -22,8 +22,11 @@ import {
 let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
 
 // ui setup
-document.querySelector('#theme-toggle').addEventListener('click', () => {
-    userSettings.theme.next();
+document.querySelector('#theme-toggle').addEventListener('click', (e) => {
+    if (e.button === 0) // cycle next when left click pressed
+        userSettings.theme.next();
+    else // cycle to previous when right click pressed
+        userSettings.theme.prev();
 });
 
 document.querySelector('#kb-toggle').addEventListener('click', () => {
@@ -78,7 +81,8 @@ async function retrieveCodeTable() {
         fetch_id = (segmentIndex === 4) ? String.fromCharCode(97) : String.fromCharCode(98 + segmentIndex);
     }
 
-    await fetch(`./resources/codeTable-gzipped/cangjieCodeTable-${fetch_id}.min.json.gz`)
+    // file path like this to satisfy vite
+    await fetch(`cangjieCodeTable-${fetch_id}.min.json.gz`)
         .then(response => {
             if (!response.ok) {
                 const err_msg = `A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`;

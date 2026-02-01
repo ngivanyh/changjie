@@ -3,7 +3,7 @@
 
 @font-face {
     font-family: 'Noto Serif TC (Medium)';
-    src: url('../resources/NotoSerifTC-Medium.woff2') format('woff2');
+    src: url('./NotoSerifTC-Medium.woff2') format('woff2');
     font-display: fallback;
 }
 
@@ -16,10 +16,10 @@
     --keyboard-key-shadow: inset 0 0 0.8125rem 0 var(--font-color);
     --region-select-shadow: inset 0 0 0.625rem 0 var(--font-color);
     /* fallback theme (light mode) */
-    --bg-color: transparent;
+    --bg-color: white;
     --font-color: black;
     --blink-bg-color: var(--font-color); /* also the same for every other color */
-    --blink-font-color: white;
+    --blink-font-color: var(--bg-color); /* also the same for every other color */
     --color-faded: gray;
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
@@ -27,9 +27,8 @@
 }
 
 [theme='light'] {
-    --bg-color: transparent;
+    --bg-color: white;
     --font-color: black;
-    --blink-font-color: white;
     --color-faded: gray;
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
@@ -39,7 +38,6 @@
 [theme='dark'] {
     --bg-color: black;
     --font-color: white;
-    --blink-font-color: black;
     --color-faded: gray;
     --key-correct: #1ece2a;
     --key-incorrect: #ed0414;
@@ -49,7 +47,6 @@
 [theme='forest'] {
     --bg-color: #203a28;
     --font-color: #ADE25D;
-    --blink-font-color: #203a28;
     --color-faded: #3e774d;
     --key-correct: #152112 ;
     --key-incorrect: #6B0504;
@@ -59,7 +56,6 @@
 [theme='ocean'] {
     --bg-color: #0153bf;
     --font-color: #05ddff;
-    --blink-font-color: #0153bf;
     --color-faded: #0ea2cc;
     --key-correct: #43b245;
     --key-incorrect: #cc5d5b;
@@ -69,7 +65,6 @@
 [theme='apple'] {
     --bg-color: #e01d33;
     --font-color: #2d070e;
-    --blink-font-color: #e01d33;
     --color-faded: #b2172b;
     --key-correct: #406326;
     --key-incorrect: #ef737d;
@@ -79,7 +74,6 @@
 [theme='ice'] {
     --bg-color: #90e0ef;
     --font-color: #0077b6;
-    --blink-font-color: #90e0ef;
     --color-faded: #b5e7fc;
     --key-correct: #98c379;
     --key-incorrect: #e06c75;
@@ -89,7 +83,6 @@
 [theme='fire'] {
     --bg-color: #e05504;
     --font-color: #ffbf00;
-    --blink-font-color: #e05504;
     --color-faded: #faa307;
     --key-correct: #527f33;
     --key-incorrect: #cc2a02;
@@ -99,7 +92,6 @@
 [theme='royalty'] {
     --bg-color: #822ecc;
     --font-color: #240046;
-    --blink-font-color: #822ecc;
     --color-faded: #9d4edd;
     --key-correct: #92cca4;
     --key-incorrect: #d3545f;

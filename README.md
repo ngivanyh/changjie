@@ -20,8 +20,14 @@ This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/ca
 - More themes! (Light, Dark, Forest, Ocean, Apple, Ice, Fire, Royalty; a total of **8**)
 
 However, under the hood lies the most significant changes. 
+- Central state and settings management
+- Modern JavaScript practices
+- Modular JavaScript to delegate different functions of the program
+- Sharding the now larger Cangjie code table for performance
+- Comments throughout core portions of the program to ensure maintainability
 
 But that won't be all, these features are soon coming:
+- Central settings page with custom footer customization (Issue: #8)
 - Decomposition mode revamp (Issue: #7)
 - Drastically improved mobile experience (Issue: #4)
 - Practicing in sentences, rather than individual words (Issue: #10)
@@ -29,6 +35,9 @@ But that won't be all, these features are soon coming:
 Current Todos:
 - [ ] Key stagger option
 - [ ] indexeddb
+- [ ] moving resources out of `src/`
+- [ ] moving the font into `styles`
+- [ ] `vite` (rewrite testing guide)
 
 ## Usage
 You open up the [webpage](https://ngivanyh.github.io/changjie) for the first time and you'll be greeted with the first mode: layout practice. This mode is designed to help you learn the different key positions of the Cangjie word roots.
@@ -47,9 +56,9 @@ Original work licensed under the [MIT License](LICENSE-ORIGINAL).
 
 All further modifications (that differ from the original) licensed under [The Unlicense](LICENSE).
 
-Cangjie code table licnesed under the [MIT License](src/resources/LICENSE-CANGJIE5) under a different name, some modifications were done to the code table.
+Cangjie code table licnesed under the [MIT License](LICENSE-CANGJIE5) under a different name, some modifications were done to the code table.
 
-[`NotoSerifTC-Medium.woff2`](fonts/NotoSerifTC-Medium.woff2) was first downloaded (in `.ttf`) then converted to `.woff2` from [this font](https://fonts.google.com/noto/specimen/Noto+Serif+TC) which is licensed under the [SIL OFL 1.1 license](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license). (conversion using [this tool](https://kombu.kanejaku.org/))
+[`NotoSerifTC-Medium.woff2`](./src/styles/NotoSerifTC-Medium.woff2) was first downloaded (in `.ttf`) then converted to `.woff2` from [this font](https://fonts.google.com/noto/specimen/Noto+Serif+TC) which is licensed under the [SIL OFL 1.1 license](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license). (conversion using [this tool](https://kombu.kanejaku.org/))
 
 Icons licensed by Fonticons, Inc under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
