@@ -48,6 +48,7 @@ export const keyboardKeyClasses = {
         'incorrect': 'keyboard-key-activated-incorrect',
     },
 };
+export const baseURL = import.meta.BASE_URL;
 
 // cached ui elements
 export const input = document.querySelector('#input-box');

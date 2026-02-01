@@ -15,7 +15,8 @@ import {
     shake_box,
     reportErr,
     decomposedCharClasses,
-    keyboardKeyClasses
+    keyboardKeyClasses,
+    baseURL
 } from './js/helper.js';
 
 // program related data
@@ -81,8 +82,8 @@ async function retrieveCodeTable() {
         fetch_id = (segmentIndex === 4) ? String.fromCharCode(97) : String.fromCharCode(98 + segmentIndex);
     }
 
-    // file path like this to satisfy vite
-    await fetch(`cangjieCodeTable-${fetch_id}.min.json.gz`)
+    // root is set to src and public is set to ../pubic so a direct path used
+    await fetch(`${baseURL}cangjieCodeTable-${fetch_id}.min.json.gz`)
         .then(response => {
             if (!response.ok) {
                 const err_msg = `A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`;
