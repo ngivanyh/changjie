@@ -240,7 +240,7 @@ a:hover {
     right: 0.625rem;
 }
 
-/* light -> dark -> forest -> ocean -> apple -> ice */
+/* light -> dark -> forest -> ocean -> apple -> ice -> fire -> royalty */
 :root:not([theme="light"]) #theme-dark { display: none; }
 :root:not([theme="dark"]) #theme-forest { display: none; }
 :root:not([theme="forest"]) #theme-ocean { display: none; }
