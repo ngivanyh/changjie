@@ -2,7 +2,7 @@
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
 // imports
-import { cangjieCodeTable, retrieveCodeTable } from './js/codeTable.js';
+import { getCangjieCharacter, getCangjieCodes } from './js/codeTable.js';
 import appState from './js/state.js';
 import userSettings from './js/settings.js';
 import {
@@ -73,14 +73,8 @@ async function initPrac() {
     cangjieRegionSelection.disabled = true;
     document.querySelectorAll(keyboardKeyClasses.blink).forEach(key => key.classList.remove(keyboardKeyClasses.blink));
 
-    let char = Object.keys(cangjieCodeTable)[appState.practiceIndex];
-
-    if (!char) { // char is undefined, should be because cangjieCodeTable has no data/this set has been completedd
-        await retrieveCodeTable();
-        char = Object.keys(cangjieCodeTable)[appState.practiceIndex];
-    }
-
-    const charCode = cangjieCodeTable[char];
+    const char = getCangjieCharacter();
+    const charCode = getCangjieCodes();
 
     if (typeof(charCode) === 'object') { // char has regional differences
         cangjieRegionSelection.disabled = false; // re-enable selection

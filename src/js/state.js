@@ -34,7 +34,8 @@ class State {
 
     incrementCodePosition(increment = 1) {
         if ((this.#currentCodeIndex + increment) === this.#testCharCodeLength) {
-            this.#practiceIndex = saveSettings('practiceIndex', this.#practiceIndex + 1, false);
+            this.#practiceIndex = saveSettings('practiceIndex', (this.#practiceIndex + 1) % 29463, false);
+            // 29462 is the number of entries in the code table
             return 0; // user has finished practicing this character
         }
 

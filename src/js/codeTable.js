@@ -1,71 +1,66 @@
+/* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
+/* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
+
 import appState from "./state.js";
-import { reportErr } from "./helper.js";
+import { reportErr, queries } from "./helper.js";
 
-export let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
+// cache api
+const changjieCache = await caches.open('ChangjieCache');
+const cachedCangjieCodes = await changjieCache.match(queries.codes);
 
-export async function retrieveCodeTable() {
-    const segmentDetails = localStorage.getItem('segment_details');
+const cangjieCodes = (!cachedCangjieCodes) ? await getCodeTable() : await cachedCangjieCodes.json();
 
-    // default fetch id and index (will be used when there is no previous record of a code table)
-    const fetch_id = (segmentDetails) ? (JSON.parse(segmentDetails)['segment-index'] + 1) % 5 : 0;
+console.log('Cangjie codes:', cangjieCodes);
 
-    // root is set to src and public is set to ../pubic so a direct path used
-    const baseURL = import.meta.env.BASE_URL;
-    await fetch(`${baseURL}cangjieCodeTable-${fetch_id}.min.json.gz`)
-        .then(response => {
-            if (!response.ok) {
-                const err_msg = `A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`;
-                reportErr(err_msg);
-            }
+async function getCodeTable() {
+    let response;
+    try {
+        response = await fetch(queries.codes);
+    } catch (error) {
+        reportErr(`Failed to fetch Cangjie code table: ${error}`);
+    }
 
-            if (response.headers.get('Content-Encoding') === 'gzip')
-                return response.json();
+    if (!response.ok)
+        reportErr(`Request to fetch Cangjie code table failed with status ${response.status}: ${response.statusText}`);
 
-            const ds = new DecompressionStream('gzip');
-            return new Response(response.body.pipeThrough(ds)).json();
-        })
-        .then(data => {
-            if (!data || typeof(data) !== 'object') {
-                const err_msg = 'An error occurred whilst processing a certain program resource.';
-                reportErr(err_msg);
-            }
+    let data;
+    if (response.headers.get('Content-Encoding') === 'gzip') {
+        data = await response.json();
+    } else {
+        const ds = new DecompressionStream('gzip');
+        data = await new Response(response.body.pipeThrough(ds)).json();
+    }
 
-            cangjieCodeTable = {};
+    if (!data || typeof (data) !== 'object')
+        reportErr(`Expected Cangjie code table response datatype: object, got ${typeof(data)}`);
 
-            const data_keys = Object.keys(data.data);
+    let scrambledCangjieCodes = {};
 
-            // Fisher-Yates-Durstenfeld Shuffle
-            for (let i = 0; i < data_keys.length - 1; i++) {
-                const j = i + Math.floor(Math.random() * (data_keys.length - i));
+    const dataKeys = Object.keys(data);
 
-                [data_keys[i], data_keys[j]] = [data_keys[j], data_keys[i]];
-            }
+    // Fisher-Yates-Durstenfeld Shuffle
+    for (let i = 0; i < dataKeys.length - 1; i++) {
+        const j = i + Math.floor(Math.random() * (dataKeys.length - i));
+        [dataKeys[i], dataKeys[j]] = [dataKeys[j], dataKeys[i]];
+    }
 
-            for (const k of data_keys) cangjieCodeTable[k] = data.data[k];
+    for (const k of dataKeys) scrambledCangjieCodes[k] = data[k];
 
-            localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
-            localStorage.setItem('segment_details', JSON.stringify(data.details));
-        });
+    await changjieCache.put(
+        queries.codes,
+        new Response(
+            JSON.stringify(scrambledCangjieCodes),
+            { 'headers': { 'Content-Type': 'application/json' } }
+        )
+    );
 
-    // reset practiced index back to the starting point
-    appState.resetPracticeIndex();
+    return scrambledCangjieCodes;
 }
 
-// in progress (indexeddb)
-let cangjieCodesDB;
-const DBOpenReq = window.indexedDB.open('CangjieCodes', 1);
+export const getCangjieCharacter = () => {
+    return Object.keys(cangjieCodes)[appState.practiceIndex];
+}
 
-DBOpenReq.onsuccess = (event) => { cangjieCodesDB = event.target.result; };
-
-DBOpenReq.onerror = (event) => {
-    reportErr(`Database error: ${event.target.error?.message}`);
-};
-
-DBOpenReq.onupgradeneeded = (event) => {
-    // save the indexeddb database interface
-    const db = event.target.result;
-
-    // create an objectStore for this database
-    const objectStore = db.createObjectStore("CangjieCodes", { keyPath: "id" });
-};
-
+export const getCangjieCodes = () => {
+    return Object.values(cangjieCodes)[appState.practiceIndex];
+}
