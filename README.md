@@ -35,21 +35,9 @@ But that won't be all, these features are soon coming:
 Current Todos:
 - [ ] Key stagger option
 - [ ] indexeddb
-- [ ] moving resources out of `src/`
-- [ ] moving the font into `styles`
 - [ ] `vite` (rewrite testing guide)
 
 ## Usage
-You open up the [webpage](https://ngivanyh.github.io/changjie) for the first time and you'll be greeted with the first mode: layout practice. This mode is designed to help you learn the different key positions of the Cangjie word roots.
-
-You can toggle the theme in the bottom left, this will alternate between the different themes.
-
-In the middle is the keyboard visibility toggle, when you think you've gotten familiar with the key positions, you can cement your memorization by turning off the text on the keyboard. You can either press the eye icon or press space.
-
-When you see the character box shaking, it means you've pressed the meta key on your operating system. (it is a measure to inform of a bug where the operating system first registers the keyboard shortcut with the meta key then leaves the webpage stuck on an uninputable state)
-
-Clicking on the bottom right turns the program into decomposition mode. This mode forces you to decompose each individual Chinese character into its 1–5 word roots. Clicking on each decomposed character can give a gray hint, so can pressing enter (hints all), and pressing space (hints on the current character).
-
 
 ## Attribution
 Original work licensed under the [MIT License](LICENSE-ORIGINAL).
@@ -63,17 +51,44 @@ Cangjie code table licnesed under the [MIT License](LICENSE-CANGJIE5) under a di
 Icons licensed by Fonticons, Inc under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## Testing/Development
+This project uses [`vite`](https://vite.dev/) as a build tool, to test on your own setup or start developing, clone the repository first:
 
-Since this project relies on external resources (the Cangjie code table), you cannot put in the path to [`index.html`](./src/index.html) in the browser, it will not function properly. It must be hosted via something like [`http-server`](https://www.npmjs.com/package/http-server/) with:
+> [!IMPORTANT]  
+> You must at least have a `git`, `node`, and `yarn` installed to follow these steps.
 
 ```
-npx http-server src
+git clone https://github.com/ngivanyh/changjie.git
 ```
 
-Assuming you are in the root directory of this repository and run that command. This will spin up an instance that will be available on [`localhost:8080`](http://localhost:8080). Or any other port on your machine with the `-p` option (if available).
+Then `cd` into the cloned repository.
+
+```
+cd changjie
+```
+
+Install the required develepment dependencies (which is [`vite`](https://vite.dev/)):
+
+```
+yarn install
+```
+
+To run the testing server, simply do:
+
+```
+yarn dev
+```
+
+To build:
+
+```
+yarn build
+```
+
+To preview the built webpage:
+
+```
+yarn preview
+```
 
 > [!NOTE]
-> An installation of `npm` or similar must be present in order to use [`http-server`](https://www.npmjs.com/package/http-server/).
-
-> [!TIP]
-> [`http-server`](https://www.npmjs.com/package/http-server/) is not the **only** tool you can use, as long as it can serve these static files, it is an adequate tool.
+> If you're deploying to github pages, you do not need to build the webpage to have it serve the built webpage. (Assuming you're using the [`deploy.yaml`](.github/workflows/deploy.yaml))

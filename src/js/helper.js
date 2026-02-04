@@ -35,6 +35,11 @@ export const keyToRadicalTable = {
     ';': '；',
 };
 
+const baseURL = import.meta.env.BASE_URL;
+export const queries = {
+    'codes': `${baseURL}cangjieCodeTable.min.json.gz`,
+}
+
 // saved class names
 export const decomposedCharClasses = {
     'faded': 'decomposed-character-faded',

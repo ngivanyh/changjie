@@ -35,18 +35,50 @@
 ## 操作方式
 
 ## 版權聲明
+所有原本程式碼以[MIT License](LICENSE-ORIGINAL)發行。
+
+所有本專案對於原本程式碼的更改以[Unlicense](LICENSE)發行。
 
 ## 測試/開發
-因為此專案需利用外部資源，故無法直接在瀏覽器裡打開[`index.html`](./src/index.html)進行測試或開發，若是要的話須使用像是[`http-server`](https://www.npmjs.com/package/http-server/)或類似的軟體。在本專案的最上層資料夾以[`http-server`](https://www.npmjs.com/package/http-server/)進行測試的話，要跑：
+本專案使用[`vite`](https://vite.dev/)，請根據以下步驟以進行個人的內部測試或開發：
+
+
+> [!IMPORTANT]  
+> 您先需有`git`、`node`、`yarn`才可以執行後面的操作。
 
 ```
-npx http-server src
+git clone https://github.com/ngivanyh/changjie.git
 ```
 
-即可。這麼做就能在[`localhost:8080`](http://localhost:8080)上測試和開發，若`8080`埠無法使用則自己在命令裡加入`-p`和一個數字。
+在`cd`到`changjie`的資料較中。
+
+```
+cd changjie
+```
+
+安裝所需專案（為[`vite`](https://vite.dev/)）:
+
+```
+yarn install
+```
+
+若要進行個人內部測試，直接執行一下指令：
+
+```
+yarn dev
+```
+
+合成網頁：
+
+```
+yarn build
+```
+
+預覽合成網頁：
+
+```
+yarn preview
+```
 
 > [!NOTE]
-> 要利用[`http-server`](https://www.npmjs.com/package/http-server/)需要先安裝`npm`或類似之軟件。
-
-> [!TIP]
-> 利用[`http-server`](https://www.npmjs.com/package/http-server/)進行測試的方法僅供參考。
+> 假設要上傳到Github Pages，您不需先合成網頁，使用[`deploy.yaml`](.github/workflows/deploy.yaml)在Github Actions中執行即可。

@@ -2,6 +2,7 @@
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
 // imports
+import { getCangjieCharacter, getCangjieCodes } from './js/codeTable.js';
 import appState from './js/state.js';
 import userSettings from './js/settings.js';
 import {
@@ -13,13 +14,9 @@ import {
     keyToRadicalTable,
     cangjieRegionSelection,
     shake_box,
-    reportErr,
     decomposedCharClasses,
     keyboardKeyClasses,
 } from './js/helper.js';
-
-// program related data
-let cangjieCodeTable = JSON.parse(localStorage.getItem('cangjieCodeTable')) || {};
 
 // ui setup
 document.querySelector('#theme-toggle').addEventListener('click', (e) => {
@@ -59,10 +56,11 @@ if (deviceType === 'mobile') {
 }
 
 // make keyboard keys clickable (using e.target.closest to save eventListeners)
-document.querySelector('#keyboard').addEventListener('mousedown', handleKeyInput);
-document.querySelector('#keyboard').addEventListener('mouseup', handleKeyRelease);
-document.querySelector('#keyboard').addEventListener('touchstart', handleKeyInput);
-document.querySelector('#keyboard').addEventListener('touchend', handleKeyRelease);
+const keyboard = document.querySelector('#keyboard');
+keyboard.addEventListener('mousedown', handleKeyInput);
+keyboard.addEventListener('mouseup', handleKeyRelease);
+keyboard.addEventListener('touchstart', handleKeyInput);
+keyboard.addEventListener('touchend', handleKeyRelease);
 
 // event listener for decomposed character click in decomposition mode
 document.querySelector('#decomposed-characters').addEventListener('click', decomposedCharacterClicked);
@@ -70,72 +68,13 @@ document.querySelector('#decomposed-characters').addEventListener('click', decom
 // start program
 initPrac();
 
-async function retrieveCodeTable() {
-    const segmentDetails = localStorage.getItem('segment_details');
-
-    // default fetch id and index (will be used when there is no previous record of a code table)
-    let fetch_id = 'a';
-
-    if (segmentDetails) {
-        const segmentIndex = JSON.parse(segmentDetails)['segment-index'];
-        fetch_id = (segmentIndex === 4) ? String.fromCharCode(97) : String.fromCharCode(98 + segmentIndex);
-    }
-
-    // root is set to src and public is set to ../pubic so a direct path used
-    const baseURL = import.meta.env.BASE_URL;
-    await fetch(`${baseURL}cangjieCodeTable-${fetch_id}.min.json.gz`)
-        .then(response => {
-            if (!response.ok) {
-                const err_msg = `A network error occurred, the request to fetch a certain program resource has failed with ${response.status}: ${response.statusText}.`;
-                reportErr(err_msg);
-            }
-
-            if (response.headers.get('Content-Encoding') === 'gzip')
-                return response.json();
-
-            const ds = new DecompressionStream('gzip');
-            return new Response(response.body.pipeThrough(ds)).json();
-        })
-        .then(data => {
-            if (!data || typeof(data) !== 'object') {
-                const err_msg = 'An error occurred whilst processing a certain program resource.';
-                reportErr(err_msg);
-            }
-
-            cangjieCodeTable = {};
-
-            const data_keys = Object.keys(data.data);
-
-            // Fisher-Yates-Durstenfeld Shuffle
-            for (let i = 0; i < data_keys.length - 1; i++) {
-                const j = i + Math.floor(Math.random() * (data_keys.length - i));
-
-                [data_keys[i], data_keys[j]] = [data_keys[j], data_keys[i]];
-            }
-
-            for (const k of data_keys) cangjieCodeTable[k] = data.data[k];
-
-            localStorage.setItem('cangjieCodeTable', JSON.stringify(cangjieCodeTable));
-            localStorage.setItem('segment_details', JSON.stringify(data.details));
-        });
-
-    // reset practiced index back to the starting point
-    appState.resetPracticeIndex();
-}
-
 async function initPrac() {
     // resetting ui
     cangjieRegionSelection.disabled = true;
     document.querySelectorAll(keyboardKeyClasses.blink).forEach(key => key.classList.remove(keyboardKeyClasses.blink));
 
-    let char = Object.keys(cangjieCodeTable)[appState.practiceIndex];
-
-    if (!char) { // char is undefined, should be because cangjieCodeTable has no data/this set has been completedd
-        await retrieveCodeTable();
-        char = Object.keys(cangjieCodeTable)[appState.practiceIndex];
-    }
-
-    const charCode = cangjieCodeTable[char];
+    const char = getCangjieCharacter();
+    const charCode = getCangjieCodes();
 
     if (typeof(charCode) === 'object') { // char has regional differences
         cangjieRegionSelection.disabled = false; // re-enable selection
