@@ -16,14 +16,13 @@ This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/ca
 - A more complete keyboard to reference when learning the key positions
 - Leaving only the silhouette of the keyboard in layout mode to practice touch typing
 - Smoother transitions between mode/theme switching
-- Similar or improved page performance whilst having more to practice (≒ 30K characters!)
+- Similar or improved page performance whilst having more to practice (≒ 16K characters!)
 - More themes! (Light, Dark, Forest, Ocean, Apple, Ice, Fire, Royalty; a total of **8**)
 
 However, under the hood lies the most significant changes. 
 - Central state and settings management
 - Modern JavaScript practices
 - Modular JavaScript to delegate different functions of the program
-- Sharding the now larger Cangjie code table for performance
 - Comments throughout core portions of the program to ensure maintainability
 
 But that won't be all, these features are soon coming:
@@ -34,8 +33,6 @@ But that won't be all, these features are soon coming:
 
 Current Todos:
 - [ ] Key stagger option
-- [ ] indexeddb
-- [ ] `vite` (rewrite testing guide)
 
 ## Usage
 
