@@ -16,7 +16,7 @@ This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/ca
 - A more complete keyboard to reference when learning the key positions
 - Leaving only the silhouette of the keyboard in layout mode to practice touch typing
 - Smoother transitions between mode/theme switching
-- Similar or improved page performance whilst having more to practice (≒ 16K characters!)
+- Similar or improved page performance whilst having more to practice (≒ 16K characters, including only the more commonly used characters in Taiwan and Hong Kong)
 - More themes! (Light, Dark, Forest, Ocean, Apple, Ice, Fire, Royalty; a total of **8**)
 
 However, under the hood lies the most significant changes. 

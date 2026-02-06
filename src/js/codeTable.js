@@ -4,13 +4,13 @@
 import appState from "./state.js";
 import { reportErr, queries } from "./helper.js";
 
-// cache api
+// cangjie code table w/ cache api
+
 const changjieCache = await caches.open('ChangjieCache');
+// see if k, v entry is in the cache
 const cachedCangjieCodes = await changjieCache.match(queries.codes);
 
 const cangjieCodes = (!cachedCangjieCodes) ? await getCodeTable() : await cachedCangjieCodes.json();
-
-console.log('Cangjie codes:', cangjieCodes);
 
 async function getCodeTable() {
     let response;
@@ -26,13 +26,13 @@ async function getCodeTable() {
     let data;
     if (response.headers.get('Content-Encoding') === 'gzip') {
         data = await response.json();
-    } else {
+    } else { // needs extra compression step
         const ds = new DecompressionStream('gzip');
         data = await new Response(response.body.pipeThrough(ds)).json();
     }
 
     if (!data || typeof (data) !== 'object')
-        reportErr(`Expected Cangjie code table response datatype: object, got ${typeof(data)}`);
+        reportErr(`Expected Cangjie code table response datatype: object, got ${typeof(data)}`, false);
 
     let scrambledCangjieCodes = {};
 
@@ -57,6 +57,7 @@ async function getCodeTable() {
     return scrambledCangjieCodes;
 }
 
+// exports
 export const getCangjieCharacter = () => {
     return Object.keys(cangjieCodes)[appState.practiceIndex];
 }
