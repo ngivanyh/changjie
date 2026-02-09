@@ -17,7 +17,6 @@ class Setting extends Cycler {
 
     // private save method so people cannot put in bogus values
     #save() { saveSettings(this.#saveParams[0], this.currentValue, this.#saveParams[1]); }
-
     // the parent methods + autosaving
     next() { super.next(); this.#save(); }
     prev() { super.prev(); this.#save(); }

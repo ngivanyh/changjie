@@ -10,14 +10,15 @@
 4. [Testing/Development](#testingdevelopment)
 
 ## Description
-`changjie` is a project designed to help you practice and learn Cangjie, an input method of Chinese that relies on typing different word "roots" that's based on how the character is written. Simplicity is this project's core philosophy, that means minimalist styling; no backends (just a simple server that hosts these static files, data is stored in `localStorage` (`IndexedDB` migration coming)); no external dependencies; and clean, concise code that makes this project hackable and extendable.
+`changjie` is a project designed to help you practice and learn Cangjie, an input method of Chinese that relies on typing different word "roots" that's based on how the character is written. Simplicity is this project's core philosophy, that means minimalist styling; no backends (just a simple server that hosts these static files, data is stored in `localStorage` and in the Cache); no external dependencies; and modern, concise code that makes this project hackable and extendable.
 
 This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/cangzen), but it extends the original functionality and adds some QOL improvements. These include:
 - A more complete keyboard to reference when learning the key positions
 - Leaving only the silhouette of the keyboard in layout mode to practice touch typing
 - Smoother transitions between mode/theme switching
-- Similar or improved page performance whilst having more to practice (≒ 16K characters, including only the more commonly used characters in Taiwan and Hong Kong)
+- Similar or improved page performance whilst having more to practice (≒ 16K characters, only including the more commonly used characters in Taiwan and Hong Kong)
 - More themes! (Light, Dark, Forest, Ocean, Apple, Ice, Fire, Royalty; a total of **8**)
+- More responsive CSS for better adaptation across more devices
 
 However, under the hood lies the most significant changes. 
 - Central state and settings management
@@ -30,9 +31,6 @@ But that won't be all, these features are soon coming:
 - Decomposition mode revamp (Issue: #7)
 - Drastically improved mobile experience (Issue: #4)
 - Practicing in sentences, rather than individual words (Issue: #10)
-
-Current Todos:
-- [ ] Key stagger option
 
 ## Usage
 
@@ -52,6 +50,9 @@ This project uses [`vite`](https://vite.dev/) as a build tool, to test on your o
 
 > [!IMPORTANT]  
 > You must at least have a `git`, `node`, and `yarn` installed to follow these steps.
+
+> [!WARNING]
+> If you're not using HTTPS on your testing server, please make sure you're not using Chrome, Safari, or any web browser that only supports the Cache API in HTTPS.
 
 ```
 git clone https://github.com/ngivanyh/changjie.git

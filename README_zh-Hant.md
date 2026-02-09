@@ -20,7 +20,7 @@
 - 更多介面樣式 （淺色、深色、森林、海洋、蘋果、冰雪、火焰、王室，共**八**個）
 
 但改變不僅如此，與原本差最多的為程式碼本身，改變為下：
-- 中央的管理使用者設定和網頁狀態
+- 中央管理使用者設定和網頁狀態
 - 現代JavaScript程式手法
 - 模組化程式碼
 - （英語）程式碼提示語
@@ -46,11 +46,14 @@
 > [!IMPORTANT]  
 > 您先需有`git`、`node`、`yarn`才可以執行後面的操作。
 
+> [!WARNING]
+> 若您的測試伺服器無HTTPS連線，請勿使用Chrome、Safari等只能在有HTTPS的情況下使用Cache API的瀏覽器。
+
 ```
 git clone https://github.com/ngivanyh/changjie.git
 ```
 
-在`cd`到`changjie`的資料較中。
+在`cd`到`changjie`的資料夾中。
 
 ```
 cd changjie

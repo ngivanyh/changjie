@@ -10,7 +10,7 @@
 :root {
     /* fonts */
     --font: 'Noto Serif TC (Medium)', serif;
-    --english-font: Arial, Helvetica, sans-serif;
+    --english-font: system-ui, -apple-system, 'Segoe UI', Roboto;
     --key-height: 4.2rem;
     /* keyboard key hover/blink box shadow */
     --keyboard-key-shadow: inset 0 0 0.8125rem 0 var(--font-color);
@@ -24,6 +24,8 @@
     --key-correct: #44fc11;
     --key-incorrect: #ff0010;
     --link-hover: #1d75e0;
+    /* transition */
+    --transition-fast: 0.2s ease;
 }
 
 [theme='light'] {

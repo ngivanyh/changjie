@@ -1,15 +1,19 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-body {
-    background-color: var(--bg-color);
-    transition: background-color 0.2s ease;
-    color: var(--font-color);
-    font-family: var(--font);
+* {
+    box-sizing: border-box;
 }
 
 .shake {
     animation: shake 0.2s ease-in-out;
+}
+
+body {
+    background-color: var(--bg-color);
+    transition: background-color var(--transition-fast);
+    color: var(--font-color);
+    font-family: var(--font);
 }
 
 #input-box {
@@ -25,13 +29,18 @@ body {
 }
 
 #testing-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
     margin-top: 2vh;
-    text-align: center;
-    transition: margin-top 0.2s ease;
+    transition: margin-top var(--transition-fast);
 }
 
 #cangjie-select {
     appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
     /* match the overall design */
     background-color: var(--bg-color);
     color: var(--font-color);
@@ -42,7 +51,10 @@ body {
     padding: 0.25rem 0.5rem 0.25rem 0.5rem;
     min-width: 4.5rem;
     margin-bottom: 0.5rem;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition:
+        color var(--transition-fast),
+        background-color var(--transition-fast),
+        border-color var(--transition-fast);
     cursor: pointer;
     /* custom dropdown arrow */
     background-image:
@@ -70,7 +82,9 @@ body {
 }
 
 #test-char {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 0.125rem solid var(--font-color);
     font-size: 10.75rem;
     padding: 0 1.875rem;
@@ -78,8 +92,9 @@ body {
 }
 
 a {
-    all: unset; /* unset all default styling from os/browser (should be available on all major browsers) */
+    text-decoration: none; /* unset default text-decoration styling */
     cursor: pointer; /* set back the pointer settings */
+    color: inherit;
 }
 
 a:hover {
@@ -90,7 +105,7 @@ a:hover {
 #decomposed-characters {
     text-align: center;
     margin-top: var(--practice-mode-cursor-margin-size);
-    transition: margin-top 0.2s ease;
+    transition: margin-top var(--transition-fast);
 }
 
 .decomposed-character {
@@ -101,10 +116,11 @@ a:hover {
     line-height: 6.25rem;
     font-size: 3.5rem;
     margin: 0 0.25rem;
-    border-bottom-width: var(--practice-mode-border-bottom-width);
-    border-bottom-style: var(--practice-mode-border-bottom-style);
-    border-bottom-color: var(--font-color);
-    transition: border-bottom-width 0.2s ease;
+    border-bottom:
+        var(--practice-mode-border-bottom-width)
+        var(--practice-mode-border-bottom-style)
+        var(--font-color);
+    transition: border-bottom-width var(--transition-fast);
 }
 
 /* default: white text when not faded */
@@ -129,14 +145,9 @@ a:hover {
 }
 
 #keyboard {
-    margin: 5vh auto;
     display: var(--keyboard-display);
-    transition: opacity 0.2s ease;
-    opacity: 1;
-}
-
-[mode='decomposition'] #keyboard {
-    opacity: 0;
+    margin: 5vh auto;
+    transition: display var(--transition-fast);
 }
 
 .keyboard-row {
@@ -173,6 +184,8 @@ a:hover {
     line-height: var(--key-height);
     margin: 0 0.1875rem 0 0.1875rem;
     user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 [kbVisibility='hidden'] .keyboard-key {
@@ -213,12 +226,20 @@ a:hover {
 /* bottom toggle row */
 .ui-toggle-row {
     fill: var(--font-color);
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.625rem;
+    position: fixed;
+    bottom: 0.625rem;
+    left: 0;
+    right: 0
 }
 
 .ui-toggle {
-    position: fixed;
-    bottom: 0.625rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 1.875rem;
     height: 1.875rem;
 }
@@ -227,43 +248,42 @@ a:hover {
     display: inline-block;
 }
 
-#theme-toggle {
-    left: 0.625rem;
-}
-
 #kb-toggle {
     display: var(--keyboard-display);
-    left: calc(50vw - 0.9375rem);
-}
-
-#mode-toggle {
-    right: 0.625rem;
 }
 
 /* light -> dark -> forest -> ocean -> apple -> ice -> fire -> royalty */
-:root:not([theme="light"]) #theme-dark { display: none; }
-:root:not([theme="dark"]) #theme-forest { display: none; }
-:root:not([theme="forest"]) #theme-ocean { display: none; }
-:root:not([theme="ocean"]) #theme-apple { display: none; }
-:root:not([theme="apple"]) #theme-ice { display: none; }
-:root:not([theme="ice"]) #theme-fire { display: none; }
-:root:not([theme="fire"]) #theme-royalty { display: none; }
-:root:not([theme="royalty"]) #theme-light { display: none; }
+:root:not([theme='light']) #theme-dark { display: none; }
+:root:not([theme='dark']) #theme-forest { display: none; }
+:root:not([theme='forest']) #theme-ocean { display: none; }
+:root:not([theme='ocean']) #theme-apple { display: none; }
+:root:not([theme='apple']) #theme-ice { display: none; }
+:root:not([theme='ice']) #theme-fire { display: none; }
+:root:not([theme='fire']) #theme-royalty { display: none; }
+:root:not([theme='royalty']) #theme-light { display: none; }
 
 /* kb visibility icon toggle */
-[kbVisibility="visible"] #visibility-visible {
+[kbVisibility='visible'] #visibility-visible {
     display: none;
 }
 
-[kbVisibility="hidden"] #visibility-invisible {
+[kbVisibility='hidden'] #visibility-invisible {
     display: none;
 }
 
 /* mode icon toggle */
-[mode="layout"] #mode-layout {
+[mode='layout'] #mode-layout {
     display: none;
 }
 
-[mode="decomposition"] #mode-decomposition {
+[mode='decomposition'] #mode-decomposition {
     display: none;
+}
+
+/* disable animations for users with prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none;
+        transition: none;
+    }
 }
