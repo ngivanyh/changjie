@@ -11,10 +11,10 @@
     /* fonts */
     --font: 'Noto Serif TC (Medium)', serif;
     --english-font: system-ui, -apple-system, 'Segoe UI', Roboto;
-    --key-height: 4.2rem;
+    --key-height: clamp(3.5rem, 4.2rem, 5rem);
     /* keyboard key hover/blink box shadow */
-    --keyboard-key-shadow: inset 0 0 0.8125rem 0 var(--font-color);
-    --region-select-shadow: inset 0 0 0.625rem 0 var(--font-color);
+    --keyboard-key-shadow: inset 0 0 0.250em 0 var(--font-color);
+    --region-select-shadow: inset 0 0 0.375em 0 var(--font-color);
     /* fallback theme (light mode) */
     --bg-color: white;
     --font-color: black;
@@ -117,15 +117,15 @@
 /* used for shaking the character box */
 @keyframes shake {
   0%   { transform: translateX(0); }
-  10%  { transform: translateX(-0.5rem); }
-  20%  { transform: translateX(0.5rem); }
-  30%  { transform: translateX(-0.5rem); }
-  40%  { transform: translateX(0.5rem); }
-  50%  { transform: translateX(-0.5rem); }
-  60%  { transform: translateX(0.5rem); }
-  70%  { transform: translateX(-0.5rem); }
-  80%  { transform: translateX(0.5rem); }
-  90%  { transform: translateX(-0.5rem); }
+  10%  { transform: translateX(-0.05em); }
+  20%  { transform: translateX(0.05em); }
+  30%  { transform: translateX(-0.05em); }
+  40%  { transform: translateX(0.05em); }
+  50%  { transform: translateX(-0.05em); }
+  60%  { transform: translateX(0.05em); }
+  70%  { transform: translateX(-0.05em); }
+  80%  { transform: translateX(0.05em); }
+  90%  { transform: translateX(-0.05em); }
   100% { transform: translateX(0); }
 }
 

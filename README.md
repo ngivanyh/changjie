@@ -1,7 +1,7 @@
 <!-- Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) -->
 
 # `changjie`
-### [繁體中文](README_zh-Hant.md)
+### [繁體中文版本](README_zh-Hant.md)
 
 ## Table of Contents
 1. [Description](#description)
@@ -17,7 +17,7 @@ This project was originated from [`Cycatz/cangzen`](https://github.com/Cycatz/ca
 - Leaving only the silhouette of the keyboard in layout mode to practice touch typing
 - Smoother transitions between mode/theme switching
 - Similar or improved page performance whilst having more to practice (≒ 16K characters, only including the more commonly used characters in Taiwan and Hong Kong)
-- More themes! (Light, Dark, Forest, Ocean, Apple, Ice, Fire, Royalty; a total of **8**)
+- More themes! (Light, Dark, Forest, Ocean, Apple, Ice, Fire, Royalty; a tally of **8**)
 - More responsive CSS for better adaptation across more devices
 
 However, under the hood lies the most significant changes. 
@@ -52,7 +52,7 @@ This project uses [`vite`](https://vite.dev/) as a build tool, to test on your o
 > You must at least have a `git`, `node`, and `yarn` installed to follow these steps.
 
 > [!WARNING]
-> If you're not using HTTPS on your testing server, please make sure you're not using Chrome, Safari, or any web browser that only supports the Cache API in HTTPS.
+> If you're not using HTTPS on your testing server, please make sure you're not using Chrome, Safari, or any web browser that only supports the Cache API in HTTPS contexts.
 
 ```
 git clone https://github.com/ngivanyh/changjie.git

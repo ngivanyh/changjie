@@ -38,7 +38,9 @@
 
 所有本專案對於原本程式碼的更改以[Unlicense](LICENSE)發行。
 
-倉頡對照表基於
+倉頡對照表之資料由其他專案而來，所有原本著作在另一個[MIT License](LICENSE-CANGJIE5)下發行。
+
+[`NotoSerifTC-Medium.woff2`](./src/styles/NotoSerifTC-Medium.woff2)字體從`.ttf`格式轉為`.woff2`格式（[來源](https://fonts.google.com/noto/specimen/Noto+Serif+TC)）；字體由[SIL OFL 1.1 license](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license)發行。([轉換工具](https://kombu.kanejaku.org/))
 
 ## 測試/開發
 本專案使用[`vite`](https://vite.dev/)，請根據以下步驟以進行個人的內部測試或開發：
@@ -47,7 +49,7 @@
 > 您先需有`git`、`node`、`yarn`才可以執行後面的操作。
 
 > [!WARNING]
-> 若您的測試伺服器無HTTPS連線，請勿使用Chrome、Safari等只能在有HTTPS的情況下使用Cache API的瀏覽器。
+> 若您的測試伺服器無HTTPS連線，請勿使用Chrome、Safari等只能在有HTTPS的條件下使用Cache API的瀏覽器。
 
 ```
 git clone https://github.com/ngivanyh/changjie.git
