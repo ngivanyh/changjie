@@ -30,10 +30,9 @@ class State {
         this.#currentDecomposedChar = decomposedChars[this.#currentCodeIndex];
     }
 
-    resetPracticeIndex() { this.#practiceIndex = saveSettings('practiceIndex', 0, false); }
-
+    // returns the amount of increment
     incrementCodePosition(increment = 1) {
-        if ((this.#currentCodeIndex + increment) === this.#testCharCodeLength) {
+        if ((this.#currentCodeIndex + increment) >= this.#testCharCodeLength) {
             this.#practiceIndex = saveSettings('practiceIndex', (this.#practiceIndex + 1) % 29463, false);
             // 29462 is the number of entries in the code table
             return 0; // user has finished practicing this character
@@ -44,6 +43,8 @@ class State {
         this.#currentDecomposedChar = decomposedChars[this.#currentCodeIndex];
         return increment;
     }
+
+    resetPracticeIndex() { this.#practiceIndex = saveSettings('practiceIndex', 0, false); }
 
     // getters (the fields themselves)
     get testCharCode() { return this.#testCharCode; }

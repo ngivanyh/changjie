@@ -38,6 +38,7 @@ export const keyToRadicalTable = {
 const baseURL = import.meta.env.BASE_URL;
 export const queries = {
     'codes': `${baseURL}cangjieCodeTable.min.json.gz`,
+    // future: sentence resource
 }
 
 // saved class names
@@ -62,9 +63,10 @@ export const decomposedChars = Array.from(
     document.querySelector('#decomposed-characters').children,
 );
 export const kbKeys = Object.fromEntries(
-    Array.from(Object.keys(keyToRadicalTable), (k) => [
-        k, document.getElementById(`keyboard-key-${k}`),
-    ]),
+    Array.from(
+        Object.keys(keyToRadicalTable),
+        (k) => [k, document.getElementById(`keyboard-key-${k}`)]
+    ),
 );
 
 // helper functions
@@ -79,7 +81,7 @@ export const loadSettings = (localStorageKey, fallback) => {
     return localStorage.getItem(localStorageKey) || fallback;
 };
 
-export const shake_box = () => {
+export const shakeBox = () => {
     charBox.classList.add('shake');
     setTimeout(() => {
         charBox.classList.remove('shake');

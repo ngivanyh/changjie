@@ -12,13 +12,11 @@ class Setting extends Cycler {
         if (saveParams.length !== 2 || typeof (saveParams[0]) !== 'string' || typeof (saveParams[1]) !== 'boolean')
             reportErr('saveParams not to spec, expected list: [string, boolean]', false);
 
-
         this.#saveParams = saveParams;
     }
 
     // private save method so people cannot put in bogus values
     #save() { saveSettings(this.#saveParams[0], this.currentValue, this.#saveParams[1]); }
-
     // the parent methods + autosaving
     next() { super.next(); this.#save(); }
     prev() { super.prev(); this.#save(); }
@@ -34,7 +32,7 @@ class Settings {
     #kbVisibility;
 
     constructor() {
-    // user definable settings
+        // user definable settings
         this.#theme = new Setting(['light', 'dark', 'forest', 'ocean', 'apple', 'ice', 'fire', 'royalty'], ['theme', true]);
         this.#regionPreference = new Setting(['hk', 'tw'], ['regionPreference', false]);
         this.#mode = new Setting(['layout', 'decomposition'], ['mode', true]);

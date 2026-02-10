@@ -16,13 +16,13 @@
 - 較完整的鍵盤，使對照鍵位更加輕鬆
 - 鍵盤的顯示開關，以練習不看鍵盤打字
 - 介面轉場效果
-- 在能練習更多的字的情況下（≒ 1.6萬字），類似或提升的網頁速度
+- 在能練習更多的字的情況下（≒ 1.6萬字，僅包含台灣和香港常用字和詞常用字），類似或提升的網頁速度
 - 更多介面樣式 （淺色、深色、森林、海洋、蘋果、冰雪、火焰、王室，共**八**個）
 
 但改變不僅如此，與原本差最多的為程式碼本身，改變為下：
-- 中央的管理使用者設定和網頁狀態
+- 中央管理使用者設定和網頁狀態
 - 現代JavaScript程式手法
-- 模組化的程式碼
+- 模組化程式碼
 - （英語）程式碼提示語
 
 除此之外，之後還希望增加這些功能：
@@ -38,7 +38,9 @@
 
 所有本專案對於原本程式碼的更改以[Unlicense](LICENSE)發行。
 
-倉頡對照表基於
+倉頡對照表之資料由其他專案而來，所有原本著作在另一個[MIT License](LICENSE-CANGJIE5)下發行。
+
+[`NotoSerifTC-Medium.woff2`](./src/styles/NotoSerifTC-Medium.woff2)字體從`.ttf`格式轉為`.woff2`格式（[來源](https://fonts.google.com/noto/specimen/Noto+Serif+TC)）；字體由[SIL OFL 1.1 license](https://fonts.google.com/noto/specimen/Noto+Serif+TC/license)發行。([轉換工具](https://kombu.kanejaku.org/))
 
 ## 測試/開發
 本專案使用[`vite`](https://vite.dev/)，請根據以下步驟以進行個人的內部測試或開發：
@@ -46,11 +48,14 @@
 > [!IMPORTANT]  
 > 您先需有`git`、`node`、`yarn`才可以執行後面的操作。
 
+> [!WARNING]
+> 若您的測試伺服器無HTTPS連線，請勿使用Chrome、Safari等只能在有HTTPS的條件下使用Cache API的瀏覽器。
+
 ```
 git clone https://github.com/ngivanyh/changjie.git
 ```
 
-在`cd`到`changjie`的資料較中。
+在`cd`到`changjie`的資料夾中。
 
 ```
 cd changjie

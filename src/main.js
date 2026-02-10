@@ -13,12 +13,12 @@ import {
     decomposedChars,
     keyToRadicalTable,
     cangjieRegionSelection,
-    shake_box,
+    shakeBox,
     decomposedCharClasses,
     keyboardKeyClasses,
 } from './js/helper.js';
 
-// ui setup
+// ui setup (event listeners)
 document.querySelector('#theme-toggle').addEventListener('click', (e) => {
     if (e.button === 0) // cycle next when left click pressed
         userSettings.theme.next();
@@ -45,6 +45,7 @@ cangjieRegionSelection.addEventListener('change', () => {
 
 // event listeners for the typing
 if (deviceType === 'mobile') {
+    // let users be able to get the digital keyboard out
     document.querySelector('main').addEventListener('click', () => {
         if (document.activeElement !== input) input.focus();
     });
@@ -147,7 +148,7 @@ function layoutHandleInput(keyname = '') {
     }
 
     if (appState.metaStateValue) {
-        shake_box();
+        shakeBox();
         return 1;
     }
 
@@ -197,7 +198,7 @@ function decompositionHandleInput(keyname = '') {
     }
 
     if (keyname !== appState.currentChar) {
-        shake_box();
+        shakeBox();
         return 1;
     }
 
