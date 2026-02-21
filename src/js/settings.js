@@ -1,7 +1,7 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-import { saveSettings, Cycler, reportErr, loadSettings} from "./helper.js";
+import { saveSettings, Cycler, reportErr, loadSetting} from "./helper.js";
 
 class Setting extends Cycler {
     #saveParams;
@@ -17,6 +17,7 @@ class Setting extends Cycler {
 
     // private save method so people cannot put in bogus values
     #save() { saveSettings(this.#saveParams[0], this.currentValue, this.#saveParams[1]); }
+
     // the parent methods + autosaving
     next() { super.next(); this.#save(); }
     prev() { super.prev(); this.#save(); }
@@ -55,9 +56,9 @@ const userSettings = new Settings();
 
 const preferredColorScheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
 
-userSettings.theme.setByValue(loadSettings('theme', preferredColorScheme));
-userSettings.mode.setByValue(loadSettings('mode', userSettings.modeValue));
-userSettings.regionPreference.setByValue(loadSettings('regionPreference', userSettings.regionPreferenceValue));
-userSettings.kbVisibility.setByValue(loadSettings('kbVisibility', userSettings.kbVisibilityValue));
+userSettings.theme.setByValue(loadSetting('theme', preferredColorScheme));
+userSettings.mode.setByValue(loadSetting('mode', userSettings.modeValue));
+userSettings.regionPreference.setByValue(loadSetting('regionPreference', userSettings.regionPreferenceValue));
+userSettings.kbVisibility.setByValue(loadSetting('kbVisibility', userSettings.kbVisibilityValue));
 
 export default userSettings;

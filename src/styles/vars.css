@@ -28,6 +28,7 @@
     --transition-fast: 0.2s ease;
 }
 
+/* themes */
 [theme='light'] {
     --bg-color: white;
     --font-color: black;

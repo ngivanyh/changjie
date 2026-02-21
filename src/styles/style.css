@@ -193,7 +193,6 @@ a:hover {
 
 [kbVisibility] .keyboard-key:hover {
     box-shadow: var(--keyboard-key-shadow);
-    animation: none;
 }
 
 /* home dot */

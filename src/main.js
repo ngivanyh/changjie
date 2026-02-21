@@ -20,9 +20,9 @@ import {
 
 // ui setup (event listeners)
 document.querySelector('#theme-toggle').addEventListener('click', (e) => {
-    if (e.button === 0) // cycle next when left click pressed
+    if (e.button === 0)            // cycle next when left click pressed
         userSettings.theme.next();
-    else // cycle to previous when right click pressed
+    else                           // cycle to previous when right click pressed
         userSettings.theme.prev();
 });
 
@@ -56,7 +56,7 @@ if (deviceType === 'mobile') {
     document.addEventListener('keyup', handleKeyRelease);
 }
 
-// make keyboard keys clickable (using e.target.closest to save eventListeners)
+// make keyboard keys clickable
 const keyboard = document.querySelector('#keyboard');
 keyboard.addEventListener('mousedown', handleKeyInput);
 keyboard.addEventListener('mouseup', handleKeyRelease);
@@ -99,7 +99,7 @@ async function initPrac() {
     }
 
     // hide unused decomposition cursor characters
-    Array.from(decomposedChars).slice(appState.testCharCodeLength).forEach(
+    decomposedChars.slice(appState.testCharCodeLength).forEach(
         unusedCursorChar => unusedCursorChar.style.display = 'none'
     );
 
@@ -112,6 +112,7 @@ async function initPrac() {
 
 function handleKeyInput(e) {
     let keyname;
+
     if (e.type === 'keydown') {
         keyname = (e.key).toLowerCase();
     } else {
@@ -126,9 +127,10 @@ function handleKeyInput(e) {
     if (out) return; // handler prematurely returned
 
     // check if we need to move on
-    if (!appState.incrementCodePosition()) // this check also implicitly increments the state
+    if (!appState.incrementCodePosition()) // this check also increments the code position
         initPrac();
     else if (userSettings.modeValue === 'layout') {
+        // set the next blinking keyboard key
         appState.currentDecomposedChar.classList.add(decomposedCharClasses.selected);
         kbKeys[appState.currentChar].classList.add(keyboardKeyClasses.blink);
     }

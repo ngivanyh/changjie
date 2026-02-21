@@ -77,7 +77,7 @@ export const saveSettings = (k, v, isDocumentAttribute = true) => {
     return v;
 };
 
-export const loadSettings = (localStorageKey, fallback) => {
+export const loadSetting = (localStorageKey, fallback) => {
     return localStorage.getItem(localStorageKey) || fallback;
 };
 
@@ -139,6 +139,6 @@ export class Cycler {
         this.#currentValue = this.#values[this.#currentIndex];
     }
 
-    // getters (not all fields exposed because there isn't a need to)
+    // getters (not all fields exposed because is no need)
     get currentValue() { return this.#currentValue; }
 }

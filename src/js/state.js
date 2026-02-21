@@ -1,7 +1,7 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-import { Cycler, decomposedChars, loadSettings, saveSettings } from "./helper.js";
+import { Cycler, decomposedChars, loadSetting, saveSettings } from "./helper.js";
 
 class State {
     #testCharCode;
@@ -19,7 +19,7 @@ class State {
         this.#currentCodeChar = '';
         this.#currentDecomposedChar = undefined;
         this.#pressedMeta = new Cycler([false, true]);
-        this.#practiceIndex = Number(loadSettings('practiceIndex', 0));
+        this.#practiceIndex = Number(loadSetting('practiceIndex', 0));
     }
 
     newTestCharacter(testCharCode) {
