@@ -170,18 +170,20 @@ a:hover {
 }
 
 [kbVisibility] .keyboard-key {
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     color: var(--font-color);
     background-color: var(--bg-color);
     font-family: var(--font);
     position: relative;
-    font-size: 2.5rem;
+    font-size: 2.8vw;
     border: 0.125rem solid var(--font-color);
-    width: 3.75rem;
+    width: 4.2vw;
     height: var(--key-height);
     line-height: var(--key-height);
-    margin: 0 0.1875rem 0 0.1875rem;
+    margin: 0 0.1em 0 0.1em;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -200,11 +202,11 @@ a:hover {
 #keyboard-key-j::after {
     content: '';
     position: absolute;
-    bottom: 0.25rem;
+    bottom: 0.125em;
     left: 50%;
     transform: translateX(-50%);
-    width: 0.375rem;
-    height: 0.375rem;
+    width: 0.125em;
+    height: 0.125em;
     border-radius: 50%;
     background: var(--font-color);
 }
@@ -235,8 +237,8 @@ a:hover {
 }
 
 .ui-toggle {
-    width: 1.875rem;
-    height: 1.875rem;
+    width: 2vw;
+    height: 2vw;
 }
 
 .settings-icon {

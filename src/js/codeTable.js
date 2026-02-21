@@ -26,7 +26,8 @@ async function getCodeTable() {
     let data;
     if (response.headers.get('Content-Encoding') === 'gzip') {
         data = await response.json();
-    } else { // needs extra compression step
+    } else {
+        // needs extra compression step
         const ds = new DecompressionStream('gzip');
         data = await new Response(response.body.pipeThrough(ds)).json();
     }

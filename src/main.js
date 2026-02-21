@@ -20,9 +20,10 @@ import {
 
 // ui setup (event listeners)
 document.querySelector('#theme-toggle').addEventListener('click', (e) => {
-    if (e.button === 0)            // cycle next when left click pressed
+    // cycle differently based on mouse click
+    if (e.button === 0)
         userSettings.theme.next();
-    else                           // cycle to previous when right click pressed
+    else
         userSettings.theme.prev();
 });
 
@@ -45,7 +46,7 @@ cangjieRegionSelection.addEventListener('change', () => {
 
 // event listeners for the typing
 if (deviceType === 'mobile') {
-    // let users be able to get the digital keyboard out
+    // let users be able to get the on screen keyboard out
     document.querySelector('main').addEventListener('click', () => {
         if (document.activeElement !== input) input.focus();
     });
@@ -77,7 +78,7 @@ async function initPrac() {
     const char = getCangjieCharacter();
     const charCode = getCangjieCodes();
 
-    if (typeof(charCode) === 'object') { // char has regional differences
+    if (typeof(charCode) === 'object') {         // char has regional differences
         cangjieRegionSelection.disabled = false; // re-enable selection
         appState.newTestCharacter(charCode[userSettings.regionPreferenceValue]);
     } else {
@@ -217,7 +218,7 @@ function decomposedCharacterClicked(e) {
     if (!decomposedCharToBeClicked || userSettings.modeValue !== 'decomposition')
         return;
 
-    const characterIndex = Number(decomposedCharToBeClicked.id.slice(-1)) - 1;
+    const characterIndex = Number(decomposedCharToBeClicked.id.slice(-1));
     const decomposedChar = decomposedChars[characterIndex];
 
     if (
@@ -230,7 +231,7 @@ function decomposedCharacterClicked(e) {
 }
 
 function handleKeyRelease(e) {
-    if (userSettings.mode.currentValue !== 'layout')
+    if (userSettings.modeValue !== 'layout')
         return;
 
     const keyname = (e.type === 'keyup') ? (e.key).toLowerCase() : e.target.id.slice(-1);
