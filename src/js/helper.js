@@ -34,12 +34,11 @@ export const keyToRadicalTable = {
     '.': '。',
     ';': '；',
 };
-
 const baseURL = import.meta.env.BASE_URL;
 export const queries = {
     'codes': `${baseURL}cangjieCodeTable.min.json.gz`,
     // future: sentence resource
-}
+};
 
 // saved class names
 export const decomposedCharClasses = {
@@ -70,8 +69,9 @@ export const kbKeys = Object.fromEntries(
 );
 
 // helper functions
-export const saveSettings = (k, v, isDocumentAttribute = true) => {
-    if (isDocumentAttribute) document.documentElement.setAttribute(k, v);
+export const saveSetting = (k, v, isDocumentAttribute = true) => {
+    if (isDocumentAttribute)
+        document.documentElement.setAttribute(k, v);
     localStorage.setItem(k, v);
 
     return v;

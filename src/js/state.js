@@ -1,7 +1,7 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-import { Cycler, decomposedChars, loadSetting, saveSettings } from "./helper.js";
+import { Cycler, decomposedChars, loadSetting, saveSetting } from "./helper.js";
 
 class State {
     #testCharCode;
@@ -33,7 +33,7 @@ class State {
     // returns the amount of increment
     incrementCodePosition(increment = 1) {
         if ((this.#currentCodeIndex + increment) >= this.#testCharCodeLength) {
-            this.#practiceIndex = saveSettings('practiceIndex', (this.#practiceIndex + 1) % 29463, false);
+            this.#practiceIndex = saveSetting('practiceIndex', (this.#practiceIndex + 1) % 29463, false);
             // 29462 is the number of entries in the code table
             return 0; // user has finished practicing this character
         }
@@ -44,7 +44,7 @@ class State {
         return increment;
     }
 
-    resetPracticeIndex() { this.#practiceIndex = saveSettings('practiceIndex', 0, false); }
+    resetPracticeIndex() { this.#practiceIndex = saveSetting('practiceIndex', 0, false); }
 
     // getters (the fields themselves)
     get testCharCode() { return this.#testCharCode; }

@@ -97,6 +97,7 @@ a {
 
 a:hover {
     text-decoration: underline;
+    text-underline-offset: 0.1em;
     color: var(--link-hover);
 }
 

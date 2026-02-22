@@ -1,7 +1,7 @@
 /* Modifications: Unlicense © 2025 ngivanyh (https://github.com/ngivanyh/changjie/blob/master/LICENSE) */
 /* Original Work: MIT License © 2019 Cycatz (https://github.com/ngivanyh/changjie/blob/master/LICENSE-ORIGINAL) */
 
-import { saveSettings, Cycler, reportErr, loadSetting} from "./helper.js";
+import { saveSetting, Cycler, reportErr, loadSetting} from "./helper.js";
 
 class Setting extends Cycler {
     #saveParams;
@@ -16,7 +16,7 @@ class Setting extends Cycler {
     }
 
     // private save method so people cannot put in bogus values
-    #save() { saveSettings(this.#saveParams[0], this.currentValue, this.#saveParams[1]); }
+    #save() { saveSetting(this.#saveParams[0], this.currentValue, this.#saveParams[1]); }
 
     // the parent methods + autosaving
     next() { super.next(); this.#save(); }
