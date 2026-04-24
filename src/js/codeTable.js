@@ -4,63 +4,71 @@
 import appState from "./state.js";
 import { reportErr, queries } from "./helper.js";
 
-// cache api
-const changjieCache = await caches.open('ChangjieCache');
-const cachedCangjieCodes = await changjieCache.match(queries.codes);
+const changjieCache = await caches.open("ChangjieCache");
+const cachedCangjieCodes = await changjieCache.match(queries.codes); // see if key-value entry is in the cache
 
-const cangjieCodes = (!cachedCangjieCodes) ? await getCodeTable() : await cachedCangjieCodes.json();
-
-console.log('Cangjie codes:', cangjieCodes);
+// the code table
+const cangjieCodes = !cachedCangjieCodes ? await getCodeTable() : await cachedCangjieCodes.json();
 
 async function getCodeTable() {
-    let response;
-    try {
-        response = await fetch(queries.codes);
-    } catch (error) {
-        reportErr(`Failed to fetch Cangjie code table: ${error}`);
-    }
+  let response;
 
-    if (!response.ok)
-        reportErr(`Request to fetch Cangjie code table failed with status ${response.status}: ${response.statusText}`);
+  try {
+    response = await fetch(queries.codes);
+  } catch (error) {
+    reportErr(`Failed to fetch Cangjie code table: ${error}`);
+  }
 
-    let data;
-    if (response.headers.get('Content-Encoding') === 'gzip') {
-        data = await response.json();
-    } else {
-        const ds = new DecompressionStream('gzip');
-        data = await new Response(response.body.pipeThrough(ds)).json();
-    }
-
-    if (!data || typeof (data) !== 'object')
-        reportErr(`Expected Cangjie code table response datatype: object, got ${typeof(data)}`);
-
-    let scrambledCangjieCodes = {};
-
-    const dataKeys = Object.keys(data);
-
-    // Fisher-Yates-Durstenfeld Shuffle
-    for (let i = 0; i < dataKeys.length - 1; i++) {
-        const j = i + Math.floor(Math.random() * (dataKeys.length - i));
-        [dataKeys[i], dataKeys[j]] = [dataKeys[j], dataKeys[i]];
-    }
-
-    for (const k of dataKeys) scrambledCangjieCodes[k] = data[k];
-
-    await changjieCache.put(
-        queries.codes,
-        new Response(
-            JSON.stringify(scrambledCangjieCodes),
-            { 'headers': { 'Content-Type': 'application/json' } }
-        )
+  if (!response.ok)
+    reportErr(
+      `Request to fetch Cangjie code table failed with status ${response.status}: ${response.statusText}`,
     );
 
-    return scrambledCangjieCodes;
+  let data;
+
+  if (response.headers.get("Content-Encoding") === "gzip") {
+    data = await response.json();
+  } else {
+    // needs extra compression step
+    const ds = new DecompressionStream("gzip");
+    data = await new Response(response.body.pipeThrough(ds)).json();
+  }
+
+  if (!data || typeof data !== "object")
+    reportErr(
+      `Expected Cangjie code table response datatype: object, got ${typeof data}`,
+      false,
+    );
+
+  let scrambledCangjieCodes = {};
+
+  const dataKeys = Object.keys(data);
+
+  // Fisher-Yates-Durstenfeld Shuffle
+  for (let i = 0; i < dataKeys.length - 1; i++) {
+    const j = i + Math.floor(Math.random() * (dataKeys.length - i));
+    [dataKeys[i], dataKeys[j]] = [dataKeys[j], dataKeys[i]];
+  }
+
+  for (const k of dataKeys) scrambledCangjieCodes[k] = data[k];
+
+  await changjieCache.put(
+    queries.codes,
+    new Response(JSON.stringify(scrambledCangjieCodes), {
+      headers: { "Content-Type": "application/json" },
+    }),
+  );
+
+  return scrambledCangjieCodes;
 }
 
+// getters for the Cangjie code table (prevents data hampering)
 export const getCangjieCharacter = () => {
-    return Object.keys(cangjieCodes)[appState.practiceIndex];
-}
+  return Object.keys(cangjieCodes)[appState.practiceIndex];
+};
 
-export const getCangjieCodes = () => {
-    return Object.values(cangjieCodes)[appState.practiceIndex];
-}
+export const getCangjieCode = () => {
+  return Object.values(cangjieCodes)[appState.practiceIndex];
+};
+
+export const totalCharacters = Object.keys(cangjieCodes).length;
