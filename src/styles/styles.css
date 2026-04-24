@@ -150,7 +150,7 @@ a:hover {
 
 #keyboard {
     display: var(--keyboard-display);
-    margin: 5vh auto;
+    margin: 3vh auto;
     transition: display var(--transition-fast);
 }
 
@@ -179,9 +179,9 @@ a:hover {
     background-color: var(--bg-color);
     font-family: var(--font);
     position: relative;
-    font-size: 2.8vw;
+    font-size: 2.5rem;
     border: 0.125rem solid var(--font-color);
-    width: 4.2vw;
+    width: 3.75rem;
     height: var(--key-height);
     line-height: var(--key-height);
     margin: 0 0.1em 0 0.1em;
@@ -234,16 +234,12 @@ a:hover {
     position: fixed;
     bottom: 0.625rem;
     left: 0;
-    right: 0
+    right: 0;
 }
 
 .ui-toggle {
-    width: 2vw;
-    height: 2vw;
-}
-
-.settings-icon {
-    display: inline-block;
+    width: 1.875rem;
+    height: 1.875rem;
 }
 
 #kb-toggle {
@@ -260,20 +256,10 @@ a:hover {
 :root:not([theme='fire']) #theme-royalty { display: none; }
 :root:not([theme='royalty']) #theme-light { display: none; }
 
-/* kb visibility icon toggle */
-[kbVisibility='visible'] #visibility-visible {
-    display: none;
-}
-
-[kbVisibility='hidden'] #visibility-invisible {
-    display: none;
-}
-
-/* mode icon toggle */
-[mode='layout'] #mode-layout {
-    display: none;
-}
-
+/* other icon toggles */
+[kbVisibility='visible'] #visibility-visible,
+[kbVisibility='hidden'] #visibility-invisible,
+[mode='layout'] #mode-layout,
 [mode='decomposition'] #mode-decomposition {
     display: none;
 }
@@ -283,5 +269,11 @@ a:hover {
     * {
         animation: none;
         transition: none;
+    }
+}
+
+@media (view-width: 768px) {
+    .ui-toggle-row {
+        display: none;
     }
 }

@@ -49,7 +49,7 @@
 > 您先需有`git`、`node`、`yarn`才可以執行後面的操作。
 
 > [!WARNING]
-> 若您的測試伺服器無HTTPS連線，請勿使用Chrome、Safari等只能在有HTTPS的條件下使用Cache API的瀏覽器。
+> 若您與測試伺服器無HTTPS連線，請勿使用Chrome、Safari等只能在有HTTPS的條件下使用Cache API的瀏覽器。
 
 ```
 git clone https://github.com/ngivanyh/changjie.git
